@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(VIEWER)
+  createdAt    DateTime   @default(now())
+  decisions    Decision[]
+}
+
+enum Role {
+  ADMIN
+  AUDITOR
+  VIEWER
+}
+
+model AiSystem {
+  id          String           @id @default(uuid())
+  name        String
+  domain      String
+  description String
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  decisions   Decision[]
+  rules       GovernanceRule[]
+}
+
+model Decision {
+  id                    String           @id @default(uuid())
+  aiSystemId            String
+  aiSystem              AiSystem         @relation(fields: [aiSystemId], references: [id])
+  userId                String?
+  user                  User?            @relation(fields: [userId], references: [id])
+  inputData             Json
+  outputDecision        String
+  confidenceScore       Float
+  cognitiveConsistency  Float
+  transparencyIndex     Float
+  ethicalComplianceRate Float
+  adaptationSpeed       Float
+  selfRepairEfficiency  Float?
+  reasoningTrace        ReasoningStep[]
+  biasFlags             BiasFlag[]
+  ethicsChecks          EthicsCheck[]
+  status                DecisionStatus   @default(PENDING)
+  createdAt             DateTime         @default(now())
+}
+
+enum DecisionStatus {
+  PENDING
+  APPROVED
+  FLAGGED
+  BLOCKED
+}
+
+model ReasoningStep {
+  id              String   @id @default(uuid())
+  decisionId      String
+  decision        Decision @relation(fields: [decisionId], references: [id])
+  stepNumber      Int
+  layer           String // perception|reasoning|symbolic|metacognitive
+  description     String
+  inputValue      String
+  outputValue     String
+  confidence      Float
+  isInterpretable Boolean  @default(true)
+  durationMs      Int
+  createdAt       DateTime @default(now())
+
+  @@index([decisionId])
+}
+
+model BiasFlag {
+  id             String   @id @default(uuid())
+  decisionId     String
+  decision       Decision @relation(fields: [decisionId], references: [id])
+  biasType       String // selection_bias|anchoring|distributional_shift|demographic
+  severity       String // low|medium|high|critical
+  description    String
+  corrected      Boolean  @default(false)
+  correctionNote String?
+  detectedAt     DateTime @default(now())
+
+  @@index([decisionId])
+}
+
+model EthicsCheck {
+  id         String         @id @default(uuid())
+  decisionId String
+  decision   Decision       @relation(fields: [decisionId], references: [id])
+  ruleId     String
+  rule       GovernanceRule @relation(fields: [ruleId], references: [id])
+  passed     Boolean
+  reason     String
+  checkedAt  DateTime       @default(now())
+
+  @@index([decisionId])
+}
+
+model GovernanceRule {
+  id           String        @id @default(uuid())
+  aiSystemId   String
+  aiSystem     AiSystem      @relation(fields: [aiSystemId], references: [id])
+  name         String
+  description  String
+  category     String // ethics|legal|safety|fairness
+  isActive     Boolean       @default(true)
+  ethicsChecks EthicsCheck[]
+}
+
+model AnomalyAlert {
+  id          String   @id @default(uuid())
+  decisionId  String
+  severity    String   // high|critical
+  description String
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([decisionId])
+}

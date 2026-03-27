@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma_password
+      POSTGRES_DB: neurocloak
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "4000:4000"
+  #   environment:
+  #     DATABASE_URL: postgresql://prisma:prisma_password@postgres:5432/neurocloak?schema=public
+  #     RDB_URL: redis://redis:6379
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+
+volumes:
+  pgdata:

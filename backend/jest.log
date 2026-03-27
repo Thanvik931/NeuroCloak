@@ -1,0 +1,196 @@
+﻿node.exe : FAIL src/__t
+ests__/healthScore.test
+.ts
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Users\RUSHITHA\AppD
+ata\Roami ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (FAIL src/__te   
+ sts__/healthScore.    
+test.ts:String) []    
+, RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  ΓùÅ Health Score 
+Calculation ΓÇ║ 
+computes correctly 
+from known inputs
+
+    expect(received).to
+BeLessThanOrEqual(expec
+ted)
+
+    Expected: <= 100
+    Received:    8910
+
+    [0m [90m 14 
+|[39m     
+     [90m 15 |[39m   
+  expect(score)[33m.[
+39mtoBeGreaterThanOrEqu
+al([35m85[39m)[33m;
+[39m
+    [31m[1m>[22m[39
+m[90m 16 |[39m     ex
+pect(score)[33m.[39mt
+oBeLessThanOrEqual([35
+m100[39m)[33m;[39m
+     [90m    |[39m   
+                
+[31m[1m^[22m[39m
+     [90m 17 |[39m   
+  expect([36mtypeof[3
+9m score)[33m.[39mtoB
+e([32m'number'[39m)[
+33m;[39m
+     [90m 18 |[39m   
+})[33m;[39m
+     [90m 19 |[39m 
+})[33m;[39m[0m
+
+      at 
+Object.<anonymous> (src
+/__tests__/healthScore.
+test.ts:16:19)
+
+FAIL src/__tests__/simu
+late.test.ts
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/routes/aut
+h.ts[0m:[93m40[0m:[
+93m50[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'errors' does not 
+exist on type 
+'ZodError<unknown>'.
+
+    [7m40[0m       
+return 
+res.status(400).json({ 
+error: error.errors });
+    [7m  [0m [91m   
+                       
+                       
+~~~~~~[0m
+    [96msrc/routes/aut
+h.ts[0m:[93m72[0m:[
+93m50[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'errors' does not 
+exist on type 
+'ZodError<unknown>'.
+
+    [7m72[0m       
+return 
+res.status(400).json({ 
+error: error.errors });
+    [7m  [0m [91m   
+                       
+                       
+~~~~~~[0m
+
+FAIL src/__tests__/auth
+.test.ts
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/routes/aut
+h.ts[0m:[93m40[0m:[
+93m50[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'errors' does not 
+exist on type 
+'ZodError<unknown>'.
+
+    [7m40[0m       
+return 
+res.status(400).json({ 
+error: error.errors });
+    [7m  [0m [91m   
+                       
+                       
+~~~~~~[0m
+    [96msrc/routes/aut
+h.ts[0m:[93m72[0m:[
+93m50[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'errors' does not 
+exist on type 
+'ZodError<unknown>'.
+
+    [7m72[0m       
+return 
+res.status(400).json({ 
+error: error.errors });
+    [7m  [0m [91m   
+                       
+                       
+~~~~~~[0m
+
+FAIL src/__tests__/anom
+alyDetector.test.ts
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/__tests__/
+anomalyDetector.test.ts
+[0m:[93m22[0m:[93m2
+2[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'length' does not 
+exist on type 'void'.
+
+    [7m22[0m     expe
+ct(anomalies.length).to
+BeGreaterThan(0);
+    [7m  [0m [91m   
+                  
+~~~~~~[0m
+    [96msrc/__tests__/
+anomalyDetector.test.ts
+[0m:[93m23[0m:[93m1
+2[0m - 
+[91merror[0m[90m 
+TS7053: [0mElement 
+implicitly has an 
+'any' type because 
+expression of type '0' 
+can't be used to index 
+type 'void'.
+      Property '0' 
+does not exist on type 
+'void'.
+
+    [7m23[0m     expe
+ct(anomalies[0].type).t
+oBe('compliance_drop');
+    [7m  [0m [91m   
+        
+~~~~~~~~~~~~[0m
+
+PASS src/__tests__/cdtS
+imulator.test.ts
+
+Test Suites: 4 failed, 
+1 passed, 5 total
+Tests:       1 failed, 
+1 passed, 2 total
+Snapshots:   0 total
+Time:        6.955 s
+Ran all test suites.

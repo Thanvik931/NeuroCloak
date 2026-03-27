@@ -1,0 +1,99 @@
+﻿node.exe : FAIL src/__t
+ests__/simulate.test.ts
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Users\RUSHITHA\AppD
+ata\Roami ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (FAIL src/__te   
+ sts__/simulate.tes    
+t.ts:String) [], R    
+emoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/routes/sys
+tems.ts[0m:[93m161[0
+m:[93m38[0m - 
+[91merror[0m[90m 
+TS2304: [0mCannot 
+find name 
+'notBlockedRatio'.
+
+    [7m161[0m        
+  notBlockedRatio: Math
+.round(notBlockedRatio 
+* 100),
+    [7m   [0m [91m  
+                       
+            
+~~~~~~~~~~~~~~~[0m
+
+FAIL src/__tests__/auth
+.test.ts
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/routes/sys
+tems.ts[0m:[93m161[0
+m:[93m38[0m - 
+[91merror[0m[90m 
+TS2304: [0mCannot 
+find name 
+'notBlockedRatio'.
+
+    [7m161[0m        
+  notBlockedRatio: Math
+.round(notBlockedRatio 
+* 100),
+    [7m   [0m [91m  
+                       
+            
+~~~~~~~~~~~~~~~[0m
+
+FAIL src/__tests__/anom
+alyDetector.test.ts
+  ΓùÅ Test suite 
+failed to run
+
+    [96msrc/__tests__/
+anomalyDetector.test.ts
+[0m:[93m23[0m:[93m2
+5[0m - 
+[91merror[0m[90m 
+TS2339: [0mProperty 
+'type' does not exist 
+on type '{ decisionId: 
+any; severity: string; 
+description: string; 
+}'.
+
+    [7m23[0m     expe
+ct(anomalies[0].type).t
+oBe('compliance_drop');
+    [7m  [0m [91m   
+                     
+~~~~[0m
+
+PASS src/__tests__/heal
+thScore.test.ts
+PASS src/__tests__/cdtS
+imulator.test.ts
+
+Test Suites: 3 failed, 
+2 passed, 5 total
+Tests:       2 passed, 
+2 total
+Snapshots:   0 total
+Time:        7.237 s
+Ran all test suites.

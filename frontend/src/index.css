@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#0F172A] text-slate-200 font-sans antialiased;
+  }
+}
+
+.glass-panel {
+  @apply bg-[#1E293B]/80 backdrop-blur-md border border-dark-border rounded-xl shadow-xl;
+}
+
+.input-field {
+  @apply w-full px-4 py-2.5 bg-[#0F172A] border border-dark-border rounded-lg 
+         focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all
+         text-white placeholder-slate-500;
+}
+
+.btn-primary {
+  @apply w-full flex justify-center py-2.5 px-4 rounded-lg shadow-sm text-sm font-medium 
+         text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 
+         focus:ring-offset-2 focus:ring-primary focus:ring-offset-[#0F172A]
+         transition-all transform active:scale-[0.98];
+}
+
+/* Custom Scrollbar for inner zones */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Fix global select dropdown visibility on light-themed OS */
+option {
+  background-color: #0F172A;
+  color: #f8fafc;
+}
