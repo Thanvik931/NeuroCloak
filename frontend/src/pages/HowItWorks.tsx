@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, Brain, Shield, Activity, RefreshCw, ShieldCheck, Zap, Wrench, PlusCircle, TrendingUp, ArrowRight } from 'lucide-react';
+import { Eye, Brain, Shield, Activity, RefreshCw, ShieldCheck, Zap, Wrench, PlusCircle, TrendingUp, ArrowRight, Database } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HowItWorks = () => {
@@ -91,7 +91,37 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      {/* SECTION 5 — Real World Applications */}
+      {/* SECTION 5 — Machine Learning Models */}
+      <section className="space-y-12">
+        <h2 className="text-3xl font-bold text-white text-center">Under the Hood: Model Training</h2>
+        <div className="bg-slate-800/40 p-8 rounded-2xl border border-slate-700 max-w-4xl mx-auto space-y-6">
+          <p className="text-slate-300 leading-relaxed text-lg">
+            NeuroCloak oversees real Machine Learning models trained on robust, domain-specific tabular datasets. Here is exactly what happens during our model training phase:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div className="space-y-3">
+              <h3 className="text-indigo-400 font-bold flex items-center gap-2"><Database className="w-5 h-5" /> 1. The Datasets</h3>
+              <p className="text-slate-400 text-sm">
+                We generate high-quality proprietary data for three domains: <strong>Healthcare</strong> (1,500 patient triage profiles), <strong>Finance</strong> (2,000 transaction velocity logs), and <strong>Industrial Defense</strong> (1,000 sensor telemetry records).
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-indigo-400 font-bold flex items-center gap-2"><Brain className="w-5 h-5" /> 2. The Algorithm</h3>
+              <p className="text-slate-400 text-sm">
+                Using <code>scikit-learn</code>, we one-hot encode the categorical values and train a <strong>RandomForestClassifier</strong>. A Random Forest uses ensemble learning (combining multiple decision trees) to achieve high accuracy without overfitting.
+              </p>
+            </div>
+            <div className="space-y-3 md:col-span-2">
+              <h3 className="text-indigo-400 font-bold flex items-center gap-2"><Shield className="w-5 h-5" /> 3. NeuroCloak Integration</h3>
+              <p className="text-slate-400 text-sm">
+                Once the <code>.pkl</code> models are compiled, NeuroCloak's Cognitive Digital Twin wraps around them. When the Random Forest outputs a prediction, NeuroCloak extracts its decision boundaries, converts them into human-readable steps, and checks for demographic biases that the Random Forest inherently couldn't catch on its own.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6 — Real World Applications */}
       <section className="space-y-12">
         <h2 className="text-3xl font-bold text-white text-center">Where This Matters</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -109,7 +139,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      {/* SECTION 6 — Call to action */}
+      {/* SECTION 7 — Call to action */}
       <section className="py-12 border-t border-slate-800 text-center space-y-8">
         <h2 className="text-2xl font-bold text-white">Experience NeuroCloak Live</h2>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
