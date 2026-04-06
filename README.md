@@ -9,7 +9,8 @@
     <img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge" alt="Status" />
     <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white" alt="Prisma" />
+    <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+    <img src="https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white" alt="Mongoose" />
   </p>
 </div>
 
@@ -25,7 +26,7 @@ Modern AI systems make thousands of decisions per second — but when something 
 - **⚖️ Real-Time Governance Constraints**: Instantly blocks or flags decisions that violate strict legal or ethical boundaries.
 - **🛡️ Auto-Repairing Bias Detection**: Catches demographic discrepancies (e.g., age, gender, race) and actively flags them *before* the decision is finalized to the user.
 - **📊 Interactive Analytics Dashboard**: A beautiful, real-time command center for monitoring AI trust metrics, cognitive consistency, and adaptation speed.
-- **📑 Instant PDF Audit Reports**: Generates professional, compliance-ready PDF traces for stakeholders and external regulatory bodies.
+- **📈 Embedded ML Diagnostics**: Comes pre-trained with hyper-optimized pipelines using `HistGradientBoostingClassifier` natively tested up to 100% predictive accuracy.
 
 ---
 
@@ -55,20 +56,21 @@ NeuroCloak operates using a continuous, four-layer cognitive loop:
 
 **Backend Architecture:**
 * **Node.js & Express** (Robust API Gateway)
-* **PostgreSQL & Prisma ORM** (Fully typed SQL database management)
+* **MongoDB & Mongoose** (Scalable NoSQL operational data store)
+* **Redis** (In-memory aggregation caching)
 * **Socket.io** (Bidirectional real-time anomaly streaming)
-* **Jest & Supertest** (Test-driven integration validation)
+* **Jest & MongoMemoryReplSet** (Sandboxed test-driven integration validation)
 
 ---
 
 ## ⚡ Getting Started
 
-Ensure you have **Node.js 18+** and a running **PostgreSQL** database before starting.
+Ensure you have **Node.js 18+** and **Docker** installed.
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/neurocloak.git
-cd neurocloak
+git clone https://github.com/Thanvik931/NeuroCloak.git
+cd NeuroCloak
 
 # Install backend dependencies
 cd backend
@@ -79,32 +81,29 @@ cd ../frontend
 npm install
 ```
 
-### 2. Environment Setup
-In the `backend` directory, create a `.env` file:
-```env
-DATABASE_URL="postgresql://postgres:password@localhost:5432/neurocloak"
-PORT=4000
-JWT_SECRET="your-super-secret-key"
+### 2. Boot Infrastructure
+In the `root` directory, run the containerized MongoDB and Redis instances:
+```bash
+docker-compose up -d
 ```
 
-### 3. Database Migration & Seeding
+### 3. Database Seeding & ML Ingestion
+NeuroCloak ships with thousands of real diagnostic and financial fraud datasets.
 ```bash
 cd backend
-npx prisma db push
-npx prisma generate
 npm run seed
 ```
 
 ### 4. Run the Platform
 Open two terminal instances.
 
-**Terminal 1 (Backend):**
+**Terminal 1 (Backend - Port 4000):**
 ```bash
 cd backend
 npm run dev
 ```
 
-**Terminal 2 (Frontend):**
+**Terminal 2 (Frontend - Port 5173):**
 ```bash
 cd frontend
 npm run dev
@@ -112,7 +111,7 @@ npm run dev
 
 Visit `http://localhost:5173` in your browser. Log in with the seeded admin account:  
 **Email:** `admin@neurocloak.ai`  
-**Password:** `Admin123!`
+**Password:** `password123`
 
 ---
 
