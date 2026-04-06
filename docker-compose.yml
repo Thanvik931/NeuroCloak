@@ -1,16 +1,12 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: prisma
-      POSTGRES_PASSWORD: prisma_password
-      POSTGRES_DB: neurocloak
+  mongo:
+    image: mongo:7
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mongo_data:/data/db
 
   redis:
     image: redis:7
@@ -22,10 +18,10 @@ services:
   #   ports:
   #     - "4000:4000"
   #   environment:
-  #     DATABASE_URL: postgresql://prisma:prisma_password@postgres:5432/neurocloak?schema=public
+  #     MONGODB_URI: mongodb://mongo:27017/neurocloak
   #     RDB_URL: redis://redis:6379
   #   depends_on:
-  #     - postgres
+  #     - mongo
   #     - redis
 
   # frontend:
@@ -34,4 +30,4 @@ services:
   #     - "3000:3000"
 
 volumes:
-  pgdata:
+  mongo_data:

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { createServer } from 'http';
+import { connectMongoDB } from './lib/mongodb';
 import authRoutes from './routes/auth';
 import decisionsRoutes from './routes/decisions';
 import systemsRoutes from './routes/systems';
@@ -14,8 +15,15 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const httpServer = createServer(app);
 
+// 1. Connect to MongoDB
+if (process.env.NODE_ENV !== 'test') {
+  connectMongoDB();
+}
+
+// 2. Initialize Socket.io
 initSocket(httpServer);
 
+// 3. Register all routes and middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());

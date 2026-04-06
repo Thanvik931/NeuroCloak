@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { prisma } from '../lib/prisma';
+import { User } from '../models';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
@@ -17,24 +17,21 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { email, password } = registerSchema.parse(req.body);
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        email,
-        passwordHash,
-        role: 'VIEWER', // default role
-      },
-      select: { id: true, email: true, role: true, createdAt: true },
+    const passwordHash = await bcrypt.hash(password, 12);
+    const user = await User.create({
+      email,
+      passwordHash,
+      role: 'VIEWER', // default role
     });
 
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
 
-    return res.status(201).json({ token, user });
+    return res.status(201).json({ token, user: { id: user._id, email: user.email, role: user.role, createdAt: user.createdAt } });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: (error as any).errors });
@@ -47,7 +44,7 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = registerSchema.parse(req.body);
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -57,10 +54,10 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
 
     const userWithoutPassword = {
-      id: user.id,
+      id: user._id,
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,
@@ -77,10 +74,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user!.userId },
-      select: { id: true, email: true, role: true, createdAt: true },
-    });
+    const user = await User.findById(req.user!.userId, { passwordHash: 0 });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

@@ -1,10 +1,12 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
-import { prisma } from '../lib/prisma';
+import { AiSystem, GovernanceRule, Decision, ReasoningStep, BiasFlag, EthicsCheck } from '../models';
 import { cdtSimulator } from '../services/cdtSimulator';
 import { emitEvent } from '../services/socketService';
 import { detectAnomalies } from '../services/anomalyDetector';
+import mongoose from 'mongoose';
 import { z } from 'zod';
+import redis from '../lib/redis';
 
 const router = Router();
 
@@ -12,29 +14,34 @@ const router = Router();
 router.post('/simulate', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const simulateSchema = z.object({
-      aiSystemId: z.string().uuid(),
+      aiSystemId: z.string(),
       inputData: z.any().optional()
     });
 
     const parseResult = simulateSchema.safeParse(req.body);
     if (!parseResult.success) {
-      return res.status(400).json({ error: parseResult.error.errors });
+      return res.status(400).json({ error: parseResult.error.issues });
     }
 
     const { aiSystemId, inputData } = parseResult.data;
 
-    const system = await prisma.aiSystem.findUnique({ where: { id: aiSystemId } });
+    const system = await AiSystem.findById(aiSystemId);
     if (!system) {
       return res.status(404).json({ error: 'AI System not found' });
     }
 
+    const rules = await GovernanceRule.find({ aiSystemId, isActive: true });
+
     const simResult = await cdtSimulator({ aiSystemId, domain: system.domain, inputData });
 
-    const decision = await prisma.decision.create({
-      data: {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const decisionDocs = await Decision.create([{
         aiSystemId,
-        inputData,
         userId: req.user?.userId,
+        inputData,
         outputDecision: simResult.outputDecision,
         confidenceScore: simResult.confidenceScore,
         cognitiveConsistency: simResult.cognitiveConsistency,
@@ -42,24 +49,75 @@ router.post('/simulate', authenticate, async (req: AuthRequest, res: Response) =
         ethicalComplianceRate: simResult.ethicalComplianceRate,
         adaptationSpeed: simResult.adaptationSpeed,
         selfRepairEfficiency: simResult.selfRepairEfficiency,
-        status: simResult.status as any,
-        reasoningTrace: { create: simResult.reasoningTrace },
-        ethicsChecks: { create: simResult.ethicsChecks },
-        biasFlags: { create: simResult.biasFlags }
-      },
-      include: {
-        reasoningTrace: true,
-        ethicsChecks: true,
-        biasFlags: true,
+        status: simResult.status as any
+      }], { session });
+
+      const decisionId = decisionDocs[0]._id;
+
+      if (simResult.reasoningTrace && simResult.reasoningTrace.length > 0) {
+         await ReasoningStep.insertMany(
+           simResult.reasoningTrace.map((s: any, i: number) => ({
+             decisionId,
+             ...s
+           })),
+           { session }
+         );
       }
-    });
 
-    emitEvent('new_decision', decision);
+      if (simResult.biasFlags && simResult.biasFlags.length > 0) {
+         await BiasFlag.insertMany(
+           simResult.biasFlags.map((b: any) => ({
+             decisionId,
+             ...b
+           })),
+           { session }
+         );
+      }
 
-    // AI Health Risk Anomaly Check
-    await detectAnomalies(decision);
+      if (simResult.ethicsChecks && simResult.ethicsChecks.length > 0) {
+         await EthicsCheck.insertMany(
+           simResult.ethicsChecks.map((e: any) => ({
+             decisionId,
+             ruleId: rules.find(r => r.category === e.category)?._id || null, // fallback if rule missing
+             passed: e.passed,
+             reason: e.reason
+           })).filter((e: any) => e.ruleId !== null), // Just making sure rule mapping is safe
+           { session }
+         );
+      }
 
-    return res.status(201).json(decision);
+      await session.commitTransaction();
+
+      const populatedDecision = await Decision.findById(decisionId)
+        .populate('aiSystemId')
+        .lean();
+
+      emitEvent('new_decision', populatedDecision);
+
+      // AI Health Risk Anomaly Check (Async)
+      detectAnomalies(populatedDecision as any, aiSystemId).catch(console.error);
+
+      // Invalidate Redis cache
+      if (redis) {
+         await redis.del('analytics:summary');
+         await redis.del('analytics:metrics');
+      }
+
+      return res.status(201).json({ 
+        ...populatedDecision, 
+        id: populatedDecision?._id.toString(),
+        aiSystem: populatedDecision?.aiSystemId,
+        reasoningTrace: simResult.reasoningTrace,
+        ethicsChecks: simResult.ethicsChecks,
+        biasFlags: simResult.biasFlags
+      });
+
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      await session.endSession();
+    }
   } catch (error) {
     console.error('Simulation error:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -72,21 +130,34 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const aiSystemId = req.query.systemId as string;
+    const status = req.query.status as string;
+    const dateFrom = req.query.dateFrom as string;
+    const dateTo = req.query.dateTo as string;
     
-    const whereClause: any = {};
-    if (aiSystemId) {
-      whereClause.aiSystemId = aiSystemId;
+    const filter: Record<string, unknown> = {};
+    if (aiSystemId) filter.aiSystemId = aiSystemId;
+    if (status) filter.status = status;
+    if (dateFrom || dateTo) {
+      filter.createdAt = {};
+      if (dateFrom) (filter.createdAt as any).$gte = new Date(dateFrom);
+      if (dateTo) (filter.createdAt as any).$lte = new Date(dateTo);
     }
 
-    const decisions = await prisma.decision.findMany({
-      where: whereClause,
-      take: limit,
-      skip: (page - 1) * limit,
-      orderBy: { createdAt: 'desc' },
-      include: { aiSystem: { select: { name: true, domain: true } } }
-    });
+    const [decisionsRaw, total] = await Promise.all([
+      Decision.find(filter)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .populate('aiSystemId', 'name domain')
+        .lean(),
+      Decision.countDocuments(filter)
+    ]);
 
-    const total = await prisma.decision.count({ where: whereClause });
+    const decisions = decisionsRaw.map(d => ({
+      ...d,
+      id: d._id.toString(),
+      aiSystem: d.aiSystemId
+    }));
 
     return res.json({
       data: decisions,
@@ -94,7 +165,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit)
       }
     });
   } catch (error) {
@@ -105,18 +176,29 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 // 3. GET single decision detail
 router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const decision = await prisma.decision.findUnique({
-      where: { id: req.params.id as string },
-      include: {
-        aiSystem: true,
-        reasoningTrace: { orderBy: { stepNumber: 'asc' } },
-        biasFlags: true,
-        ethicsChecks: { include: { rule: true } }
-      }
-    });
+    const decision = await Decision.findById(req.params.id)
+      .populate('aiSystemId', 'name domain')
+      .lean();
 
     if (!decision) return res.status(404).json({ error: 'Decision not found' });
-    return res.json(decision);
+
+    const [reasoningSteps, biasFlags, ethicsChecksRaw] = await Promise.all([
+      ReasoningStep.find({ decisionId: req.params.id }).sort({ stepNumber: 1 }).lean(),
+      BiasFlag.find({ decisionId: req.params.id }).lean(),
+      EthicsCheck.find({ decisionId: req.params.id }).populate('ruleId', 'name category').lean()
+    ]);
+
+    return res.json({
+      ...decision,
+      id: decision._id.toString(),
+      aiSystem: decision.aiSystemId,
+      reasoningTrace: reasoningSteps,
+      biasFlags: biasFlags,
+      ethicsChecks: ethicsChecksRaw.map(e => ({
+         ...e,
+         rule: e.ruleId // Frontend expects `rule` property object from Prisma nested include
+      }))
+    });
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
   }
@@ -125,11 +207,10 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 // 4. GET trace only
 router.get('/:id/trace', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const trace = await prisma.reasoningStep.findMany({
-      where: { decisionId: req.params.id as string },
-      orderBy: { stepNumber: 'asc' }
-    });
-    return res.json(trace);
+    const steps = await ReasoningStep.find({ decisionId: req.params.id })
+      .sort({ stepNumber: 1 })
+      .lean();
+    return res.json(steps);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
   }
@@ -138,10 +219,11 @@ router.get('/:id/trace', authenticate, async (req: AuthRequest, res: Response) =
 // 5. PATCH flag decision (AUDITOR/ADMIN)
 router.patch('/:id/flag', authenticate, requireRole(['ADMIN', 'AUDITOR']), async (req: AuthRequest, res: Response) => {
   try {
-    const decision = await prisma.decision.update({
-      where: { id: req.params.id as string },
-      data: { status: 'FLAGGED' }
-    });
+    const decision = await Decision.findByIdAndUpdate(
+      req.params.id,
+      { $set: { status: 'FLAGGED' } },
+      { new: true }
+    );
     return res.json(decision);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });

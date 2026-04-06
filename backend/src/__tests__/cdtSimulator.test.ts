@@ -1,19 +1,23 @@
 import { cdtSimulator as runCDTSimulation } from '../services/cdtSimulator';
+import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
-// Mock Prisma so the test doesn't fail trying to read from the DB without a real system ID
-jest.mock('../lib/prisma', () => ({
-  prisma: {
-    governanceRule: {
-      findMany: jest.fn().mockResolvedValue([])
-    }
-  }
-}));
+let mongoServer: MongoMemoryServer;
 
 describe('cdtSimulator', () => {
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri());
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoServer.stop();
+  });
+
   it('returns all 5 required metrics', async () => {
-    // Adapter for the requested test signature
     const result = await runCDTSimulation({
-      aiSystemId: 'test-system',
+      aiSystemId: new mongoose.Types.ObjectId().toString(),
       domain: 'healthcare',
       inputData: 'test input'
     });

@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import { GovernanceRule } from '../models';
 
 export interface SimulateParams {
   aiSystemId: string;
@@ -96,9 +96,10 @@ export const cdtSimulator = async ({ aiSystemId, domain, inputData }: SimulatePa
   const transparencyIndex = interpretableSteps / reasoningTrace.length;
 
   // 2. Fetch Rules and Run Ethics Checks
-  const rules = await prisma.governanceRule.findMany({
-    where: { aiSystemId, isActive: true }
-  });
+  const rules = await GovernanceRule.find({
+    aiSystemId: aiSystemId as any,
+    isActive: true
+  }).lean();
 
   const passReasons: Record<string, string> = {
     safety: "Decision maintains safety thresholds within accepted operational bounds",
@@ -117,7 +118,7 @@ export const cdtSimulator = async ({ aiSystemId, domain, inputData }: SimulatePa
   const ethicsChecks = rules.map(rule => {
     const passed = Math.random() > 0.15; // 85% pass rate
     return {
-      ruleId: rule.id,
+      ruleId: (rule as any)._id,
       passed,
       reason: passed 
         ? (passReasons[rule.category] || "Constraint satisfied")

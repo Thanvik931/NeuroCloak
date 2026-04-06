@@ -1,71 +1,82 @@
-import { prisma } from '../lib/prisma';
+import { Decision, BiasFlag, AnomalyAlert } from '../models';
+import { IDecision } from '../models/Decision';
 import { emitEvent } from './socketService';
 
-export const detectAnomalies = async (decision: any, mockHistory?: any[]) => {
+export async function detectAnomalies(
+  newDecision: IDecision,
+  aiSystemId: string
+): Promise<void> {
+
+  // Fetch last 20 decisions for baseline
+  const history = await Decision
+    .find({
+      aiSystemId,
+      _id: { $ne: newDecision._id }
+    })
+    .sort({ createdAt: -1 })
+    .limit(20)
+    .lean();
+
+  // Need at least 5 historical decisions
+  if (history.length < 5) return;
+
   const anomalies = [];
 
-  // We only look at recent history for the same AI system
-  const recentHistory = mockHistory || await prisma.decision.findMany({
-    where: {
-      aiSystemId: decision.aiSystemId,
-      createdAt: {
-        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
-      }
-    },
-    orderBy: {
-      createdAt: 'desc'
-    },
-    take: 100 // Limit to 100 recent decisions
+  // CHECK A — Compliance Drop
+  const baseline = history.reduce((sum, d) => sum + d.ethicalComplianceRate, 0) / history.length;
+
+  if (newDecision.ethicalComplianceRate < (baseline - 0.15)) {
+    anomalies.push({
+      type: 'compliance_drop',
+      message: `Compliance dropped below baseline (baseline: ${(baseline * 100).toFixed(1)}%, current: ${(newDecision.ethicalComplianceRate * 100).toFixed(1)}%)`,
+      severity: 'critical'
+    });
+  }
+
+  // CHECK B — Unexpected Bias Spike
+  const last5 = history.slice(0, 5);
+  const recentBiasCount = await BiasFlag.countDocuments({
+    decisionId: { $in: last5.map(d => d._id) }
   });
 
-  // 1. High Severity Bias Spike
-  const severeBiases = decision.biasFlags?.filter((b: any) => b.severity === 'high' || b.severity === 'critical') || [];
-  if (severeBiases.length >= 2) {
+  const newDecisionHasBias = await BiasFlag.countDocuments({ decisionId: newDecision._id });
+
+  if (recentBiasCount === 0 && newDecisionHasBias > 0) {
     anomalies.push({
-      type: 'severe_bias',
-      decisionId: decision.id,
-      severity: 'critical',
-      description: 'Multiple critical biases detected in a single decision trace.'
+      type: 'bias_spike',
+      message: 'Bias detected after 5 consecutive clean decisions',
+      severity: 'warning'
     });
   }
 
-  // 2. Sudden Compliance Drop
-  if (decision.ethicalComplianceRate <= 0.6) {
-    const past10 = recentHistory.slice(0, 10);
-    const last10Avg = past10.reduce((acc: any, d: any) => acc + d.ethicalComplianceRate, 0) / (past10.length || 1);
-    
-    if (last10Avg - decision.ethicalComplianceRate > 0.15) {
-      anomalies.push({
-        type: 'compliance_drop',
-        decisionId: decision.id,
-        severity: 'critical',
-        description: `Sudden compliance drop detected (${last10Avg.toFixed(2)} -> ${decision.ethicalComplianceRate})`
-      });
-    }
-  }
+  // CHECK C — First Block in Clean Run
+  const last10Statuses = history.slice(0, 10).map(d => d.status);
+  const allApproved = last10Statuses.every(s => s === 'APPROVED');
 
-  // 3. Unexpected System Block
-  if (decision.status === 'BLOCKED') {
+  if (allApproved && newDecision.status === 'BLOCKED') {
     anomalies.push({
-      type: 'system_blocked',
-      decisionId: decision.id,
-      severity: 'high',
-      description: 'AI System blocked a decision due to governance rule violation.'
+      type: 'unexpected_block',
+      message: 'First BLOCKED decision after 10 consecutive APPROVED decisions',
+      severity: 'critical'
     });
   }
 
-  if (anomalies.length > 0) {
-    // Create in DB
-    const createdAnomalies = await Promise.all(anomalies.map(({ type, ...data }) => {
-      // @ts-ignore
-      return prisma.anomalyAlert.create({ data });
-    }));
+  // Save and emit each anomaly
+  for (const anomaly of anomalies) {
+    const alert = await AnomalyAlert.create({
+      aiSystemId,
+      decisionId: newDecision._id,
+      type:       anomaly.type,
+      message:    anomaly.message,
+      severity:   anomaly.severity
+    });
 
-    // Broadcast over WebSockets
-    createdAnomalies.forEach(alert => {
-      emitEvent('anomaly_detected', alert);
+    emitEvent('anomaly_detected', {
+      systemName: newDecision.aiSystemId,
+      type:       anomaly.type,
+      message:    anomaly.message,
+      severity:   anomaly.severity,
+      decisionId: newDecision._id.toString()
     });
   }
-
-  return anomalies;
-};
+}
