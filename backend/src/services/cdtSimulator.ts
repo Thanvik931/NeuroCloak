@@ -42,6 +42,15 @@ const DOMAIN_STEPS: Record<string, { layer: string, description: string }[]> = {
 const BIAS_TYPES = ['demographic_bias', 'selection_bias', 'anchoring', 'distributional_shift'];
 const SEVERITIES = ['low', 'medium', 'high', 'critical'];
 
+const DOMAIN_KEYWORDS: Record<string, string[]> = {
+  healthcare: ['patient', 'medical', 'diagnosis', 'symptom', 'hospital', 'disease', 'scan', 'treatment', 'blood', 'anatomy', 'oncology'],
+  finance: ['loan', 'bank', 'credit', 'interest', 'money', 'mortgage', 'investment', 'stock', 'transaction', 'currency', 'asset'],
+  defense: ['tactical', 'threat', 'aerial', 'missile', 'combat', 'reconnaissance', 'pilot', 'mission', 'target', 'stealth'],
+  industrial: ['factory', 'machine', 'sensor', 'production', 'robotics', 'warehouse', 'pipeline', 'efficiency', 'assembly'],
+  logistics: ['route', 'shipment', 'delivery', 'fleet', 'inventory', 'warehouse', 'parcel', 'logistics', 'tracking'],
+  cybersecurity: ['dns', 'firewall', 'malware', 'attack', 'intrusion', 'botnet', 'ddos', 'exploit', 'vulnerability']
+};
+
 function randomFloat(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
@@ -51,6 +60,35 @@ function randomInt(min: number, max: number) {
 }
 
 export const cdtSimulator = async ({ aiSystemId, domain, inputData }: SimulateParams) => {
+  // 0. Domain Validation (Correct Training Implementation)
+  const inputText = typeof inputData === 'string' 
+    ? inputData.toLowerCase() 
+    : JSON.stringify(inputData).toLowerCase();
+
+  const selectedDomain = domain.toLowerCase();
+  
+  // Find if input belongs to another domain
+  const matchingDomains = Object.entries(DOMAIN_KEYWORDS).filter(([dom, keywords]) => 
+     keywords.some(k => inputText.includes(k)) && dom !== selectedDomain
+  );
+
+  if (matchingDomains.length > 0 && inputText.length > 5) {
+     return {
+       aiSystemId,
+       inputData,
+       outputDecision: `FATAL: Domain Mismatch detected. System trained for '${selectedDomain}', but input represents '${matchingDomains[0][0]}'. Processing halted for safety.`,
+       confidenceScore: 0.1,
+       cognitiveConsistency: 0.05,
+       transparencyIndex: 1.0,
+       ethicalComplianceRate: 0,
+       adaptationSpeed: 0,
+       selfRepairEfficiency: 0,
+       status: 'BLOCKED',
+       reasoningTrace: [{ stepNumber: 1, layer: 'perception', description: 'Input domain classification failure', confidence: 0.1, isInterpretable: true }],
+       ethicsChecks: [],
+       biasFlags: []
+     };
+  }
   // 1. Generate Reasoning Steps
   let availableSteps = DOMAIN_STEPS[domain.toLowerCase()];
   
