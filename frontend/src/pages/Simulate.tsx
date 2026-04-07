@@ -300,7 +300,7 @@ export default function Simulate() {
       {isBattleMode ? (
         <div className="flex flex-col gap-6 animate-in fade-in duration-500 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
-             {systems.slice(0,3).map((sys: any, idx: number) => renderBattleColumn(sys, battleResults[idx]))}
+             {systems.map((sys: any, idx: number) => renderBattleColumn(sys, battleResults[idx]))}
           </div>
 
           {/* Winner Banner */}
