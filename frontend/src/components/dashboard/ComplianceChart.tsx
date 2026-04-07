@@ -37,7 +37,7 @@ export default function ComplianceChart({ data = [] }: { data: any[] }) {
             contentStyle={{ backgroundColor: '#1E293B', borderColor: '#334155', borderRadius: '12px', color: '#f8fafc', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' }}
             itemStyle={{ color: '#3B82F6', fontWeight: 600 }}
             labelStyle={{ color: '#94a3b8', fontSize: '12px', marginBottom: '8px' }}
-            formatter={(value: number) => [`${(value * 100).toFixed(1)}%`, 'Compliance Rate']}
+            formatter={(value: any) => [`${(value * 100).toFixed(1)}%`, 'Compliance Rate']}
             labelFormatter={(label) => new Date(label).toLocaleDateString(undefined, { weekday: 'short', month: 'long', day: 'numeric' })}
             cursor={{ stroke: '#334155', strokeWidth: 1, strokeDasharray: '4 4' }}
           />

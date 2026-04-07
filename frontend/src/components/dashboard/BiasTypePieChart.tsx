@@ -28,7 +28,7 @@ export default function BiasTypePieChart({ data = [] }: { data: any[] }) {
           <Tooltip 
             contentStyle={{ backgroundColor: '#1E293B', borderColor: '#334155', borderRadius: '12px', color: '#f8fafc', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' }}
             itemStyle={{ fontWeight: 600 }}
-            formatter={(value, name: string) => [value, name.replace(/_/g, ' ').toUpperCase()]}
+            formatter={(value: any, name: any) => [value, name?.replace(/_/g, ' ').toUpperCase()]}
           />
           <Legend 
             wrapperStyle={{ fontSize: '11px', color: '#94a3b8', paddingTop: '20px' }}

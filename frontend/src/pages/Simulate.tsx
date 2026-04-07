@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiClient } from '../api/client';
 import { Play, Loader2, CheckCircle2, AlertTriangle, XCircle, BrainCircuit, Swords, Trophy } from 'lucide-react';
@@ -123,7 +123,7 @@ export default function Simulate() {
   }
 
   // Render Battle Column
-  const renderBattleColumn = (sys: any, result: any, index: number) => {
+  const renderBattleColumn = (sys: any, result: any) => {
     return (
       <div key={sys.id} className="glass-panel p-4 flex flex-col h-full bg-slate-900/50 border border-slate-700/50">
         <div className="flex items-center justify-between mb-4 border-b border-slate-700/50 pb-3">
@@ -300,7 +300,7 @@ export default function Simulate() {
       {isBattleMode ? (
         <div className="flex flex-col gap-6 animate-in fade-in duration-500 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
-             {systems.slice(0,3).map((sys: any, idx: number) => renderBattleColumn(sys, battleResults[idx], idx))}
+             {systems.slice(0,3).map((sys: any, idx: number) => renderBattleColumn(sys, battleResults[idx]))}
           </div>
 
           {/* Winner Banner */}

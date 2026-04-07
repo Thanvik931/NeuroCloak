@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';

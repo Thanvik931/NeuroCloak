@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../api/client';
-import { BrainCircuit, ShieldCheck, Activity, Settings, Plus, X, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { BrainCircuit, X, Plus, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 const HealthScoreDisplay = ({ systemId }: { systemId: string }) => {
   const { data, isLoading } = useQuery({

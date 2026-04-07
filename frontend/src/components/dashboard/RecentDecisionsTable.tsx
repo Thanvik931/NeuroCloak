@@ -1,4 +1,3 @@
-import React from 'react';
 import { Badge, cn } from '../ui/Badge';
 import { BrainCircuit } from 'lucide-react';
 

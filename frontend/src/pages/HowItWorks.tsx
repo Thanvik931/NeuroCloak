@@ -1,4 +1,3 @@
-import React from 'react';
 import { Eye, Brain, Shield, Activity, RefreshCw, ShieldCheck, Zap, Wrench, PlusCircle, TrendingUp, ArrowRight, Database } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

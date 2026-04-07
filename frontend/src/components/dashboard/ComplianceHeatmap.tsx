@@ -1,4 +1,3 @@
-import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import 'react-calendar-heatmap/dist/styles.css';
