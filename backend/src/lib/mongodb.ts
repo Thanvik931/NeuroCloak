@@ -8,17 +8,21 @@ export async function connectMongoDB(): Promise<void> {
   if (isConnected) return
 
   try {
+    const maskedUri = MONGODB_URI.replace(/:([^:@]+)@/, ':****@');
+    console.log(`Connecting to MongoDB: ${maskedUri}`);
     await mongoose.connect(MONGODB_URI, {
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000, // Increased timeout
       socketTimeoutMS: 45000,
     })
     isConnected = true
     console.log('MongoDB connected successfully')
   } catch (error) {
-    console.error('MongoDB connection failed:', error)
+    const maskedUri = MONGODB_URI.replace(/:([^:@]+)@/, ':****@');
+    console.error(`MongoDB connection failed [${maskedUri}]:`, error)
     process.exit(1)
   }
+
 }
 
 export async function disconnectMongoDB(): Promise<void> {
