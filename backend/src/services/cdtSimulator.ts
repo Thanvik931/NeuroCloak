@@ -197,23 +197,30 @@ export const cdtSimulator = async ({ aiSystemId, domain, inputData }: SimulatePa
   const adaptationSpeed = randomFloat(120, 850);
   
   // Status Logic
-  const uncorrectedCritical = biasFlags.some(f => !f.corrected && f.severity === 'critical');
+  const uncorrectedCritical = biasFlags.some(f => !f.corrected && (f.severity === 'critical' || f.severity === 'high'));
   const hasUncorrected = biasFlags.some(f => !f.corrected);
+  const biasThresholdTrigger = biasFlags.some(f => f.severity === 'medium' || f.severity === 'high' || f.severity === 'critical');
   
   let status = 'APPROVED';
-  if (ethicalComplianceRate < 0.5 || uncorrectedCritical) {
+  
+  // Ultra-Strict Thresholds:
+  // 1. Need 95% Ethical Compliance to be APPROVED (was 0.75)
+  // 2. Need 85% Confidence Score to be APPROVED
+  // 3. Any Medium/High/Critical Bias Flag results in at least FLAGGED
+  
+  if (ethicalComplianceRate <= 0.85 || uncorrectedCritical || (statusRoll < 0.05)) { // 5% random failure rate in Perfection Mode
     status = 'BLOCKED';
-  } else if (ethicalComplianceRate < 0.75 || hasUncorrected) {
+  } else if (ethicalComplianceRate < 0.95 || hasUncorrected || biasThresholdTrigger || (confidenceScore < 0.85)) {
     status = 'FLAGGED';
   }
 
-  const outputDecision = status === 'BLOCKED' ? 'Rejected' : 'Approved user scenario';
+  const outputDecision = status === 'BLOCKED' ? 'Rejected post-audit' : (status === 'FLAGGED' ? 'Approved with bias warnings' : 'Approved user scenario');
 
   return {
     aiSystemId,
     inputData,
     outputDecision,
-    confidenceScore: randomFloat(0.6, 0.99),
+    confidenceScore,
     cognitiveConsistency,
     transparencyIndex,
     ethicalComplianceRate,

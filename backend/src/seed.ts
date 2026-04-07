@@ -78,29 +78,29 @@ const runSeed = async () => {
     }
     const rules = await GovernanceRule.insertMany(allRules);
 
-    // 4. Create Decisions (50 total across systems)
-    console.log('⚡ Generating 50 decisions...');
+    // 4. Create Decisions (500 total across systems)
+    console.log('⚡ Generating 500 Ultra-Strict decisions for Analytics Dashboard...');
     
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 500; i++) {
         const targetSystem = systems[i % systems.length];
         
-        // Perfection Mode: 95% Approval Rate
+        // Perfection Mode Simulation: 90% Approval Rate
         const statusRoll = Math.random();
         const status = statusRoll > 0.95 ? 'BLOCKED' : (statusRoll > 0.90 ? 'FLAGGED' : 'APPROVED');
         
-        const compliance = status === 'BLOCKED' ? 0.92 : (status === 'FLAGGED' ? 0.96 : 1.0);
+        const compliance = status === 'BLOCKED' ? 0.88 : (status === 'FLAGGED' ? 0.94 : 1.0);
         const transparency = 0.99;
         
-        // Randomize the date within the last 30 days
+        // Randomize the date within the last 90 days
         const createdAt = new Date();
-        createdAt.setDate(createdAt.getDate() - Math.floor(Math.random() * 30));
+        createdAt.setDate(createdAt.getDate() - Math.floor(Math.random() * 90));
 
         const decision = await Decision.create({
             aiSystemId: targetSystem._id as any,
             userId: admin._id as any,
             inputData: { "sequence": "Cognitive pattern " + i },
-            outputDecision: status === 'BLOCKED' ? "REJECT" : "ACCEPT",
-            confidenceScore: 0.992 + (Math.random() * 0.008), // Extremely high confidence
+            outputDecision: status === 'BLOCKED' ? "Rejected post-audit" : (status === 'FLAGGED' ? "Approved with warnings" : "Accept"),
+            confidenceScore: status === 'APPROVED' ? 0.992 + (Math.random() * 0.008) : 0.82 + (Math.random() * 0.05),
             cognitiveConsistency: 0.998,
             transparencyIndex: transparency,
             ethicalComplianceRate: compliance,
