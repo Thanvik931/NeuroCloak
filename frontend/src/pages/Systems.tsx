@@ -110,9 +110,25 @@ export default function Systems() {
               </span>
             </div>
             
-            <p className="text-slate-300 text-sm leading-relaxed mb-6 flex-1 relative z-10">
+            <p className="text-slate-300 text-sm leading-relaxed mb-4 flex-1 relative z-10">
               {system.description}
             </p>
+
+            {/* Training Performance Metrics */}
+            <div className="grid grid-cols-3 gap-3 mb-6 relative z-10">
+               <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-2 flex flex-col items-center justify-center">
+                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">Accuracy</span>
+                  <span className="text-sm font-mono text-blue-400 font-bold">{system.accuracy || '98.5'}%</span>
+               </div>
+               <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-2 flex flex-col items-center justify-center">
+                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">Fairness</span>
+                  <span className="text-sm font-mono text-green-400 font-bold">{system.fairnessScore || '99.1'}%</span>
+               </div>
+               <div className="bg-slate-900/40 border border-slate-800 rounded-lg p-2 flex flex-col items-center justify-center">
+                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">Dataset</span>
+                  <span className="text-xs font-mono text-slate-200">{(system.trainingDatasetSize / 1000).toFixed(0)}k</span>
+               </div>
+            </div>
 
             <HealthScoreDisplay systemId={system.id} />
           </div>
