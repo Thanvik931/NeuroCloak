@@ -11,7 +11,7 @@ router.get('/summary', authenticate, async (req: AuthRequest, res: Response) => 
     const aiSystemId = req.query.systemId as string;
     
     // Check redis cache if no specific systemId
-    if (!aiSystemId && redis) {
+    if (!aiSystemId && redis && (redis as any).status === 'ready') {
        const cached = await redis.get('analytics:summary');
        if (cached) return res.json(JSON.parse(cached));
     }
@@ -46,7 +46,7 @@ router.get('/summary', authenticate, async (req: AuthRequest, res: Response) => 
       activeFlags: summary?.flaggedCount || 0
     };
 
-    if (!aiSystemId && redis) {
+    if (!aiSystemId && redis && (redis as any).status === 'ready') {
        await redis.setex('analytics:summary', 300, JSON.stringify(result));
     }
 

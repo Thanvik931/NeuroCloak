@@ -98,7 +98,7 @@ router.post('/simulate', authenticate, async (req: AuthRequest, res: Response) =
       detectAnomalies(populatedDecision as any, aiSystemId).catch(console.error);
 
       // Invalidate Redis cache
-      if (redis) {
+      if (redis && (redis as any).status === 'ready') {
          await redis.del('analytics:summary');
          await redis.del('analytics:metrics');
       }
