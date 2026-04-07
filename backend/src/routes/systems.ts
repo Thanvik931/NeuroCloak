@@ -43,8 +43,15 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 // POST new system (ADMIN)
 router.post('/', authenticate, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
   try {
-    const { name, domain, description } = req.body;
-    const system = await AiSystem.create({ name, domain, description });
+    const { 
+      name, domain, description, 
+      accuracy, precision, recall, fairnessScore, trainingDatasetSize 
+    } = req.body;
+    
+    const system = await AiSystem.create({ 
+      name, domain, description,
+      accuracy, precision, recall, fairnessScore, trainingDatasetSize
+    });
     return res.status(201).json(system);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
@@ -75,10 +82,17 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 // PATCH system (ADMIN)
 router.patch('/:id', authenticate, requireRole(['ADMIN']), async (req: AuthRequest, res: Response) => {
   try {
-    const { name, domain, description, isActive } = req.body;
+    const { 
+      name, domain, description, isActive,
+      accuracy, precision, recall, fairnessScore, trainingDatasetSize
+    } = req.body;
+    
     const system = await AiSystem.findByIdAndUpdate(
       req.params.id,
-      { $set: { name, domain, description, isActive } },
+      { $set: { 
+        name, domain, description, isActive,
+        accuracy, precision, recall, fairnessScore, trainingDatasetSize
+      } },
       { new: true } // Return updated document
     );
     if (!system) return res.status(404).json({ error: 'System not found' });
