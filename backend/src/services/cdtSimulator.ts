@@ -195,6 +195,8 @@ export const cdtSimulator = async ({ aiSystemId, domain, inputData }: SimulatePa
   // Calculate Metrics
   const cognitiveConsistency = randomFloat(0.75, 0.98);
   const adaptationSpeed = randomFloat(120, 850);
+  const statusRoll = Math.random();
+  const confidenceScore = reasoningTrace.reduce((acc, s) => acc + s.confidence, 0) / reasoningTrace.length;
   
   // Status Logic
   const uncorrectedCritical = biasFlags.some(f => !f.corrected && (f.severity === 'critical' || f.severity === 'high'));
