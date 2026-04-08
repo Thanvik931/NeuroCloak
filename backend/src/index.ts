@@ -8,6 +8,7 @@ import decisionsRoutes from './routes/decisions';
 import systemsRoutes from './routes/systems';
 import analyticsRoutes from './routes/analytics';
 import anomaliesRoutes from './routes/anomalies';
+import chatRoutes from './routes/chat';
 import { initSocket } from './services/socketService';
 import rateLimit from 'express-rate-limit';
 
@@ -57,6 +58,7 @@ app.use('/api/decisions', decisionsRoutes);
 app.use('/api/systems', systemsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/anomalies', anomaliesRoutes);
+app.use('/api/chat', chatRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
