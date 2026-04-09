@@ -3,8 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../api/client';
 import MetricCard from '../components/dashboard/MetricCard';
 import RecentDecisionsTable from '../components/dashboard/RecentDecisionsTable';
-import ComplianceChart from '../components/dashboard/ComplianceChart';
-import BiasTypePieChart from '../components/dashboard/BiasTypePieChart';
+import EmbeddedChart from '../components/dashboard/EmbeddedChart';
 import AnomalyPanel from '../components/dashboard/AnomalyPanel';
 import { Activity, ShieldCheck, Zap } from 'lucide-react';
 
@@ -76,15 +75,19 @@ export default function Dashboard() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="glass-panel p-6 lg:col-span-2 shadow-sm relative z-0">
-          <h2 className="text-lg font-bold text-white tracking-tight">Ethical Compliance Rate (30 Days)</h2>
-          <p className="text-sm text-slate-400 mt-1">Time-series tracking of global domain compliance</p>
-          <ComplianceChart data={metricsData?.timeSeries || []} />
-        </div>
+          <EmbeddedChart 
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
+            chartId="dcfd7c64-cc3d-461c-a912-b5ddcba717ab"
+            height="320px"
+            title="Ethical Compliance Rate (30 Days)"
+          />
         <div className="glass-panel p-6 shadow-sm flex flex-col relative z-0">
-          <h2 className="text-lg font-bold text-white tracking-tight">Identified Bias Distribution</h2>
-          <p className="text-sm text-slate-400 mt-1">Total detected drift variables</p>
-          <BiasTypePieChart data={biasData?.distribution || []} />
+          <EmbeddedChart 
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
+            chartId="86071f23-022d-4015-8f13-fcf15b7d1e96"
+            height="320px"
+            title="Identified Bias Distribution"
+          />
         </div>
       </div>
 
