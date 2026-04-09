@@ -19,7 +19,7 @@ export interface IDecision extends Document {
 
 const DecisionSchema = new Schema<IDecision>({
   aiSystemId:            { type: Schema.Types.ObjectId, ref: 'AiSystem', required: true },
-  userId:                { type: Schema.Types.ObjectId, ref: 'User' },
+  userId:                { type: String, ref: 'User' },
   inputData:             { type: Schema.Types.Mixed, default: {} },
   outputDecision:        { type: String, required: true },
   confidenceScore:       { type: Number, required: true },
