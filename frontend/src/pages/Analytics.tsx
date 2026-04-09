@@ -36,7 +36,7 @@ export default function Analytics() {
         </div>
         <div className="grid grid-cols-1 gap-6">
           <EmbeddedChart
-            baseUrl="PASTE_YOUR_BASE_URL_HERE"
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
             chartId="690fdf03-9dd2-40ac-b73d-7607320a5953"
             height="350px"
             title="System Health & Ethical Compliance Heatmap"
@@ -80,7 +80,7 @@ export default function Analytics() {
             <h2 className="text-lg font-bold text-white tracking-tight">Compliance Timeseries</h2>
           </div>
           <EmbeddedChart
-            baseUrl="PASTE_YOUR_BASE_URL_HERE"
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
             chartId="dcfd7c64-cc3d-461c-a912-b5ddcba717ab"
             height="450px"
             title="30-Day Pass Rate Trends"
@@ -93,7 +93,7 @@ export default function Analytics() {
             <h2 className="text-lg font-bold text-white tracking-tight">Bias Distribution</h2>
           </div>
           <EmbeddedChart
-            baseUrl="PASTE_YOUR_BASE_URL_HERE"
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
             chartId="86071f23-022d-4015-8f13-fcf15b7d1e96"
             height="450px"
             title="Statistical Bias Types (Donut Chart)"
