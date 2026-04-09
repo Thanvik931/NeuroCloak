@@ -23,10 +23,10 @@ const GlobalLoader = () => (
   </div>
 );
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = () => {
   const token = useAuthStore((state) => state.token);
   if (!token) return <Navigate to="/login" replace />;
-  return <Layout>{children}</Layout>;
+  return <Layout />;
 };
 
 function App() {
@@ -37,13 +37,17 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/simulate" element={<ProtectedRoute><Simulate /></ProtectedRoute>} />
-              <Route path="/decisions" element={<ProtectedRoute><Decisions /></ProtectedRoute>} />
-              <Route path="/decisions/:id" element={<ProtectedRoute><DecisionDetail /></ProtectedRoute>} />
-              <Route path="/systems" element={<ProtectedRoute><Systems /></ProtectedRoute>} />
-              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
-              <Route path="/how-it-works" element={<ProtectedRoute><HowItWorks /></ProtectedRoute>} />
+              
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/simulate" element={<Simulate />} />
+                <Route path="/decisions" element={<Decisions />} />
+                <Route path="/decisions/:id" element={<DecisionDetail />} />
+                <Route path="/systems" element={<Systems />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/how-it-works" element={<HowItWorks />} />
+              </Route>
+
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>

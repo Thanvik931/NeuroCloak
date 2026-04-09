@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useLiveFeed } from '../../hooks/useLiveFeed';
 import AssistantBot from '../chat/AssistantBot';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
   const location = useLocation();
   const [title, setTitle] = useState('Dashboard');
 
@@ -28,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Header title={title} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-dark-bg p-8 relative">
           <div className="max-w-7xl mx-auto w-full h-full">
-            {children}
+            <Outlet />
           </div>
         </main>
       </div>
