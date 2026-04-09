@@ -1,10 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../api/client';
-import ComplianceChart from '../components/dashboard/ComplianceChart';
-import BiasTypePieChart from '../components/dashboard/BiasTypePieChart';
-import ComplianceHeatmap from '../components/dashboard/ComplianceHeatmap';
 import EmbeddedChart from '../components/dashboard/EmbeddedChart';
-import { ShieldAlert, Zap, Box, Globe } from 'lucide-react';
+import { ShieldAlert, Zap, Box, Globe, BarChart3, PieChart, Activity } from 'lucide-react';
 
 export default function Analytics() {
   const { data: metricsData } = useQuery({
@@ -24,85 +21,93 @@ export default function Analytics() {
 
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500 pb-8">
-      
+
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white tracking-tight">Executive Analytics</h1>
         <p className="text-sm text-slate-400 mt-1">Deep operational insights and statistical bias distribution tracking.</p>
       </div>
 
-      {/* MongoDB Atlas Charts Integration */}
+      {/* MongoDB Atlas: Heatmap Analytics (Full Width) */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-primary">
-          <Globe className="w-5 h-5" />
-          <h2 className="text-lg font-bold text-white tracking-tight">Global MongoDB Atlas Insights</h2>
+        <div className="flex items-center gap-2 text-green-400">
+          <Activity className="w-5 h-5" />
+          <h2 className="text-lg font-bold text-white tracking-tight">Global Compliance Heatmap</h2>
         </div>
         <div className="grid grid-cols-1 gap-6">
-           <EmbeddedChart 
-             baseUrl="" 
-             chartId="" 
-             title="Cloud-Synced Security Matrix"
-           />
+          <EmbeddedChart
+            baseUrl=""
+            chartId=""
+            height="350px"
+            title="System Health & Ethical Compliance Heatmap"
+          />
         </div>
-        <p className="text-xs text-slate-500 italic">Note: These charts are powered directly by MongoDB Atlas cloud-aggregation pipelines.</p>
       </div>
 
       {/* Primary KPI Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="glass-panel p-6 shadow-sm border-t-4 border-t-green-500">
-           <div className="flex items-center gap-3 text-slate-400 mb-2">
-             <ShieldAlert className="w-5 h-5 text-green-400" />
-             <span className="text-xs uppercase tracking-widest font-bold">Safety Score</span>
-           </div>
-           <p className="text-3xl font-mono text-white mt-4">98.2<span className="text-lg text-slate-500">%</span></p>
-           <p className="text-xs text-slate-500 mt-2">Overall platform compliance matrix</p>
+          <div className="flex items-center gap-3 text-slate-400 mb-2">
+            <ShieldAlert className="w-5 h-5 text-green-400" />
+            <span className="text-xs uppercase tracking-widest font-bold">Safety Score</span>
+          </div>
+          <p className="text-3xl font-mono text-white mt-4">98.2<span className="text-lg text-slate-500">%</span></p>
+          <p className="text-xs text-slate-500 mt-2">Overall platform compliance matrix</p>
         </div>
         <div className="glass-panel p-6 shadow-sm border-t-4 border-t-primary">
-           <div className="flex items-center gap-3 text-slate-400 mb-2">
-             <Zap className="w-5 h-5 text-primary" />
-             <span className="text-xs uppercase tracking-widest font-bold">Interpretability</span>
-           </div>
-           <p className="text-3xl font-mono text-white mt-4">87.5<span className="text-lg text-slate-500">%</span></p>
-           <p className="text-xs text-slate-500 mt-2">White-box reasoning trace fidelity</p>
+          <div className="flex items-center gap-3 text-slate-400 mb-2">
+            <Zap className="w-5 h-5 text-primary" />
+            <span className="text-xs uppercase tracking-widest font-bold">Interpretability</span>
+          </div>
+          <p className="text-3xl font-mono text-white mt-4">87.5<span className="text-lg text-slate-500">%</span></p>
+          <p className="text-xs text-slate-500 mt-2">White-box reasoning trace fidelity</p>
         </div>
         <div className="glass-panel p-6 shadow-sm border-t-4 border-t-yellow-500">
-           <div className="flex items-center gap-3 text-slate-400 mb-2">
-             <Box className="w-5 h-5 text-yellow-500" />
-             <span className="text-xs uppercase tracking-widest font-bold">Latency Overhead</span>
-           </div>
-           <p className="text-3xl font-mono text-white mt-4">124<span className="text-lg text-slate-500">ms</span></p>
-           <p className="text-xs text-slate-500 mt-2">Average added verification delay</p>
+          <div className="flex items-center gap-3 text-slate-400 mb-2">
+            <Box className="w-5 h-5 text-yellow-500" />
+            <span className="text-xs uppercase tracking-widest font-bold">Latency Overhead</span>
+          </div>
+          <p className="text-3xl font-mono text-white mt-4">124<span className="text-lg text-slate-500">ms</span></p>
+          <p className="text-xs text-slate-500 mt-2">Average added verification delay</p>
         </div>
       </div>
 
-      {/* Heatmap Row */}
-      <div className="glass-panel p-8 w-full overflow-hidden">
-         <h2 className="text-lg font-bold text-white tracking-tight">Compliance Health — Last 365 Days</h2>
-         <p className="text-sm text-slate-400 mt-1 mb-8">Visualization of daily average ethical compliance rates acting roughly as a system health status.</p>
-         <div className="w-full">
-            <ComplianceHeatmap data={heatmapData?.heatmapData || []} />
-         </div>
-      </div>
-
-      {/* Expanded Charts Row */}
+      {/* MongoDB Atlas: Line & Donut Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="glass-panel p-8 flex flex-col items-center">
-           <h2 className="text-lg font-bold text-white tracking-tight self-start">Correlated Drift & Bias Distribution</h2>
-           <p className="text-sm text-slate-400 mt-1 mb-8 self-start">Detected statistical biases across all features globally.</p>
-           <div className="w-full flex-1 min-h-[400px]">
-             <BiasTypePieChart data={biasData?.distribution || []} />
-           </div>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2 text-primary">
+            <BarChart3 className="w-5 h-5" />
+            <h2 className="text-lg font-bold text-white tracking-tight">Compliance Timeseries</h2>
+          </div>
+          <EmbeddedChart
+            baseUrl=""
+            chartId=""
+            height="450px"
+            title="30-Day Pass Rate Trends"
+          />
         </div>
-        
-        <div className="glass-panel p-8 flex flex-col">
-           <h2 className="text-lg font-bold text-white tracking-tight">Compliance Timeseries Matrix</h2>
-           <p className="text-sm text-slate-400 mt-1 mb-8">Aggregated 30-day tracking of ethical pass rates.</p>
-           <div className="w-full flex-1">
-             <ComplianceChart data={metricsData?.timeSeries || []} />
-           </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2 text-purple-400">
+            <PieChart className="w-5 h-5" />
+            <h2 className="text-lg font-bold text-white tracking-tight">Bias Distribution</h2>
+          </div>
+          <EmbeddedChart
+            baseUrl=""
+            chartId=""
+            height="450px"
+            title="Statistical Bias Types (Donut Chart)"
+          />
         </div>
       </div>
-      
+
+      <div className="p-4 bg-blue-500/5 rounded-xl border border-blue-500/20">
+        <p className="text-xs text-slate-400 italic flex items-center gap-2">
+          <Globe className="w-4 h-4 text-primary" />
+          These advanced visualizations are processed directly via MongoDB Atlas cloud aggregation pipelines for maximum data fidelity.
+        </p>
+      </div>
+
     </div>
   );
 }
