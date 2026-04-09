@@ -3,7 +3,8 @@ import { apiClient } from '../api/client';
 import ComplianceChart from '../components/dashboard/ComplianceChart';
 import BiasTypePieChart from '../components/dashboard/BiasTypePieChart';
 import ComplianceHeatmap from '../components/dashboard/ComplianceHeatmap';
-import { ShieldAlert, Zap, Box } from 'lucide-react';
+import EmbeddedChart from '../components/dashboard/EmbeddedChart';
+import { ShieldAlert, Zap, Box, Globe } from 'lucide-react';
 
 export default function Analytics() {
   const { data: metricsData } = useQuery({
@@ -28,6 +29,22 @@ export default function Analytics() {
       <div>
         <h1 className="text-2xl font-bold text-white tracking-tight">Executive Analytics</h1>
         <p className="text-sm text-slate-400 mt-1">Deep operational insights and statistical bias distribution tracking.</p>
+      </div>
+
+      {/* MongoDB Atlas Charts Integration */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-primary">
+          <Globe className="w-5 h-5" />
+          <h2 className="text-lg font-bold text-white tracking-tight">Global MongoDB Atlas Insights</h2>
+        </div>
+        <div className="grid grid-cols-1 gap-6">
+           <EmbeddedChart 
+             baseUrl="" 
+             chartId="" 
+             title="Cloud-Synced Security Matrix"
+           />
+        </div>
+        <p className="text-xs text-slate-500 italic">Note: These charts are powered directly by MongoDB Atlas cloud-aggregation pipelines.</p>
       </div>
 
       {/* Primary KPI Row */}

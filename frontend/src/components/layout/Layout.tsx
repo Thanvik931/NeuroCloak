@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useLiveFeed } from '../../hooks/useLiveFeed';
+import AssistantBot from '../chat/AssistantBot';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -31,6 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
+      <AssistantBot />
     </div>
   );
 }
