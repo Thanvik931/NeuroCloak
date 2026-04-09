@@ -29,7 +29,11 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
       // For immediate resolution without service account JSON, we decode and verify claims
       const decodedFirebase: any = jwt.decode(token);
 
-      if (decodedFirebase && decodedFirebase.iss.includes('firebase')) {
+      // Multi-pattern check for Firebase (google.com or firebase)
+      if (decodedFirebase && (
+        (decodedFirebase.iss && decodedFirebase.iss.includes('firebase')) ||
+        (decodedFirebase.iss && decodedFirebase.iss.includes('google.com'))
+      )) {
         req.user = {
           userId: decodedFirebase.sub || decodedFirebase.user_id,
           role: 'ADMIN' // Treat Firebase authenticated users as ADMIN for this dashboard
