@@ -30,10 +30,13 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
       const decodedFirebase: any = jwt.decode(token);
 
       // Multi-pattern check for Firebase (google.com or firebase)
-      if (decodedFirebase && (
+      const isFirebase = decodedFirebase && (
         (decodedFirebase.iss && decodedFirebase.iss.includes('firebase')) ||
-        (decodedFirebase.iss && decodedFirebase.iss.includes('google.com'))
-      )) {
+        (decodedFirebase.iss && decodedFirebase.iss.includes('google.com')) ||
+        (decodedFirebase.aud && decodedFirebase.aud.includes('neurocloak'))
+      );
+
+      if (isFirebase) {
         req.user = {
           userId: decodedFirebase.sub || decodedFirebase.user_id,
           role: 'ADMIN' // Treat Firebase authenticated users as ADMIN for this dashboard
@@ -41,6 +44,11 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
         return next();
       }
 
+      console.warn('Rejected Auth Token:', { 
+        iss: decodedFirebase?.iss, 
+        aud: decodedFirebase?.aud, 
+        sub: decodedFirebase?.sub 
+      });
       throw new Error('Invalid token');
     }
   } catch (error) {

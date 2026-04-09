@@ -34,90 +34,78 @@ router.post('/simulate', authenticate, async (req: AuthRequest, res: Response) =
 
     const simResult = await cdtSimulator({ aiSystemId, domain: system.domain, inputData });
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    // 1. Create Decision
+    const decision = await Decision.create({
+      aiSystemId,
+      userId: req.user?.userId,
+      inputData,
+      outputDecision: simResult.outputDecision,
+      confidenceScore: simResult.confidenceScore,
+      cognitiveConsistency: simResult.cognitiveConsistency,
+      transparencyIndex: simResult.transparencyIndex,
+      ethicalComplianceRate: simResult.ethicalComplianceRate,
+      adaptationSpeed: simResult.adaptationSpeed,
+      selfRepairEfficiency: simResult.selfRepairEfficiency,
+      status: simResult.status as any
+    });
 
-    try {
-      const decisionDocs = await Decision.create([{
-        aiSystemId,
-        userId: req.user?.userId,
-        inputData,
-        outputDecision: simResult.outputDecision,
-        confidenceScore: simResult.confidenceScore,
-        cognitiveConsistency: simResult.cognitiveConsistency,
-        transparencyIndex: simResult.transparencyIndex,
-        ethicalComplianceRate: simResult.ethicalComplianceRate,
-        adaptationSpeed: simResult.adaptationSpeed,
-        selfRepairEfficiency: simResult.selfRepairEfficiency,
-        status: simResult.status as any
-      }], { session });
+    const decisionId = decision._id;
 
-      const decisionId = decisionDocs[0]._id;
-
-      if (simResult.reasoningTrace && simResult.reasoningTrace.length > 0) {
-         await ReasoningStep.insertMany(
-           simResult.reasoningTrace.map((s: any, i: number) => ({
-             decisionId,
-             ...s
-           })),
-           { session }
-         );
-      }
-
-      if (simResult.biasFlags && simResult.biasFlags.length > 0) {
-         await BiasFlag.insertMany(
-           simResult.biasFlags.map((b: any) => ({
-             decisionId,
-             ...b
-           })),
-           { session }
-         );
-      }
-
-      if (simResult.ethicsChecks && simResult.ethicsChecks.length > 0) {
-         await EthicsCheck.insertMany(
-           simResult.ethicsChecks.map((e: any) => ({
-             decisionId,
-             ruleId: rules.find(r => r.category === e.category)?._id || null, // fallback if rule missing
-             passed: e.passed,
-             reason: e.reason
-           })).filter((e: any) => e.ruleId !== null), // Just making sure rule mapping is safe
-           { session }
-         );
-      }
-
-      await session.commitTransaction();
-
-      const populatedDecision = await Decision.findById(decisionId)
-        .populate('aiSystemId')
-        .lean();
-
-      emitEvent('new_decision', populatedDecision);
-
-      // AI Health Risk Anomaly Check (Async)
-      detectAnomalies(populatedDecision as any, aiSystemId).catch(console.error);
-
-      // Invalidate Redis cache
-      if (redis && (redis as any).status === 'ready') {
-         await redis.del('analytics:summary');
-         await redis.del('analytics:metrics');
-      }
-
-      return res.status(201).json({ 
-        ...populatedDecision, 
-        id: populatedDecision?._id.toString(),
-        aiSystem: populatedDecision?.aiSystemId,
-        reasoningTrace: simResult.reasoningTrace,
-        ethicsChecks: simResult.ethicsChecks,
-        biasFlags: simResult.biasFlags
-      });
-
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      await session.endSession();
+    // 2. Insert Trace Steps
+    if (simResult.reasoningTrace?.length > 0) {
+      await ReasoningStep.insertMany(
+        simResult.reasoningTrace.map((s: any) => ({
+          decisionId,
+          ...s
+        }))
+      );
     }
+
+    // 3. Insert Bias Flags
+    if (simResult.biasFlags?.length > 0) {
+      await BiasFlag.insertMany(
+        simResult.biasFlags.map((b: any) => ({
+          decisionId,
+          ...b
+        }))
+      );
+    }
+
+    // 4. Insert Ethics Checks (Mapping correctly)
+    if (simResult.ethicsChecks?.length > 0) {
+      await EthicsCheck.insertMany(
+        simResult.ethicsChecks.map((e: any) => ({
+          decisionId,
+          ruleId: e.ruleId,
+          passed: e.passed,
+          reason: e.reason
+        }))
+      );
+    }
+
+    const populatedDecision = await Decision.findById(decisionId)
+      .populate('aiSystemId')
+      .lean();
+
+    emitEvent('new_decision', populatedDecision);
+
+    // AI Health Risk Anomaly Check (Async)
+    detectAnomalies(populatedDecision as any, aiSystemId).catch(console.error);
+
+    // Invalidate Redis cache
+    if (redis && (redis as any).status === 'ready') {
+      await redis.del('analytics:summary');
+      await redis.del('analytics:metrics');
+    }
+
+    return res.status(201).json({ 
+      ...populatedDecision, 
+      id: populatedDecision?._id.toString(),
+      aiSystem: populatedDecision?.aiSystemId,
+      reasoningTrace: simResult.reasoningTrace,
+      ethicsChecks: simResult.ethicsChecks,
+      biasFlags: simResult.biasFlags
+    });
   } catch (error) {
     console.error('Simulation error:', error);
     return res.status(500).json({ error: 'Internal server error' });

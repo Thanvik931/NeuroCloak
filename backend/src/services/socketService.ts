@@ -14,9 +14,28 @@ export const initSocket = (server: HttpServer) => {
   io.use((socket: Socket, next: (err?: any) => void) => {
     const token = socket.handshake.auth?.token;
     if (!token) return next(new Error('Authentication error'));
+    
     try {
-      jwt.verify(token, JWT_SECRET);
-      next();
+      // 1. Try Internal JWT
+      try {
+        jwt.verify(token, JWT_SECRET);
+        return next();
+      } catch (err) {
+        // 2. Try Firebase Decode
+        const decoded: any = jwt.decode(token);
+        const isFirebase = decoded && (
+          (decoded.iss && decoded.iss.includes('firebase')) ||
+          (decoded.iss && decoded.iss.includes('google.com')) ||
+          (decoded.aud && decoded.aud.includes('neurocloak'))
+        );
+
+        if (isFirebase) {
+          return next();
+        }
+        
+        console.warn('Socket Auth Rejected:', { iss: decoded?.iss, aud: decoded?.aud });
+        next(new Error('Authentication error'));
+      }
     } catch (err) {
       next(new Error('Authentication error'));
     }

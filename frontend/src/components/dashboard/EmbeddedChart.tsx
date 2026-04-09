@@ -5,9 +5,16 @@ interface EmbeddedChartProps {
   chartId: string;
   height?: string;
   title?: string;
+  type?: 'chart' | 'dashboard';
 }
 
-const EmbeddedChart: React.FC<EmbeddedChartProps> = ({ baseUrl, chartId, height = '400px', title }) => {
+const EmbeddedChart: React.FC<EmbeddedChartProps> = ({ 
+  baseUrl, 
+  chartId, 
+  height = '400px', 
+  title,
+  type = 'chart'
+}) => {
   // If the user hasn't provided details yet, show a helpful placeholder
   if (!baseUrl || !chartId) {
     return (
@@ -25,8 +32,9 @@ const EmbeddedChart: React.FC<EmbeddedChartProps> = ({ baseUrl, chartId, height 
     );
   }
 
-  // The official MongoDB Atlas Charts iFrame URL format
-  const src = `${baseUrl}/embed/charts?id=${chartId}&theme=dark&autoRefresh=true&maxDataAge=3600&showTitle=false&attribution=false`;
+  // Handle both individual charts and full dashboards
+  const basePath = type === 'dashboard' ? 'dashboards' : 'charts';
+  const src = `${baseUrl}/embed/${basePath}?id=${chartId}&theme=dark&autoRefresh=true&maxDataAge=3600&showTitle=false&attribution=false`;
 
   return (
     <div className="w-full bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">

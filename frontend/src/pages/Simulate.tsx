@@ -66,6 +66,7 @@ export default function Simulate() {
     if (!selectedSystem) return alert('Select an AI System to audit first.');
     try {
       const parsed = JSON.parse(inputData);
+      setSimulationResult(null); // Reset for animation
       simulateMutation.mutate({ aiSystemId: selectedSystem, inputData: parsed });
     } catch(e) {
       alert('Invalid JSON in Input Data.');
