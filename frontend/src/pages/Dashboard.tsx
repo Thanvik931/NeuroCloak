@@ -73,19 +73,24 @@ export default function Dashboard() {
         />
       </div>
 
-        {/* Full MongoDB Dashboard Embedding */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-primary">
-          <Globe className="w-5 h-5" />
-          <h2 className="text-lg font-bold text-white tracking-tight">NeuroCloak Unified Governance Intelligence</h2>
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <EmbeddedChart 
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
+            chartId="39f78fc4-994c-48d4-895f-cd300f276115"
+            height="400px"
+            title="Ethical Compliance Rate (30 Days)"
+          />
         </div>
-        <EmbeddedChart
-          baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
-          chartId="e67fc0f4-2121-4b03-90d0-3980a8132e1d"
-          height="900px"
-          title="Full Platform Analytics Matrix"
-          type="dashboard"
-        />
+        <div className="glass-panel p-6 shadow-sm flex flex-col relative z-0">
+          <EmbeddedChart 
+            baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
+            chartId="b5c92381-0433-400a-a359-84017dfdb66c"
+            height="400px"
+            title="Identified Bias Distribution"
+          />
+        </div>
       </div>
 
       {/* Anomaly Alerts Row */}
