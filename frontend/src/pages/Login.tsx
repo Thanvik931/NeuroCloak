@@ -67,6 +67,7 @@ export default function Login() {
 
       navigate('/dashboard');
     } catch (err: any) {
+      console.error('Firebase Google Auth Error:', err);
       if (err.code !== 'auth/popup-closed-by-user') {
         setError('Google authentication failed. Please try again.');
       }
