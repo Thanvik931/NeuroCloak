@@ -11,6 +11,7 @@ import Systems from './pages/Systems';
 import Analytics from './pages/Analytics';
 import HowItWorks from './pages/HowItWorks';
 import Layout from './components/layout/Layout';
+import AssistantBot from './components/chat/AssistantBot';
 import ErrorBoundary from './components/layout/ErrorBoundary';
 import { Loader2 } from 'lucide-react';
 
@@ -35,19 +36,20 @@ function App() {
         <Suspense fallback={<GlobalLoader />}>
           <BrowserRouter>
             <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/simulate" element={<ProtectedRoute><Simulate /></ProtectedRoute>} />
-          <Route path="/decisions" element={<ProtectedRoute><Decisions /></ProtectedRoute>} />
-          <Route path="/decisions/:id" element={<ProtectedRoute><DecisionDetail /></ProtectedRoute>} />
-          <Route path="/systems" element={<ProtectedRoute><Systems /></ProtectedRoute>} />
-          <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
-          <Route path="/how-it-works" element={<ProtectedRoute><HowItWorks /></ProtectedRoute>} />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </Suspense>
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/simulate" element={<ProtectedRoute><Simulate /></ProtectedRoute>} />
+              <Route path="/decisions" element={<ProtectedRoute><Decisions /></ProtectedRoute>} />
+              <Route path="/decisions/:id" element={<ProtectedRoute><DecisionDetail /></ProtectedRoute>} />
+              <Route path="/systems" element={<ProtectedRoute><Systems /></ProtectedRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+              <Route path="/how-it-works" element={<ProtectedRoute><HowItWorks /></ProtectedRoute>} />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+            <AssistantBot />
+          </BrowserRouter>
+        </Suspense>
       </ErrorBoundary>
     </QueryClientProvider>
   );
