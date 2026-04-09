@@ -37,7 +37,7 @@ export default function Analytics() {
         <div className="grid grid-cols-1 gap-6">
           <EmbeddedChart
             baseUrl="https://charts.mongodb.com/charts-project-0-hdpyqif"
-            chartId="690fdf03-9dd2-40ac-b73d-7607320a5953"
+            chartId="5a410fc6-58e7-4d76-aa55-d84cc57c3d37"
             height="350px"
             title="System Health & Ethical Compliance Heatmap"
           />
