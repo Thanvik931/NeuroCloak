@@ -24,7 +24,7 @@ export default function AnomalyPanel() {
     if (!token) return;
     const SOCKET_URL = import.meta.env.VITE_API_URL
       ? import.meta.env.VITE_API_URL.replace('/api', '')
-      : 'http://localhost:4000';
+      : window.location.origin;
     const socket = io(SOCKET_URL, { auth: { token } });
 
     socket.on('anomaly_detected', (newAnomaly: any) => {

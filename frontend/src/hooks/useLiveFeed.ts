@@ -10,7 +10,9 @@ export const useLiveFeed = () => {
   useEffect(() => {
     if (!token) return;
 
-    const API_BASE = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:4000';
+    const API_BASE = import.meta.env.VITE_API_URL 
+      ? import.meta.env.VITE_API_URL.replace('/api', '') 
+      : window.location.origin;
 
     // Connect to Backend WebSocket server using JWT for Auth
     const socket = io(API_BASE, {

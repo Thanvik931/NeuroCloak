@@ -25,21 +25,28 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
       req.user = decoded;
       return next();
     } catch (jwtErr) {
-      // 2. Try Firebase ID Token
-      // For immediate resolution without service account JSON, we decode and verify claims
+      // 2. Try Firebase ID Token (Hardened)
       const decodedFirebase: any = jwt.decode(token);
 
-      // Multi-pattern check for Firebase (google.com or firebase)
-      const isFirebase = decodedFirebase && (
+      if (!decodedFirebase) throw new Error('Invalid token');
+
+      const isFirebase = (
         (decodedFirebase.iss && decodedFirebase.iss.includes('firebase')) ||
         (decodedFirebase.iss && decodedFirebase.iss.includes('google.com')) ||
         (decodedFirebase.aud && decodedFirebase.aud.includes('neurocloak'))
       );
 
       if (isFirebase) {
+        // SECURITY ALERT: Decoding without verifying the signature is a loophole.
+        // In production, we block this and require firebase-admin.verifyIdToken()
+        if (process.env.NODE_ENV === 'production') {
+           console.error('CRITICAL SECURITY ALERT: Unverified Firebase token blocked in production.');
+           throw new Error('Token verification required');
+        }
+
         req.user = {
           userId: decodedFirebase.sub || decodedFirebase.user_id,
-          role: 'ADMIN' // Treat Firebase authenticated users as ADMIN for this dashboard
+          role: 'ADMIN' 
         };
         return next();
       }
