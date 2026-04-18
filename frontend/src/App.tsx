@@ -40,13 +40,13 @@ function App() {
               <Route path="/login" element={<Login />} />
               
               <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/simulate" element={<Simulate />} />
-                <Route path="/decisions" element={<Decisions />} />
-                <Route path="/decisions/:id" element={<DecisionDetail />} />
-                <Route path="/systems" element={<Systems />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/how-it-works" element={<HowItWorks />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="simulate" element={<Simulate />} />
+                <Route path="decisions" element={<Decisions />} />
+                <Route path="decisions/:id" element={<DecisionDetail />} />
+                <Route path="systems" element={<Systems />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="how-it-works" element={<HowItWorks />} />
               </Route>
 
               <Route path="/" element={<Home />} />

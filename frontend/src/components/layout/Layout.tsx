@@ -14,12 +14,17 @@ export default function Layout() {
 
   useEffect(() => {
     const path = location.pathname.split('/')[1];
-    if (path) {
-      if (path === 'decisions') setTitle('Decision Audit Log');
-      else if (path === 'simulate') setTitle('Live Simulation');
-      else setTitle(path.charAt(0).toUpperCase() + path.slice(1));
-    }
-  }, [location]);
+    const titles: Record<string, string> = {
+      'dashboard': 'Dashboard Overview',
+      'simulate': 'Live Simulation & Audit',
+      'decisions': 'Decision Audit Log',
+      'systems': 'AI Systems Registry',
+      'analytics': 'Global Analytics',
+      'how-it-works': 'Documentation'
+    };
+    
+    setTitle(titles[path] || 'NeuroCloak');
+  }, [location.pathname]);
 
   return (
     <div className="flex bg-dark-bg h-screen text-slate-200 w-full overflow-hidden">
