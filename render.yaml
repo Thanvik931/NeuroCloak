@@ -1,0 +1,31 @@
+services:
+  # ── REDIS (Internal Cache & Socket Broker) ────────────────────────────────
+  - type: redis
+    name: neurocloak-redis
+    plan: free
+    region: oregon # Stable region for free tier
+    ipAllowList: [] # Only allow internal traffic
+
+  # ── BACKEND (Node.js/Express API) ─────────────────────────────────────────
+  - type: web
+    name: neurocloak-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # User must set this manually in Render dashboard for security
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: neurocloak-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://neuro-cloak.vercel.app # Default, will be updated after Vercel deploy
