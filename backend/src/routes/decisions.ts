@@ -7,10 +7,26 @@ import { detectAnomalies } from '../services/anomalyDetector';
 import mongoose from 'mongoose';
 import { z } from 'zod';
 import redis from '../lib/redis';
+import { aiService } from '../services/aiService';
 
 const router = Router();
 
-// 1. Simulate Decision
+// 1. Audit a specific decision with AI
+router.post('/:id/verify', authenticate, async (req, res) => {
+  try {
+    const decision = await Decision.findById(req.params.id).lean();
+    if (!decision) return res.status(404).json({ error: 'Decision not found' });
+
+    const trace = await ReasoningStep.find({ decisionId: req.params.id }).sort('stepNumber').lean();
+    
+    const auditResult = await aiService.auditDecision(decision, trace);
+    res.json({ data: auditResult });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error during audit' });
+  }
+});
+
+// 2. Simulate Decision
 router.post('/simulate', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const simulateSchema = z.object({

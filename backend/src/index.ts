@@ -65,7 +65,10 @@ const authLimiter = rateLimit({
 app.use('/api', apiLimiter);
 app.use('/api/auth/login', authLimiter);
 
+import utilsRoutes from './routes/utils';
+
 // Routes
+app.use('/api/utils', utilsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/decisions', decisionsRoutes);
 app.use('/api/systems', systemsRoutes);

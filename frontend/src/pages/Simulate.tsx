@@ -7,76 +7,51 @@ import { Badge, cn } from '../components/ui/Badge';
 export default function Simulate() {
   const [selectedSystem, setSelectedSystem] = useState('');
   const [inputData, setInputData] = useState('{\n  "age": 45,\n  "history": "clean",\n  "amount_requested": 50000\n}');
-  const [simulationResult, setSimulationResult] = useState<any>(null);
-  const [visibleSteps, setVisibleSteps] = useState<number>(0);
-
-  // Feature 1: Battle Mode State
-  const [isBattleMode, setIsBattleMode] = useState(false);
-  const [biasSlider, setBiasSlider] = useState(50);
-  const [battleResults, setBattleResults] = useState<any[]>([]);
-  const [battleTick, setBattleTick] = useState(0);
-  const [isBattlePending, setIsBattlePending] = useState(false);
-
-  // Fetch systems
-  const { data: systemsData } = useQuery({
-    queryKey: ['systems'],
-    queryFn: () => apiClient('/systems')
-  });
-  const systems = systemsData?.data || [];
-
-  // Standard Mutation
-  const simulateMutation = useMutation({
-    mutationFn: async (payload: any) => apiClient('/decisions/simulate', {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    }),
-    onSuccess: (data) => {
-      setSimulationResult(data);
-      setVisibleSteps(0);
-    }
-  });
-
-  // Regular Stagger Effect
-  useEffect(() => {
-    if (!isBattleMode && simulationResult && simulationResult.reasoningTrace) {
-      if (visibleSteps < simulationResult.reasoningTrace.length) {
-        const timer = setTimeout(() => {
-          setVisibleSteps(prev => prev + 1);
-        }, 600);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [simulationResult, visibleSteps, isBattleMode]);
-
-  // Battle Mode Stagger Effect (150ms)
-  useEffect(() => {
-    if (isBattleMode && battleResults.length === 3 && battleResults.every(r => r !== null)) {
-      const maxSteps = Math.max(...battleResults.map(r => r.reasoningTrace.length));
-      if (battleTick < maxSteps) {
-        const timer = setTimeout(() => {
-          setBattleTick(prev => prev + 1);
-        }, 150);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [battleResults, battleTick, isBattleMode]);
+  const [inputMode, setInputMode] = useState<'json' | 'text'>('text');
+  const [naturalLanguage, setNaturalLanguage] = useState('A 45-year-old applicant with a clean financial history is requesting a $50,000 mortgage loan for a new primary residence.');
+  const [isParsing, setIsParsing] = useState(false);
 
   // Handlers
+  const handleParseNL = async () => {
+    setIsParsing(true);
+    try {
+      const result = await apiClient('/utils/parse-scenario', {
+        method: 'POST',
+        body: JSON.stringify({ text: naturalLanguage })
+      });
+      setInputData(JSON.stringify(result.data, null, 2));
+      setInputMode('json');
+    } catch (e) {
+      alert('AI Parsing failed. Please try manual JSON entry.');
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
   const handleSimulate = () => {
     if (!selectedSystem) return alert('Select an AI System to audit first.');
     try {
-      const parsed = JSON.parse(inputData);
+      let finalData = inputData;
+      if (inputMode === 'text') {
+        // Simple fallback if they didn't parse
+        finalData = JSON.stringify({ description: naturalLanguage });
+      }
+      const parsed = JSON.parse(finalData);
       setSimulationResult(null); // Reset for animation
       simulateMutation.mutate({ aiSystemId: selectedSystem, inputData: parsed });
     } catch(e) {
-      alert('Invalid JSON in Input Data.');
+      alert('Invalid input data format.');
     }
   };
 
   const handleBattleRun = async () => {
     if (systems.length < 3) return alert("Need at least 3 systems registered for Battle Mode.");
     try {
-      const parsed = JSON.parse(inputData);
+      let finalData = inputData;
+      if (inputMode === 'text') {
+        finalData = JSON.stringify({ description: naturalLanguage });
+      }
+      const parsed = JSON.parse(finalData);
       // inject bias setting for backend dynamics if applicable
       parsed._bias_injection_probability = biasSlider / 100;
       
@@ -92,7 +67,7 @@ export default function Simulate() {
       const results = await Promise.all(promises);
       setBattleResults(results);
     } catch(e) {
-      alert('Invalid JSON in Input Data.');
+      alert('Invalid input data format.');
     } finally {
       setIsBattlePending(false);
     }
@@ -212,18 +187,34 @@ export default function Simulate() {
             <BrainCircuit className="w-5 h-5 text-primary" /> Configuration
           </h2>
           
-          {/* FEATURE 1: Battle Mode Toggle */}
-          <button 
-            onClick={() => setIsBattleMode(!isBattleMode)}
-            className={cn(
-              "flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all text-xs font-bold uppercase tracking-widest",
-              isBattleMode 
-                ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
-                : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-300"
-            )}
-          >
-            <Swords className="w-4 h-4" /> Battle Mode {isBattleMode ? 'ON' : 'OFF'}
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="flex bg-slate-800/50 p-1 rounded-lg border border-slate-700 mr-2">
+              <button 
+                onClick={() => setInputMode('text')}
+                className={cn("px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all", inputMode === 'text' ? "bg-primary text-white" : "text-slate-500 hover:text-slate-300")}
+              >
+                Simple Text
+              </button>
+              <button 
+                onClick={() => setInputMode('json')}
+                className={cn("px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all", inputMode === 'json' ? "bg-primary text-white" : "text-slate-500 hover:text-slate-300")}
+              >
+                Pro JSON
+              </button>
+            </div>
+
+            <button 
+              onClick={() => setIsBattleMode(!isBattleMode)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all text-xs font-bold uppercase tracking-widest",
+                isBattleMode 
+                  ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
+                  : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-300"
+              )}
+            >
+              <Swords className="w-4 h-4" /> Battle Mode {isBattleMode ? 'ON' : 'OFF'}
+            </button>
+          </div>
         </div>
 
         <div className={cn("flex flex-1 gap-6", isBattleMode ? "flex-col lg:flex-row items-center w-full" : "flex-col")}>
@@ -253,13 +244,37 @@ export default function Simulate() {
           )}
 
           <div className={cn("space-y-2 flex flex-col", isBattleMode ? "flex-1" : "flex-1 pt-4")}>
-            <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Inference Scenario (JSON)</label>
-            <textarea 
-              value={inputData}
-              onChange={(e) => setInputData(e.target.value)}
-              className={cn("input-field font-mono text-sm leading-relaxed w-full resize-none bg-dark-bg/50 border-dark-border/80 focus:bg-dark-bg focus:border-primary", isBattleMode ? "h-32" : "flex-1 min-h-[300px]")}
-              spellCheck="false"
-            />
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
+                {inputMode === 'text' ? 'Natural Language Scenario' : 'Inference Scenario (JSON)'}
+              </label>
+              {inputMode === 'text' && (
+                <button 
+                  onClick={handleParseNL}
+                  disabled={isParsing || !naturalLanguage}
+                  className="text-[10px] font-bold text-primary hover:text-blue-400 flex items-center gap-1 uppercase tracking-widest disabled:opacity-50 transition-colors"
+                >
+                  {isParsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <BrainCircuit className="w-3 h-3" />}
+                  {isParsing ? 'Neural Parsing...' : 'Neural Parse to JSON'}
+                </button>
+              )}
+            </div>
+            
+            {inputMode === 'text' ? (
+              <textarea 
+                value={naturalLanguage}
+                onChange={(e) => setNaturalLanguage(e.target.value)}
+                className={cn("input-field text-sm leading-relaxed w-full resize-none bg-dark-bg/50 border-dark-border/80 focus:bg-dark-bg focus:border-primary", isBattleMode ? "h-32" : "flex-1 min-h-[300px]")}
+                placeholder="Describe the scenario in plain English... e.g. A high-risk patient with existing conditions needs an MRI approval."
+              />
+            ) : (
+              <textarea 
+                value={inputData}
+                onChange={(e) => setInputData(e.target.value)}
+                className={cn("input-field font-mono text-sm leading-relaxed w-full resize-none bg-dark-bg/50 border-dark-border/80 focus:bg-dark-bg focus:border-primary", isBattleMode ? "h-32" : "flex-1 min-h-[300px]")}
+                spellCheck="false"
+              />
+            )}
           </div>
 
           {isBattleMode && (
@@ -404,9 +419,29 @@ export default function Simulate() {
 
                   {simulationResult.biasFlags?.length > 0 && (
                     <div className="space-y-3 mt-6 animate-in slide-in-from-bottom-4 duration-500 delay-500 fill-mode-backwards">
-                      <h3 className="text-[11px] font-bold tracking-[0.2em] text-red-500 uppercase flex items-center gap-2">
-                         <AlertTriangle className="w-3.5 h-3.5" /> Detected Drift / Bias
-                      </h3>
+                      <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-[11px] font-bold tracking-[0.2em] text-red-500 uppercase flex items-center gap-2">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Detected Drift / Bias
+                        </h3>
+                        <button 
+                          onClick={async () => {
+                             const btn = document.getElementById('audit-btn');
+                             if (btn) btn.innerText = 'Auditing...';
+                             try {
+                               const res = await apiClient(`/decisions/${simulationResult.id}/verify`, { method: 'POST' });
+                               alert(`AI AUDIT REPORT:\n\nAccuracy Score: ${res.data.accuracyScore * 100}%\nEthical Rating: ${res.data.ethicalRating}\n\nCommentary: ${res.data.commentary}`);
+                             } catch(e) {
+                               alert('AI Audit service unavailable. Please check backend logs.');
+                             } finally {
+                               if (btn) btn.innerText = 'Verify with AI Auditor';
+                             }
+                          }}
+                          id="audit-btn"
+                          className="text-[10px] font-bold text-primary hover:text-white flex items-center gap-1.5 uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full border border-primary/30 transition-all hover:bg-primary"
+                        >
+                          <BrainCircuit className="w-3 h-3" /> Verify with AI Auditor
+                        </button>
+                      </div>
                       <div className="space-y-3">
                         {simulationResult.biasFlags.map((flag: any, i: number) => (
                           <div key={i} className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-sm">
