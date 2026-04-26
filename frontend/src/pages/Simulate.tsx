@@ -11,6 +11,60 @@ export default function Simulate() {
   const [naturalLanguage, setNaturalLanguage] = useState('A 45-year-old applicant with a clean financial history is requesting a $50,000 mortgage loan for a new primary residence.');
   const [isParsing, setIsParsing] = useState(false);
 
+  const [simulationResult, setSimulationResult] = useState<any>(null);
+  const [visibleSteps, setVisibleSteps] = useState<number>(0);
+  
+  // Battle Mode State
+  const [isBattleMode, setIsBattleMode] = useState(false);
+  const [biasSlider, setBiasSlider] = useState(50);
+  const [battleResults, setBattleResults] = useState<any[]>([]);
+  const [battleTick, setBattleTick] = useState(0);
+  const [isBattlePending, setIsBattlePending] = useState(false);
+
+  // Fetch systems
+  const { data: systemsData } = useQuery({
+    queryKey: ['systems'],
+    queryFn: () => apiClient('/systems')
+  });
+  const systems = systemsData?.data || [];
+
+  // Standard Mutation
+  const simulateMutation = useMutation({
+    mutationFn: async (payload: any) => apiClient('/decisions/simulate', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    }),
+    onSuccess: (data) => {
+      setSimulationResult(data);
+      setVisibleSteps(0);
+    }
+  });
+
+  // Regular Stagger Effect
+  useEffect(() => {
+    if (!isBattleMode && simulationResult && simulationResult.reasoningTrace) {
+      if (visibleSteps < simulationResult.reasoningTrace.length) {
+        const timer = setTimeout(() => {
+          setVisibleSteps(prev => prev + 1);
+        }, 600);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [simulationResult, visibleSteps, isBattleMode]);
+
+  // Battle Mode Stagger Effect (150ms)
+  useEffect(() => {
+    if (isBattleMode && battleResults.length === 3 && battleResults.every(r => r !== null)) {
+      const maxSteps = Math.max(...battleResults.map(r => r.reasoningTrace.length));
+      if (battleTick < maxSteps) {
+        const timer = setTimeout(() => {
+          setBattleTick(prev => prev + 1);
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [battleResults, battleTick, isBattleMode]);
+
   // Handlers
   const handleParseNL = async () => {
     setIsParsing(true);
