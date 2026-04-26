@@ -187,34 +187,17 @@ export default function Simulate() {
             <BrainCircuit className="w-5 h-5 text-primary" /> Configuration
           </h2>
           
-          <div className="flex items-center gap-2">
-            <div className="flex bg-slate-800/50 p-1 rounded-lg border border-slate-700 mr-2">
-              <button 
-                onClick={() => setInputMode('text')}
-                className={cn("px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all", inputMode === 'text' ? "bg-primary text-white" : "text-slate-500 hover:text-slate-300")}
-              >
-                Simple Text
-              </button>
-              <button 
-                onClick={() => setInputMode('json')}
-                className={cn("px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-all", inputMode === 'json' ? "bg-primary text-white" : "text-slate-500 hover:text-slate-300")}
-              >
-                Pro JSON
-              </button>
-            </div>
-
-            <button 
-              onClick={() => setIsBattleMode(!isBattleMode)}
-              className={cn(
-                "flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all text-xs font-bold uppercase tracking-widest",
-                isBattleMode 
-                  ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
-                  : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-300"
-              )}
-            >
-              <Swords className="w-4 h-4" /> Battle Mode {isBattleMode ? 'ON' : 'OFF'}
-            </button>
-          </div>
+          <button 
+            onClick={() => setIsBattleMode(!isBattleMode)}
+            className={cn(
+              "flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all text-xs font-bold uppercase tracking-widest",
+              isBattleMode 
+                ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
+                : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-300"
+            )}
+          >
+            <Swords className="w-4 h-4" /> Battle Mode {isBattleMode ? 'ON' : 'OFF'}
+          </button>
         </div>
 
         <div className={cn("flex flex-1 gap-6", isBattleMode ? "flex-col lg:flex-row items-center w-full" : "flex-col")}>
@@ -244,21 +227,37 @@ export default function Simulate() {
           )}
 
           <div className={cn("space-y-2 flex flex-col", isBattleMode ? "flex-1" : "flex-1 pt-4")}>
-            <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
-                {inputMode === 'text' ? 'Natural Language Scenario' : 'Inference Scenario (JSON)'}
-              </label>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-2">
+              <div className="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50 shadow-inner">
+                <button 
+                  onClick={() => setInputMode('text')}
+                  className={cn("px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all", inputMode === 'text' ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:text-slate-300")}
+                >
+                  Simple Text
+                </button>
+                <button 
+                  onClick={() => setInputMode('json')}
+                  className={cn("px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all", inputMode === 'json' ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:text-slate-300")}
+                >
+                  Pro JSON
+                </button>
+              </div>
+              
               {inputMode === 'text' && (
                 <button 
                   onClick={handleParseNL}
                   disabled={isParsing || !naturalLanguage}
-                  className="text-[10px] font-bold text-primary hover:text-blue-400 flex items-center gap-1 uppercase tracking-widest disabled:opacity-50 transition-colors"
+                  className="text-[10px] font-bold text-primary hover:text-blue-400 flex items-center gap-2 uppercase tracking-widest disabled:opacity-50 transition-all bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg border border-primary/20"
                 >
                   {isParsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <BrainCircuit className="w-3 h-3" />}
-                  {isParsing ? 'Neural Parsing...' : 'Neural Parse to JSON'}
+                  {isParsing ? 'Neural Parsing...' : 'Generate JSON Schema'}
                 </button>
               )}
             </div>
+
+            <label className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-1 block">
+              {inputMode === 'text' ? 'Natural Language Scenario' : 'Inference Scenario (JSON)'}
+            </label>
             
             {inputMode === 'text' ? (
               <textarea 

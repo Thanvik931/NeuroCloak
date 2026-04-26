@@ -3,8 +3,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const openai = process.env.OPENAI_API_KEY 
-  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const apiKey = process.env.OPENAI_API_KEY;
+const openai = (apiKey && apiKey !== "" && !apiKey.includes("your-api-key")) 
+  ? new OpenAI({ apiKey })
   : null;
 
 export const aiService = {
