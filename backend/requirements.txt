@@ -1,0 +1,12 @@
+Flask==3.1.1
+Flask-CORS==5.0.1
+Flask-Limiter==3.12
+Flask-SocketIO==5.5.1
+pymongo==4.12.1
+redis==5.3.0
+PyJWT==2.9.0
+bcrypt==4.3.0
+openai==1.82.0
+python-dotenv==1.1.0
+gunicorn==23.0.0
+eventlet==0.39.1
