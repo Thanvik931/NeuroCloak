@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github, X, Sun, Moon } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github, X, Sun, Moon, User } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 
@@ -13,6 +13,7 @@ export default function Sidebar() {
     { name: 'Decisions', path: '/decisions', icon: BrainCircuit },
     { name: 'Systems', path: '/systems', icon: Database },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
+    { name: 'Profile', path: '/profile', icon: User },
     { name: 'How It Works', path: '/how-it-works', icon: HelpCircle },
   ];
 
@@ -96,17 +97,24 @@ export default function Sidebar() {
             GitHub Repo
           </a>
 
-          <div className="flex items-center space-x-3 bg-white/[0.03] hover:bg-white/5 transition-colors p-3 rounded-lg border border-white/5 cursor-default">
-            <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/30">
+          {/* User Profile Footer Card */}
+          <Link
+            to="/profile"
+            onClick={() => setSidebarOpen(false)}
+            className="flex items-center space-x-3 bg-white/[0.03] hover:bg-white/10 transition-colors p-3 rounded-lg border border-white/5 group"
+          >
+            <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/30 group-hover:scale-105 transition-transform">
               <span className="text-primary font-semibold text-sm text-center leading-none">
                 {user?.email?.charAt(0).toUpperCase() || 'A'}
               </span>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white truncate">{user?.email || 'admin@neurocloak.ai'}</p>
-              <p className="text-[10px] text-primary font-semibold tracking-wider truncate mt-0.5">{user?.role || 'ADMIN'}</p>
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-xs font-bold text-white truncate group-hover:text-primary transition-colors">
+                {user?.email || 'admin@neurocloak.ai'}
+              </p>
+              <p className="text-[10px] text-slate-400 font-medium truncate">Edit Profile &amp; Settings</p>
             </div>
-          </div>
+          </Link>
         </div>
       </aside>
     </>

@@ -13,6 +13,7 @@ import DecisionDetail from './pages/DecisionDetail';
 import Systems from './pages/Systems';
 import Analytics from './pages/Analytics';
 import HowItWorks from './pages/HowItWorks';
+import Profile from './pages/Profile';
 import Layout from './components/layout/Layout';
 import AssistantBot from './components/chat/AssistantBot';
 import ErrorBoundary from './components/layout/ErrorBoundary';
@@ -54,6 +55,7 @@ function App() {
                 <Route path="decisions/:id" element={<DecisionDetail />} />
                 <Route path="systems" element={<Systems />} />
                 <Route path="analytics" element={<Analytics />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
 
               {/* Catch-all Redirect */}

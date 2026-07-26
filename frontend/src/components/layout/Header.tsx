@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Bell, LogOut, Search, Menu, Sun, Moon } from 'lucide-react';
+import { Bell, LogOut, Search, Menu, Sun, Moon, User } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../../api/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface HeaderProps {
   title: string;
@@ -26,12 +26,12 @@ export default function Header({ title }: HeaderProps) {
   return (
     <header className="h-16 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors">
       <div className="flex items-center gap-3">
-        {/* Hamburger Menu Toggle Button for Sidebar Access */}
+        {/* Hamburger Menu Button - ONLY visible on Mobile / Tablet (< lg) */}
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center"
-          title="Toggle Sidebar Menu"
-          aria-label="Toggle Sidebar Menu"
+          className="lg:hidden p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center"
+          title="Toggle Mobile Sidebar Menu"
+          aria-label="Toggle Mobile Sidebar Menu"
         >
           <Menu className="w-5 h-5 text-white" />
         </button>
@@ -52,7 +52,7 @@ export default function Header({ title }: HeaderProps) {
 
         <div className="flex items-center gap-2 relative">
           
-          {/* Theme Toggle Button (Light/Dark mode) */}
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
             className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/10 transition-colors border border-slate-700/60"
@@ -65,6 +65,15 @@ export default function Header({ title }: HeaderProps) {
               <Moon className="w-5 h-5 text-indigo-600" />
             )}
           </button>
+
+          {/* User Profile Quick Link Button */}
+          <Link
+            to="/profile"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/10 transition-colors border border-slate-700/60"
+            title="My Profile & Settings"
+          >
+            <User className="w-5 h-5 text-primary" />
+          </Link>
 
           {/* Interactive Bell Dropdown Container */}
           <div>
