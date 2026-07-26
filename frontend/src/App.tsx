@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useAuthStore } from './store/authStore';
 import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Simulate from './pages/Simulate';
@@ -37,8 +39,14 @@ function App() {
         <Suspense fallback={<GlobalLoader />}>
           <BrowserRouter>
             <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/login" element={<Login />} />
-              
+
+              {/* Protected Dashboard Routes */}
               <Route element={<ProtectedRoute />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="simulate" element={<Simulate />} />
@@ -46,10 +54,9 @@ function App() {
                 <Route path="decisions/:id" element={<DecisionDetail />} />
                 <Route path="systems" element={<Systems />} />
                 <Route path="analytics" element={<Analytics />} />
-                <Route path="how-it-works" element={<HowItWorks />} />
               </Route>
 
-              <Route path="/" element={<Home />} />
+              {/* Catch-all Redirect */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <AssistantBot />
