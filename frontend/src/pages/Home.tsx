@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import PublicNavbar from '../components/layout/PublicNavbar';
@@ -10,19 +10,24 @@ import {
   ArrowRight, 
   BrainCircuit, 
   Activity, 
-  CheckCircle, 
+  CheckCircle2, 
   Lock, 
   Sliders, 
   Sparkles,
   ChevronRight,
   Database,
-  FileCheck
+  FileCheck,
+  Terminal,
+  Cpu,
+  RefreshCw,
+  AlertTriangle,
+  Play
 } from 'lucide-react';
-import heroVisual from '../assets/hero-visual.png';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
+  const [activeTab, setActiveTab] = useState<'reasoning' | 'perception' | 'audit'>('reasoning');
 
   const handleCTA = () => {
     if (token) {
@@ -33,176 +38,277 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-200 selection:bg-primary/30 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#0F172A] text-slate-200 selection:bg-primary/30 flex flex-col justify-between font-sans">
       <div>
         <PublicNavbar />
 
         {/* Hero Section */}
-        <section className="relative pt-16 pb-24 overflow-hidden">
-          {/* Glowing Ambient Backgrounds */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-b from-primary/20 via-blue-600/10 to-transparent blur-[140px] pointer-events-none" />
-
+        <section className="relative pt-16 pb-20 overflow-hidden border-b border-slate-800/80">
           <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold mb-8 uppercase tracking-widest animate-fade-in shadow-lg shadow-primary/10">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Official MongoDB Atlas Integrated Platform</span>
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-800/90 border border-slate-700 text-slate-300 text-xs font-semibold mb-8 tracking-wide">
+              <Cpu className="w-3.5 h-3.5 text-primary" />
+              <span>MongoDB Atlas Integrated AI Oversight Platform</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight max-w-4xl">
-              AI Audited.{' '}
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight tracking-tight max-w-4xl">
+              Real-Time AI Auditing &{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-emerald-400">
-                Ethical Oversight Guaranteed.
+                Cognitive Digital Twin Oversight
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-slate-300 max-w-3xl mb-10 leading-relaxed font-normal">
-              NeuroCloak attaches an independent **Cognitive Digital Twin (CDT)** to your artificial intelligence models. Extract real-time human reasoning traces, block demographic bias, and ensure regulatory compliance before decisions reach your users.
+            <p className="text-base md:text-lg text-slate-400 max-w-3xl mb-10 leading-relaxed font-normal">
+              Attach an independent Cognitive Digital Twin (CDT) to your AI models. Extract human-readable decision traces, monitor demographic parity, and enforce legal compliance before predictions are finalized.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center gap-4 mb-14">
               <button
                 onClick={handleCTA}
-                className="group px-8 py-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary-hover hover:to-blue-700 text-white rounded-full font-bold shadow-xl shadow-primary/25 transition-all flex items-center gap-3 text-base"
+                className="group px-7 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-full font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2 text-sm"
               >
-                <span>{token ? 'Go to Dashboard' : 'Launch Demo Portal'}</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>{token ? 'Enter Dashboard' : 'Open Security Portal'}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <Link
                 to="/about"
-                className="px-8 py-4 rounded-full border border-slate-700 hover:border-slate-500 hover:bg-slate-800/60 text-slate-200 font-semibold transition-all text-base"
+                className="px-7 py-3.5 rounded-full border border-slate-700 hover:border-slate-500 hover:bg-slate-800/60 text-slate-200 font-semibold transition-all text-sm"
               >
-                Learn About CDT AI
+                About Cognitive Twin
               </Link>
 
               <Link
-                to="/contact"
-                className="px-8 py-4 text-slate-400 hover:text-white font-medium transition-colors text-base flex items-center gap-1.5"
+                to="/how-it-works"
+                className="px-7 py-3.5 text-slate-400 hover:text-white font-medium transition-colors text-sm flex items-center gap-1"
               >
-                <span>Contact Sales / Audit</span>
+                <span>How It Works</span>
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
 
-            {/* Platform Feature Stats Pills */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full mb-16">
-              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-center">
-                <div className="text-2xl font-black text-white">100%</div>
-                <div className="text-xs text-slate-400 mt-1">Audit Traceability</div>
-              </div>
-              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-center">
-                <div className="text-2xl font-black text-emerald-400">&lt; 5ms</div>
-                <div className="text-xs text-slate-400 mt-1">Inference Latency</div>
-              </div>
-              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-center">
-                <div className="text-2xl font-black text-blue-400">4-Layer</div>
-                <div className="text-xs text-slate-400 mt-1">Cognitive Loop</div>
-              </div>
-              <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-center">
-                <div className="text-2xl font-black text-primary">Atlas</div>
-                <div className="text-xs text-slate-400 mt-1">Real-Time Sync</div>
-              </div>
-            </div>
+            {/* Clean UI Code & Live CDT Telemetry Component (Replaces 3D AI Image) */}
+            <div className="w-full max-w-5xl rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl text-left overflow-hidden">
+              {/* Window Header */}
+              <div className="bg-slate-950 px-6 py-3 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <span className="text-xs font-mono text-slate-400 ml-2">cdt-observer.neurocloak.ai // live-stream</span>
+                </div>
 
-            {/* Hero Visual Preview */}
-            <div className="relative max-w-5xl w-full">
-              <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-[80px] -z-10 opacity-30" />
-              <div className="glass-panel p-2 rounded-2xl overflow-hidden border-slate-700/60 shadow-2xl transition-transform duration-500 hover:scale-[1.01]">
-                <img
-                  src={heroVisual}
-                  alt="NeuroCloak Cognitive Digital Twin Dashboard Preview"
-                  className="rounded-xl w-full object-cover shadow-inner"
-                />
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setActiveTab('reasoning')}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      activeTab === 'reasoning' ? 'bg-primary/20 text-primary border border-primary/30' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Reasoning Trace
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('perception')}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      activeTab === 'perception' ? 'bg-primary/20 text-primary border border-primary/30' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Vector Perception
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('audit')}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                      activeTab === 'audit' ? 'bg-primary/20 text-primary border border-primary/30' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Atlas Audit Stream
+                  </button>
+                </div>
+              </div>
+
+              {/* Console Body */}
+              <div className="p-6 font-mono text-xs space-y-4 bg-slate-900/90 min-h-[300px]">
+                {activeTab === 'reasoning' && (
+                  <div className="space-y-3 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between text-slate-400 border-b border-slate-800/80 pb-2">
+                      <span className="flex items-center gap-2 text-emerald-400 font-bold">
+                        <CheckCircle2 className="w-4 h-4" /> DECISION #8941 — PASSED (Ethical Score: 98/100)
+                      </span>
+                      <span className="text-[11px] text-slate-500">Latency: 4.1ms</span>
+                    </div>
+
+                    <div className="space-y-2 text-slate-300">
+                      <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <span className="text-primary font-bold">Step 1 [Perception]:</span> Extracted 14 tabular features (Risk Score: 0.18, Credit Ratio: 3.2).
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <span className="text-purple-400 font-bold">Step 2 [Neuro-Symbolic Deduce]:</span> Applied Rule #104 (Income to debt within threshold &gt; 2.5x).
+                      </div>
+                      <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 flex justify-between items-center">
+                        <div>
+                          <span className="text-emerald-400 font-bold">Step 3 [Governance Verification]:</span> Zero demographic disparity detected across protected attributes.
+                        </div>
+                        <span className="px-2 py-0.5 text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded font-bold">
+                          COMPLIANT
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'perception' && (
+                  <div className="space-y-3 animate-in fade-in duration-200">
+                    <div className="text-slate-400 border-b border-slate-800/80 pb-2 flex justify-between">
+                      <span className="text-primary font-bold">MODEL FEATURE IMPORTANCE WEIGHTS</span>
+                      <span className="text-slate-500">RandomForestClassifier Engine</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+                      <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>Transaction Velocity (x1)</span>
+                          <span className="text-primary font-bold">34.2%</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-primary h-full w-[34.2%]" />
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>Debt-to-Income Ratio (x2)</span>
+                          <span className="text-blue-400 font-bold">28.5%</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-blue-400 h-full w-[28.5%]" />
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>Historical Repayment (x3)</span>
+                          <span className="text-emerald-400 font-bold">21.8%</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-emerald-400 h-full w-[21.8%]" />
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>Demographic Sensitivity Shield</span>
+                          <span className="text-slate-500 font-bold">0.0% (EXCLUDED)</span>
+                        </div>
+                        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-slate-600 h-full w-0" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'audit' && (
+                  <div className="space-y-2 animate-in fade-in duration-200">
+                    <div className="text-slate-400 border-b border-slate-800/80 pb-2 flex justify-between">
+                      <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                        <Database className="w-4 h-4" /> MONGODB ATLAS TELEMETRY LOGS
+                      </span>
+                      <span className="text-slate-500">Auto-Index Sync: ACTIVE</span>
+                    </div>
+
+                    <div className="space-y-1.5 font-mono text-[11px]">
+                      <div className="text-slate-400">[11:29:04] INFO mongo_audit_stream: Connected to cluster0.neurocloak.mongodb.net</div>
+                      <div className="text-slate-300">[11:29:12] RECORD inserted _id: 66a3d902e1 ... system_id: "fin-loan-v4"</div>
+                      <div className="text-emerald-400">[11:29:22] VERIFY rule_check passed: "EU AI Act Transparency Compliance"</div>
+                      <div className="text-slate-400">[11:29:30] SYNC aggregated metrics: cognitive_consistency=98.4%, latency=4.2ms</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </section>
 
         {/* 3 Core Pillars */}
-        <section className="relative z-10 container mx-auto px-6 py-24 border-t border-slate-800/80">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Autonomous Governance for Critical AI
+        <section className="container mx-auto px-6 py-20 border-b border-slate-800/80">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Built for Enterprise Reliability & Governance
             </h2>
-            <p className="text-slate-400 text-base">
-              Whether deploying high-stakes medical diagnostic tools or automated financial scoring, NeuroCloak protects your operations against algorithmic failure.
+            <p className="text-slate-400 text-sm md:text-base">
+              Wrap AI decision engines in continuous oversight without sacrificing execution performance.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-primary/50 transition-all group flex flex-col justify-between">
+            <div className="p-7 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Shield className="w-7 h-7" />
+                <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5">
+                  <Shield className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Audit the Unauditable</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Capture every neural inference step in real-time. Turn complex matrices into transparent, human-readable logic trees.
+                <h3 className="text-lg font-bold text-white mb-2">Auditable Logic Trees</h3>
+                <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                  Translates non-linear neural weights into plain-English reasoning paths so compliance teams can audit decisions line-by-line.
                 </p>
               </div>
-              <Link to="/about" className="text-primary font-semibold text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                <span>Explore reasoning trace</span>
-                <ChevronRight className="w-4 h-4" />
+              <Link to="/about" className="text-primary font-bold text-xs flex items-center gap-1">
+                <span>Learn about reasoning traces</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/50 transition-all group flex flex-col justify-between">
+            <div className="p-7 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Zap className="w-7 h-7" />
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-5">
+                  <Zap className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Real-Time Bias Guards</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Detect demographic discrepancies (age, race, gender) and automatically flag non-compliant predictions before outputting results.
+                <h3 className="text-lg font-bold text-white mb-2">Automated Bias Guards</h3>
+                <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                  Calculates demographic disparity metrics across sensitive attributes (age, race, gender) and flags anomalies prior to final output.
                 </p>
               </div>
-              <Link to="/how-it-works" className="text-blue-400 font-semibold text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                <span>See architecture specs</span>
-                <ChevronRight className="w-4 h-4" />
+              <Link to="/how-it-works" className="text-blue-400 font-bold text-xs flex items-center gap-1">
+                <span>View architecture specs</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition-all group flex flex-col justify-between">
+            <div className="p-7 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between">
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Database className="w-7 h-7" />
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-5">
+                  <Database className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">MongoDB Atlas Native</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Built to scale with MongoDB Atlas, enabling sub-millisecond document indexing and aggregation pipelines for visual diagnostics.
+                <h3 className="text-lg font-bold text-white mb-2">MongoDB Atlas Storage</h3>
+                <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                  Persists immutable document logs and metrics to MongoDB Atlas with fast index aggregation for dashboard analytics.
                 </p>
               </div>
-              <Link to="/contact" className="text-emerald-400 font-semibold text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                <span>Request Enterprise Setup</span>
-                <ChevronRight className="w-4 h-4" />
+              <Link to="/contact" className="text-emerald-400 font-bold text-xs flex items-center gap-1">
+                <span>Contact technical team</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Quick CTA Banner */}
-        <section className="py-20 container mx-auto px-6">
-          <div className="glass-panel p-10 md:p-14 rounded-3xl border border-slate-800 bg-gradient-to-r from-primary/20 via-slate-900 to-blue-900/30 text-center flex flex-col items-center">
-            <div className="w-12 h-12 rounded-2xl bg-primary/20 text-primary flex items-center justify-center mb-6">
-              <FileCheck className="w-6 h-6" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Get Started with NeuroCloak Today
+        {/* Action Banner */}
+        <section className="py-16 container mx-auto px-6">
+          <div className="p-10 rounded-3xl bg-slate-900 border border-slate-800 text-center flex flex-col items-center max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+              Get Started with NeuroCloak
             </h2>
-            <p className="text-slate-300 max-w-xl mb-8 text-sm md:text-base">
-              Test out the simulation sandbox, explore decision logs, or get in touch with our AI compliance engineering team.
+            <p className="text-slate-400 max-w-lg mb-6 text-xs md:text-sm">
+              Try out the decision simulator, inspect diagnostic charts, or schedule a custom enterprise compliance audit.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <button
                 onClick={handleCTA}
-                className="px-8 py-3.5 rounded-full bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2"
+                className="px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-white font-bold text-xs shadow-md transition-all flex items-center gap-2"
               >
-                <span>{token ? 'Enter Dashboard' : 'Login to Demo Account'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>{token ? 'Enter Dashboard' : 'Login to Security Portal'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <Link
                 to="/contact"
-                className="px-8 py-3.5 rounded-full border border-slate-700 hover:bg-slate-800/80 text-slate-200 font-semibold text-sm transition-all"
+                className="px-6 py-3 rounded-full border border-slate-700 hover:bg-slate-800 text-slate-300 font-semibold text-xs transition-all"
               >
                 Contact Support / Sales
               </Link>
