@@ -10,15 +10,13 @@ import {
   RefreshCw, 
   ShieldCheck, 
   Zap, 
-  Wrench, 
   PlusCircle, 
   TrendingUp, 
   ArrowRight, 
   Database,
   ArrowLeft,
-  CheckCircle2,
-  Cpu,
-  Layers
+  HelpCircle,
+  Sparkles
 } from 'lucide-react';
 
 const HowItWorks: React.FC = () => {
@@ -27,7 +25,7 @@ const HowItWorks: React.FC = () => {
       <div>
         <PublicNavbar />
 
-        <main className="container mx-auto px-6 py-12 space-y-20 max-w-6xl">
+        <main className="container mx-auto px-6 py-12 space-y-16 max-w-5xl">
           {/* Top Navigation Back Link */}
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <Link 
@@ -38,112 +36,111 @@ const HowItWorks: React.FC = () => {
               <span>Back to Home</span>
             </Link>
 
-            <div className="flex items-center space-x-2 text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-              <Cpu className="w-3.5 h-3.5 text-primary" />
-              <span>Cognitive Engine v2.4</span>
-            </div>
+            <span className="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+              Simple Guide
+            </span>
           </div>
 
           {/* SECTION 1 — Hero */}
-          <section className="text-center space-y-6 max-w-4xl mx-auto">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Neuro-Symbolic Operational Specs</span>
+          <section className="text-center space-y-4 max-w-3xl mx-auto">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span>How It Works</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
-              How NeuroCloak Audits AI
+            <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+              How NeuroCloak Helps You Check AI
             </h1>
 
-            <p className="text-lg md:text-xl text-slate-400 leading-relaxed">
-              A Cognitive Digital Twin attaches directly to your model's prediction pipeline — extracting plain-English deduction steps, validating governance constraints, and logging audit trails in real time.
+            <p className="text-base md:text-lg text-slate-400 leading-relaxed">
+              NeuroCloak runs quietly alongside your AI system. It translates AI decision steps into plain English, checks for fairness, and warns you if anything is wrong.
             </p>
           </section>
 
           {/* SECTION 2 — The Problem */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">The Black Box Challenge in AI Today</h2>
-              <p className="text-base text-slate-400 leading-relaxed">
-                Modern AI models make thousands of automated judgments every minute — approving credit loans, prioritizing ER triage patients, or flagging fraud. However, when an error or demographic skew occurs, traditional neural networks offer zero human explanation.
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-white">Why AI Needs a Checker</h2>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Modern AI algorithms can make thousands of choices every minute — like evaluating credit applications, prioritizing hospital triage, or reviewing job applications.
               </p>
-              <ul className="space-y-3">
-                {[
-                  "Regulators cannot inspect the intermediate inference math",
-                  "Domain experts cannot verify if medical rules were respected",
-                  "Engineers spend weeks isolating silent bias anomalies"
-                ].map((point, idx) => (
-                  <li key={idx} className="flex items-center space-x-2 text-sm text-slate-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                However, when an AI rejects an application, it usually doesn't give a clear reason. This makes it impossible for normal people or managers to know if the choice was fair or just a mistake.
+              </p>
             </div>
 
-            <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 flex flex-col items-center justify-center space-y-6 shadow-2xl">
-              <div className="w-full max-w-sm p-4 bg-slate-950 rounded-xl border border-slate-800 font-mono text-xs text-slate-400 space-y-2">
-                <div className="flex justify-between text-slate-500 border-b border-slate-800 pb-2">
-                  <span>INPUT_VECTOR</span>
-                  <span>PREDICTION_OUTPUT</span>
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+              <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-2">
+                <div className="flex justify-between text-slate-500 font-bold border-b border-slate-800 pb-2">
+                  <span>INPUT DETAILS</span>
+                  <span>AI DECISION</span>
                 </div>
                 <div className="flex justify-between items-center text-white">
-                  <span>[0.82, 45, 0.12, 1]</span>
-                  <span className="text-rose-400 font-bold">REJECT (0.872)</span>
+                  <span>Applicant Information</span>
+                  <span className="text-rose-400 font-bold">REJECTED</span>
                 </div>
-                <div className="pt-2 text-[11px] text-slate-500 italic text-center border-t border-slate-800/80">
-                  ⚠️ Black Box Output: Reasoning missing or unreadable
+                <div className="pt-2 text-[11px] text-slate-400 italic text-center border-t border-slate-800">
+                  ❌ Without NeuroCloak: No explanation given!
                 </div>
               </div>
 
-              <div className="bg-rose-500/10 text-rose-400 px-4 py-2 rounded-full text-xs font-bold border border-rose-500/20">
-                Traditional AI: No Human Reasoning Trace
+              <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-2">
+                <div className="flex justify-between text-slate-500 font-bold border-b border-slate-800 pb-2">
+                  <span>WITH NEUROCLOAK</span>
+                  <span>RESULT & REASON</span>
+                </div>
+                <div className="flex justify-between items-center text-emerald-400 font-bold">
+                  <span>Clear Explanation</span>
+                  <span>PASSED (100% Fair)</span>
+                </div>
+                <div className="pt-2 text-[11px] text-slate-300 text-center border-t border-slate-800">
+                  ✅ Simple English: "Savings cover payments. No age bias found."
+                </div>
               </div>
             </div>
           </section>
 
-          {/* SECTION 3 — The Solution */}
-          <section className="space-y-10">
-            <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl font-bold text-white mb-3">The NeuroCloak Cognitive Loop</h2>
-              <p className="text-slate-400 text-base">Four continuous, real-time layers of automated AI oversight.</p>
+          {/* SECTION 3 — 4 Steps */}
+          <section className="space-y-8">
+            <div className="text-center max-w-xl mx-auto">
+              <h2 className="text-2xl font-bold text-white mb-2">The 4 Simple Steps</h2>
+              <p className="text-slate-400 text-sm">How NeuroCloak double-checks every AI decision.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
               {[
-                { icon: Eye, color: 'text-blue-400', bg: 'bg-blue-500/10', title: '1. Perceive', desc: 'The Neural Perception Module normalizes incoming features and captures vector embeddings.' },
-                { icon: Brain, color: 'text-purple-400', bg: 'bg-purple-500/10', title: '2. Reason', desc: 'The Neuro-Symbolic Engine parses numeric weights into human-readable rule execution trees.' },
-                { icon: Shield, color: 'text-emerald-400', bg: 'bg-emerald-500/10', title: '3. Verify', desc: 'The Knowledge Base tests the reasoning path against legal, ethical, and safety constraints.' },
-                { icon: Activity, color: 'text-amber-400', bg: 'bg-amber-500/10', title: '4. Monitor', desc: 'The Meta-Cognitive Observer streams live WebSocket alerts and flags demographic bias.' }
+                { icon: Eye, color: 'text-blue-400', bg: 'bg-blue-500/10', title: '1. Read Data', desc: 'Reads the basic facts given to the AI system.' },
+                { icon: Brain, color: 'text-purple-400', bg: 'bg-purple-500/10', title: '2. Explain Reason', desc: 'Translates AI code into simple English sentences.' },
+                { icon: Shield, color: 'text-emerald-400', bg: 'bg-emerald-500/10', title: '3. Check Rules', desc: 'Verifies safety, fairness, and legal rules.' },
+                { icon: Activity, color: 'text-amber-400', bg: 'bg-amber-500/10', title: '4. Live Alerts', desc: 'Displays real-time warnings if any rule is broken.' }
               ].map((step, i) => (
-                <div key={i} className="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all">
-                  <div className={`w-12 h-12 rounded-xl ${step.bg} flex items-center justify-center mb-5`}>
-                    <step.icon className={`w-6 h-6 ${step.color}`} />
+                <div key={i} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center space-y-2">
+                  <div className={`w-10 h-10 rounded-xl ${step.bg} flex items-center justify-center mx-auto mb-3`}>
+                    <step.icon className={`w-5 h-5 ${step.color}`} />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
+                  <h3 className="text-base font-bold text-white">{step.title}</h3>
                   <p className="text-slate-400 text-xs leading-relaxed">{step.desc}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* SECTION 4 — The 5 Metrics explained */}
-          <section className="space-y-10">
-            <h2 className="text-3xl font-bold text-white text-center">Core Telemetry & Metrics</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* SECTION 4 — What We Check */}
+          <section className="space-y-8">
+            <h2 className="text-2xl font-bold text-white text-center">What We Measure & Check</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
               {[
-                { icon: RefreshCw, title: 'Cognitive Consistency', desc: "Measures how accurately the CDT mirrors the AI's internal logic. A score > 95% indicates high fidelity." },
-                { icon: Eye, title: 'Transparency Index', desc: "Percentage of reasoning steps explainable in plain English for non-technical auditors." },
-                { icon: ShieldCheck, title: 'Ethical Compliance Rate', desc: "Percentage of governance policies satisfied. Values below 75% trigger instant review flags." },
-                { icon: Zap, title: 'Adaptation Latency', desc: "Time required for the CDT to recalibrate when processing novel feature distributions (sub-5ms)." },
-                { icon: Wrench, title: 'Self-Repair Efficiency', desc: "Percentage of detected demographic bias anomalies automatically mitigated prior to output." }
+                { icon: RefreshCw, title: 'Accuracy Score', desc: "Measures how accurately NeuroCloak understands what the AI is doing." },
+                { icon: Eye, title: 'Clarity Index', desc: "Shows what percentage of the decision is written in easy-to-read English." },
+                { icon: ShieldCheck, title: 'Fairness Rate', desc: "Checks if the decision follows all fairness and anti-bias guidelines." },
+                { icon: Zap, title: 'Response Speed', desc: "Checks decisions instantly in less than 0.01 seconds without slowing down the AI." }
               ].map((metric, i) => (
-                <div key={i} className={`bg-slate-900/80 p-6 rounded-2xl border border-slate-800 flex gap-4 ${i === 4 ? 'md:col-span-2 md:w-2/3 md:mx-auto' : ''}`}>
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 text-primary flex items-center justify-center shrink-0">
-                    <metric.icon className="w-5 h-5" />
+                <div key={i} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex gap-4">
+                  <div className="w-9 h-9 rounded-xl bg-slate-800 text-primary flex items-center justify-center shrink-0">
+                    <metric.icon className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white mb-1">{metric.title}</h3>
+                    <h3 className="text-sm font-bold text-white mb-1">{metric.title}</h3>
                     <p className="text-slate-400 text-xs leading-relaxed">{metric.desc}</p>
                   </div>
                 </div>
@@ -151,61 +148,52 @@ const HowItWorks: React.FC = () => {
             </div>
           </section>
 
-          {/* SECTION 5 — Machine Learning Models */}
+          {/* SECTION 5 — Real Examples */}
           <section className="space-y-8">
-            <h2 className="text-3xl font-bold text-white text-center">Model Pipeline & Datasets</h2>
-            <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 space-y-6">
-              <p className="text-slate-300 text-base leading-relaxed">
-                NeuroCloak is pre-tested against production-grade tabular models trained using <code className="text-primary bg-slate-950 px-2 py-0.5 rounded font-mono text-sm">scikit-learn</code> and <code className="text-primary bg-slate-950 px-2 py-0.5 rounded font-mono text-sm">RandomForestClassifier</code> / <code className="text-primary bg-slate-950 px-2 py-0.5 rounded font-mono text-sm">HistGradientBoosting</code>:
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="text-primary font-bold text-sm flex items-center gap-2">
-                    <Database className="w-4 h-4" /> Medical Triage
-                  </div>
-                  <p className="text-slate-400 text-xs">
-                    1,500 patient diagnostic profiles evaluating vital urgency vs. demographic fairness.
-                  </p>
-                </div>
+            <h2 className="text-2xl font-bold text-white text-center">Where This Helps in Real Life</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-2">
+                <PlusCircle className="w-7 h-7 text-primary mb-2" />
+                <h3 className="text-base font-bold text-white">Healthcare & Hospitals</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Helps doctors see why an AI recommended a medical treatment so they can confirm it is safe.
+                </p>
+              </div>
 
-                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="text-blue-400 font-bold text-sm flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" /> Credit & Fraud
-                  </div>
-                  <p className="text-slate-400 text-xs">
-                    2,000 transaction velocity records auditing credit approval parity across age groups.
-                  </p>
-                </div>
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-2">
+                <TrendingUp className="w-7 h-7 text-blue-400 mb-2" />
+                <h3 className="text-base font-bold text-white">Banks & Banking</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Proves that credit approvals or loan denials are based strictly on financial facts, not age or gender.
+                </p>
+              </div>
 
-                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="text-emerald-400 font-bold text-sm flex items-center gap-2">
-                    <Shield className="w-4 h-4" /> Threat Classification
-                  </div>
-                  <p className="text-slate-400 text-xs">
-                    1,000 sensor telemetry entries ensuring strict rules of engagement compliance.
-                  </p>
-                </div>
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-2">
+                <Shield className="w-7 h-7 text-emerald-400 mb-2" />
+                <h3 className="text-base font-bold text-white">Job Hiring & HR</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Ensures recruitment tools evaluate candidates fairly based on skills and experience.
+                </p>
               </div>
             </div>
           </section>
 
-          {/* SECTION 6 — Call to action */}
-          <section className="py-10 border-t border-slate-800 text-center space-y-6">
-            <h2 className="text-2xl font-bold text-white">Ready to inspect NeuroCloak live?</h2>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* Call to Action */}
+          <section className="py-8 border-t border-slate-800 text-center space-y-4">
+            <h2 className="text-xl font-bold text-white">Want to try it out live?</h2>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link 
                 to="/simulate" 
-                className="px-8 py-3 bg-primary hover:bg-primary-hover text-white font-bold text-sm rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+                className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-full transition-colors flex items-center justify-center gap-2"
               >
-                <span>Launch Interactive Simulator</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Try the Live Simulator</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <Link 
                 to="/" 
-                className="px-8 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold text-sm rounded-full transition-colors flex items-center justify-center gap-2"
+                className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs rounded-full transition-colors"
               >
-                <span>Return to Home Page</span>
+                Go Back to Home
               </Link>
             </div>
           </section>
