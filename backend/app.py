@@ -7,8 +7,6 @@ blueprints, sets up CORS, rate limiting, and Socket.io.
 import os
 import sys
 
-# Ensure backend/ is on sys.path so imports like `from config import ...` work
-# regardless of the working directory.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from flask import Flask, jsonify
@@ -49,7 +47,7 @@ limiter = Limiter(
 @limiter.limit("10 per 15 minutes")
 @app.route("/api/auth/login_limiter_dummy")
 def _login_limiter():
-    pass  # limiter applied via blueprint decoration below
+    pass
 
 # ── Register Blueprints ──────────────────────────────────────────────
 from routes.auth import bp as auth_bp
@@ -59,6 +57,7 @@ from routes.analytics import bp as analytics_bp
 from routes.anomalies import bp as anomalies_bp
 from routes.chat import bp as chat_bp
 from routes.utils import bp as utils_bp
+from routes.contact import bp as contact_bp
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(decisions_bp)
@@ -67,6 +66,7 @@ app.register_blueprint(analytics_bp)
 app.register_blueprint(anomalies_bp)
 app.register_blueprint(chat_bp)
 app.register_blueprint(utils_bp)
+app.register_blueprint(contact_bp)
 
 
 # ── Health Check ─────────────────────────────────────────────────────
