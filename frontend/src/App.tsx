@@ -14,6 +14,7 @@ import Systems from './pages/Systems';
 import Analytics from './pages/Analytics';
 import HowItWorks from './pages/HowItWorks';
 import Profile from './pages/Profile';
+import Admin from './pages/Admin';
 import Layout from './components/layout/Layout';
 import AssistantBot from './components/chat/AssistantBot';
 import ErrorBoundary from './components/layout/ErrorBoundary';
@@ -56,6 +57,7 @@ function App() {
                 <Route path="systems" element={<Systems />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="admin" element={<Admin />} />
               </Route>
 
               {/* Catch-all Redirect */}

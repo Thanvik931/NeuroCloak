@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github, X, Sun, Moon, User } from 'lucide-react';
+import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github, X, Sun, Moon, User, ShieldAlert } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 
@@ -13,6 +13,7 @@ export default function Sidebar() {
     { name: 'Decisions', path: '/decisions', icon: BrainCircuit },
     { name: 'Systems', path: '/systems', icon: Database },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
+    { name: 'Admin Console', path: '/admin', icon: ShieldAlert },
     { name: 'Profile', path: '/profile', icon: User },
     { name: 'How It Works', path: '/how-it-works', icon: HelpCircle },
   ];

@@ -20,6 +20,7 @@ export default function Layout() {
       'systems': 'AI Systems Registry',
       'analytics': 'Global Analytics',
       'profile': 'My Profile & Settings',
+      'admin': 'Admin Console & User Roles',
       'how-it-works': 'Documentation'
     };
     
