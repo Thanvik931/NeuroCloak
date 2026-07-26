@@ -38,17 +38,64 @@ Modern artificial intelligence models make thousands of critical decisions every
 
 ---
 
-## ✅ Everything Accomplished & Built in this Project
+## 📊 Datasets Used & Model Training Architecture
+
+### 1. Benchmark & Evaluation Dataset: **UCI Statlog (German Credit Data)**
+- **Dataset Name**: UCI Statlog German Credit Data ([Hofmann, 1994; DOI: 10.24432/C5NC77](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)), OpenML Dataset ID 31 `credit-g` v1).
+- **Sample Count ($N$)**: **1,000 instances** (700 training / 300 testing held-out split).
+- **Predictor Attributes (20 Total)**:
+  - **7 Numerical Features**: `duration_months`, `credit_amount`, `installment_rate`, `residence_since`, `age_years`, `existing_credits`, `people_liable`.
+  - **13 Categorical Features**: `checking_account_status`, `credit_history`, `purpose`, `savings_account`, `employment_since`, `personal_status_sex`, `other_debtors`, `property`, `other_installment_plans`, `housing`, `job`, `telephone`, `foreign_worker`.
+- **Target Label**: Binary Credit Risk (`1` = Good Credit / Approved, `0` = Bad Credit / Risk).
+- **Protected Attributes Audited**:
+  - **Age Cohort**: Age $\ge 30$ ($N_{\text{test}} = 190$) vs. Age $< 30$ ($N_{\text{test}} = 110$).
+  - **Foreign Worker Status**: $N_{\text{test, disadvantaged}} = 13$ (evaluated as secondary exploratory finding).
+
+### 2. Multi-Domain Synthesized & Synthetic Datasets
+NeuroCloak ships with multi-domain datasets located in `dataset taken to train the model/`:
+- **Healthcare Triage (`healthcare_dataset.csv`)**: 1,500 patient records evaluating diagnostic risk severity and patient consent autonomy.
+- **Finance & Fraud (`finance_dataset.csv`)**: 2,000 transaction records evaluating velocity, transaction amounts, and geographic distance.
+- **Industrial Maintenance (`industrial_dataset.csv`)**: 1,000 machine telemetry logs evaluating sensor temperatures, vibration frequencies, and PSI levels.
+
+### 3. Machine Learning Models & Training Specs
+
+All models were trained using **scikit-learn 1.8.0** with a fixed random seed of **`random_state = 42`** for 100% reproducibility:
+
+#### **Model A: Tuned HistGradientBoostingClassifier (Primary Baseline)**
+- **Hyperparameter Grid Tuning**: Selected via 5-fold stratified cross-validation on training split (`learning_rate=0.06`, `max_depth=3`, `max_iter=100`; train CV accuracy: $75.57\%$).
+- **Test Metrics ($N_{\text{test}} = 300$)**:
+  - **Accuracy**: **73.67%**
+  - **Precision**: **76.73%**
+  - **Recall**: **89.52%**
+  - **F1-Score**: **0.8264**
+  - **ROC-AUC**: **0.7530**
+
+#### **Model B: RandomForestClassifier**
+- **Architecture**: Ensemble of 200 decision trees, `max_depth=10`, `random_state=42`.
+- **Test Metrics ($N_{\text{test}} = 300$)**:
+  - **Accuracy**: **70.67%**
+  - **Precision**: **73.83%**
+  - **Recall**: **90.00%**
+  - **F1-Score**: **0.8112**
+  - **ROC-AUC**: **0.7680**
+
+#### **Preprocessing Pipeline**:
+- `StandardScaler` for Z-score normalization of numerical features.
+- `OneHotEncoder(drop='first', sparse_output=False)` for 13 categorical attributes.
+
+---
+
+## ✅ Everything Accomplished in this Project
 
 ### 1. Web Application & User Experience Transformation
 - **Public Educational Pages**:
-  - **Home (`/`)**: Features an interactive live decision stream console (replacing static 3D visual placeholders) and simplified plain-English explanations.
+  - **Home (`/`)**: Features an interactive live decision stream console and simplified plain-English explanations.
   - **About Us (`/about`)**: Explains the 4 core steps (*Read Data*, *Explain Reason*, *Check Rules*, *Live Alerts*) in clear, non-technical terms.
   - **How It Works (`/how-it-works`)**: Comprehensive documentation with top navigation and `← Back to Home` routing.
   - **Contact Us (`/contact`)**: Formatted message dispatch system that sends user inquiries directly to support contact **`+91 8790505507`** via WhatsApp deep-linking and SMS.
 - **Modern UI & Theme System**:
   - Built with **Google Font 'Lato'**, responsive glassmorphism panels, and instant Dark/Light theme switching (persisted via Zustand in `localStorage`).
-  - Re-architected navigation into a top header bar (`[☰] NeuroCloak`) and smooth slide-out drawer overlay, eliminating desktop sidebar clutter.
+  - Re-architected navigation into a top header bar (`[☰] NeuroCloak`) and smooth slide-out drawer overlay.
 
 ### 2. User & Admin Governance Control Panels
 - **Profile Management (`/profile`)**:
@@ -56,24 +103,17 @@ Modern artificial intelligence models make thousands of critical decisions every
 - **Dedicated Admin Console (`/admin`)**:
   - Allows administrators to assign user roles (`ADMIN`, `ETHICS_AUDITOR`, `MODEL_ENGINEER`, `VIEWER`), set global AI safety thresholds (e.g. minimum compliance 75%, max bias 5%), monitor MongoDB Atlas and Redis cluster health, and trigger **Global AI Emergency Overrides**.
 
-### 3. Full-Stack Python Backend & Machine Learning Infrastructure
+### 3. Full-Stack Python Backend Infrastructure
 - **Python Flask API & Real-Time Engine**:
   - Rebuilt backend using Python 3, Flask, PyJWT authentication, MongoDB Atlas, and Socket.io real-time alert streaming.
-- **Pre-Trained Machine Learning Models**:
-  - Trained `RandomForestClassifier` and `HistGradientBoostingClassifier` pipelines across 6 operational domains (*Finance, Healthcare, HR/Industrial, Logistics, Cybersecurity, Defense*).
 
-### 4. Rigorous Empirical Science on UCI German Credit Benchmark
-- **Dataset Acquisition**: Processed the canonical **UCI Statlog (German Credit Data)** ($N = 1,000$ instances, 20 predictor attributes, 70/30 stratified train/test split, fixed `seed = 42`).
-- **Classification Performance**:
-  - Tuned `HistGradientBoostingClassifier`: **73.67% Accuracy**, **76.73% Precision**, **89.52% Recall**, **0.8264 F1-Score**, **0.7530 ROC-AUC**.
-  - `RandomForestClassifier`: **70.67% Accuracy**, **73.83% Precision**, **90.00% Recall**, **0.8112 F1-Score**, **0.7680 ROC-AUC**.
+### 4. Empirical Science & Post-Hoc Fairness Repair
 - **Fairness & Disparity Mitigation**:
-  - Evaluated primary protected attribute **Age** ($\ge 30$ vs. $< 30$, $N_{\text{test}} = 190 / 110$).
   - Achieved a **+44.83% Disparity Reduction** ($5.55\% \rightarrow 3.06\%$) on Random Forest with **0.00% accuracy cost** ($p = 0.7728$, McNemar test).
 - **Model-Dependent Sensitivity Discovery**:
   - Discovered that HistGradientBoosting produces double the out-of-fold extreme probabilities ($P < 0.10$ or $P > 0.90$) compared to Random Forest (**21.14%** vs. **10.86%**), causing threshold postprocessing to overfit on small subgroups—a key limitation documented for paper submission.
 - **Speed of Adaptation Benchmark**:
-  - Measured procedural threshold re-convergence latency under 100 trials of synthetic distribution shift: **`1.49 ms ± 0.13 ms`**.
+  - Benchmarked procedural threshold re-convergence latency under 100 trials of synthetic distribution shift: **`1.49 ms ± 0.13 ms`**.
 
 ### 5. Publication-Ready Conference Manuscript
 - Compiled complete LaTeX tables, methodology prose, and reproducibility statements ready for submission (`conference_paper_results.md` & `full_conference_manuscript.md`).
@@ -141,6 +181,7 @@ python app.py
 cd "../dataset taken to train the model"
 python fetch_openml_credit_g.py
 python reproducible_empirical_benchmark.py
+python verify_oof_distributions.py
 ```
 
 ---
