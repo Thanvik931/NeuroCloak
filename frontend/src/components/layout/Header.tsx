@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, LogOut, Search, Menu, Sun, Moon, User } from 'lucide-react';
+import { Bell, LogOut, Search, Menu, Sun, Moon, User, BrainCircuit } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useQuery } from '@tanstack/react-query';
@@ -24,21 +24,32 @@ export default function Header({ title }: HeaderProps) {
   const activeFlags = summary?.activeFlags || 0;
 
   return (
-    <header className="h-16 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors">
-      <div className="flex items-center gap-3">
-        {/* Hamburger Menu Button - ONLY visible on Mobile / Tablet (< lg) */}
+    <header className="h-16 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border px-6 flex items-center justify-between sticky top-0 z-30 transition-colors w-full">
+      {/* Left Brand & Menu Toggle ([☰] NeuroCloak) */}
+      <div className="flex items-center space-x-3">
         <button
           onClick={toggleSidebar}
-          className="lg:hidden p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center"
-          title="Toggle Mobile Sidebar Menu"
-          aria-label="Toggle Mobile Sidebar Menu"
+          className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center"
+          title="Toggle Navigation Menu"
+          aria-label="Toggle Navigation Menu"
         >
           <Menu className="w-5 h-5 text-white" />
         </button>
 
-        <h2 className="text-lg font-bold text-white tracking-wide">{title}</h2>
+        <Link to="/dashboard" className="flex items-center space-x-2 group">
+          <BrainCircuit className="w-6 h-6 text-primary group-hover:scale-105 transition-transform" />
+          <span className="font-extrabold text-xl text-white tracking-tight flex items-center gap-1.5">
+            NeuroCloak
+          </span>
+        </Link>
+
+        <span className="hidden sm:inline-block text-slate-600 font-light px-1">|</span>
+        <span className="hidden sm:inline-block text-xs font-bold text-slate-400 tracking-wide uppercase">
+          {title}
+        </span>
       </div>
 
+      {/* Right Controls */}
       <div className="flex items-center gap-4">
         {/* Search Bar */}
         <div className="relative hidden md:block">
@@ -66,7 +77,7 @@ export default function Header({ title }: HeaderProps) {
             )}
           </button>
 
-          {/* User Profile Quick Link Button */}
+          {/* User Profile Link Button */}
           <Link
             to="/profile"
             className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/10 transition-colors border border-slate-700/60"
@@ -75,7 +86,7 @@ export default function Header({ title }: HeaderProps) {
             <User className="w-5 h-5 text-primary" />
           </Link>
 
-          {/* Interactive Bell Dropdown Container */}
+          {/* Bell Notifications */}
           <div>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}

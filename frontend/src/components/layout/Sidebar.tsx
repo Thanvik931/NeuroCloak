@@ -19,18 +19,18 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Backdrop Overlay */}
+      {/* Backdrop Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden transition-opacity"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity animate-in fade-in duration-200"
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Slide-out Sidebar Drawer */}
       <aside
-        className={`fixed lg:static top-0 left-0 z-40 w-64 bg-dark-sidebar border-r border-dark-border h-full flex flex-col transition-all duration-300 transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed top-0 left-0 z-50 w-64 bg-dark-sidebar border-r border-dark-border h-full flex flex-col transition-transform duration-300 transform shadow-2xl ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Header */}
@@ -40,10 +40,10 @@ export default function Sidebar() {
             <span className="font-bold text-lg text-white tracking-wide">NeuroCloak</span>
           </div>
 
-          {/* Close button on smaller screens */}
+          {/* Close button */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
             aria-label="Close Sidebar"
           >
             <X className="w-5 h-5" />

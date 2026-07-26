@@ -3,13 +3,12 @@ import { useLocation, Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useLiveFeed } from '../../hooks/useLiveFeed';
-import AssistantBot from '../chat/AssistantBot';
 
 export default function Layout() {
   const location = useLocation();
   const [title, setTitle] = useState('Dashboard');
 
-  // Initialize global socket connection for live updates!
+  // Initialize global socket connection for live updates
   useLiveFeed();
 
   useEffect(() => {
@@ -20,6 +19,7 @@ export default function Layout() {
       'decisions': 'Decision Audit Log',
       'systems': 'AI Systems Registry',
       'analytics': 'Global Analytics',
+      'profile': 'My Profile & Settings',
       'how-it-works': 'Documentation'
     };
     
@@ -27,16 +27,14 @@ export default function Layout() {
   }, [location.pathname]);
 
   return (
-    <div className="flex bg-dark-bg h-screen text-slate-200 w-full overflow-hidden">
+    <div className="bg-dark-bg min-h-screen text-slate-200 w-full overflow-x-hidden flex flex-col font-sans">
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden h-full">
-        <Header title={title} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-dark-bg p-8 relative">
-          <div className="max-w-7xl mx-auto w-full h-full">
-            <Outlet />
-          </div>
-        </main>
-      </div>
+      <Header title={title} />
+      <main className="flex-1 overflow-x-hidden p-6 md:p-8 relative w-full">
+        <div className="max-w-7xl mx-auto w-full">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
