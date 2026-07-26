@@ -1,0 +1,42 @@
+{
+  "model": "HistGradientBoostingClassifier (learning_rate=0.06, max_depth=3, max_iter=100)",
+  "dataset": "UCI Statlog German Credit Data (N=1,000)",
+  "train_test_split": "700 / 300, Stratified, Seed=42",
+  "primary_protected_attribute": "Age (>=30 vs <30, N_test = 190/110)",
+  "oof_calibrated_thresholds": {
+    "group_0_younger": 0.449,
+    "group_1_older": 0.559
+  },
+  "table_1_hgb_metrics": {
+    "baseline": {
+      "accuracy_percent": 73.67,
+      "precision_percent": 76.73,
+      "recall_percent": 89.52,
+      "f1_score": 0.8264,
+      "roc_auc_score": 0.753
+    },
+    "repaired": {
+      "accuracy_percent": 72.33,
+      "precision_percent": 76.57,
+      "recall_percent": 87.14,
+      "f1_score": 0.8151,
+      "roc_auc_score": 0.753
+    }
+  },
+  "table_2_fairness_metrics": {
+    "raw_age_disparity_percent": 2.63,
+    "repaired_age_disparity_percent": 10.57,
+    "accuracy_cost_percentage_points": 1.33,
+    "mcnemar_test": {
+      "changed_samples_b": 13,
+      "changed_samples_c": 7,
+      "chi2_statistic": 1.25,
+      "p_value": 0.2636
+    },
+    "speed_of_adaptation": {
+      "protocol": "Synthetic Distribution Shift Threshold Re-convergence (100 trials)",
+      "mean_latency_ms": 6.0068,
+      "std_latency_ms": 1.3247
+    }
+  }
+}
