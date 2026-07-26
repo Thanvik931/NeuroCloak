@@ -1,11 +1,11 @@
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, HelpCircle, Github, X, Sun, Moon, User, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, ShieldAlert, X } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 
 export default function Sidebar() {
   const { user } = useAuthStore();
-  const { sidebarOpen, setSidebarOpen, theme, toggleTheme } = useThemeStore();
+  const { sidebarOpen, setSidebarOpen } = useThemeStore();
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -13,9 +13,7 @@ export default function Sidebar() {
     { name: 'Decisions', path: '/decisions', icon: BrainCircuit },
     { name: 'Systems', path: '/systems', icon: Database },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-    { name: 'Admin Console', path: '/admin', icon: ShieldAlert },
-    { name: 'Profile', path: '/profile', icon: User },
-    { name: 'How It Works', path: '/how-it-works', icon: HelpCircle },
+    { name: 'Admin', path: '/admin', icon: ShieldAlert },
   ];
 
   return (
@@ -51,7 +49,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Nav Links */}
+        {/* Clean Nav Links */}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {navItems.map((item) => (
             <NavLink
@@ -59,9 +57,9 @@ export default function Sidebar() {
               to={item.path}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                `flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive 
-                    ? 'bg-primary/10 text-primary shadow-[0_0_10px_rgba(59,130,246,0.1)] font-bold' 
+                    ? 'bg-primary/10 text-primary font-bold border border-primary/20 shadow-sm' 
                     : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
                 }`
               }
@@ -72,40 +70,15 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-dark-border space-y-3">
-          {/* Theme Quick Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg border border-slate-700/60 transition-all"
-          >
-            <span className="flex items-center gap-2">
-              {theme === 'dark' ? <Moon className="w-4 h-4 text-indigo-400" /> : <Sun className="w-4 h-4 text-amber-400" />}
-              <span>Theme: {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
-            </span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary font-bold">
-              Toggle
-            </span>
-          </button>
-
-          <a
-            href="https://github.com/Thanvik931/NeuroCloak"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center px-3 py-2 text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-          >
-            <Github className="w-4 h-4 mr-3 shrink-0" />
-            GitHub Repo
-          </a>
-
-          {/* User Profile Footer Card */}
+        {/* Minimal Footer: User Profile Card Only */}
+        <div className="p-4 border-t border-dark-border">
           <Link
             to="/profile"
             onClick={() => setSidebarOpen(false)}
-            className="flex items-center space-x-3 bg-white/[0.03] hover:bg-white/10 transition-colors p-3 rounded-lg border border-white/5 group"
+            className="flex items-center space-x-3 bg-white/[0.03] hover:bg-white/10 transition-colors p-3 rounded-xl border border-white/5 group"
           >
             <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/30 group-hover:scale-105 transition-transform">
-              <span className="text-primary font-semibold text-sm text-center leading-none">
+              <span className="text-primary font-bold text-sm text-center leading-none">
                 {user?.email?.charAt(0).toUpperCase() || 'A'}
               </span>
             </div>
@@ -113,7 +86,7 @@ export default function Sidebar() {
               <p className="text-xs font-bold text-white truncate group-hover:text-primary transition-colors">
                 {user?.email || 'admin@neurocloak.ai'}
               </p>
-              <p className="text-[10px] text-slate-400 font-medium truncate">Edit Profile &amp; Settings</p>
+              <p className="text-[10px] text-slate-400 font-medium truncate">My Account &amp; Profile</p>
             </div>
           </Link>
         </div>
