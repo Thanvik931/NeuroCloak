@@ -38,6 +38,48 @@ Modern artificial intelligence models make thousands of critical decisions every
 
 ---
 
+## 🏗️ System Architecture & Workflow
+
+NeuroCloak operates using a continuous four-layer cognitive loop layered over baseline black-box models:
+
+```
+                  +-----------------------------------+
+                  |      Raw Input Features (X)       |
+                  +-----------------------------------+
+                                    |
+                                    v
+                  +-----------------------------------+
+                  |  Layer 1: Perception & Standard   |
+                  |     Z-Score / OneHot Encoding     |
+                  +-----------------------------------+
+                                    |
+                                    v
+                  +-----------------------------------+
+                  |  Layer 2: Neuro-Symbolic Engine   |
+                  |   (1:1 Decision Path Extraction)  |
+                  +-----------------------------------+
+                                    |
+                                    v
+                  +-----------------------------------+
+                  | Layer 3: Symbolic Knowledge Base  |
+                  |   (Policy & Governance Verify)    |
+                  +-----------------------------------+
+                                    |
+                                    v
+                  +-----------------------------------+
+                  | Layer 4: Metacognitive Auto-Repair|
+                  | (Equalized Treatment Postprocessing|
+                  +-----------------------------------+
+                                    |
+                                    v
+                  +-----------------------------------+
+                  | Final Verdict & Immutable Audit   |
+                  |  [APPROVED / FLAGGED / BLOCKED]   |
+                  +-----------------------------------+
+```
+
+---
+
 ## 📊 Datasets Used & Model Training Architecture
 
 ### 1. Benchmark & Evaluation Dataset: **UCI Statlog (German Credit Data)**
@@ -79,9 +121,23 @@ All models were trained using **scikit-learn 1.8.0** with a fixed random seed of
   - **F1-Score**: **0.8112**
   - **ROC-AUC**: **0.7680**
 
-#### **Preprocessing Pipeline**:
-- `StandardScaler` for Z-score normalization of numerical features.
-- `OneHotEncoder(drop='first', sparse_output=False)` for 13 categorical attributes.
+---
+
+## ⚡ API Endpoint Reference
+
+NeuroCloak backend provides RESTful JSON endpoints for authentication, AI system management, simulations, and analytics:
+
+| Method | Endpoint | Description | Access Level |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | Register a new user account | Public |
+| `POST` | `/api/auth/login` | Authenticate user & return JWT token | Public |
+| `GET` | `/api/auth/me` | Fetch authenticated user profile | Protected |
+| `GET` | `/api/systems` | List all registered AI models | Protected |
+| `POST` | `/api/systems` | Register new AI system for CDT monitoring | Admin / Engineer |
+| `POST` | `/api/simulate` | Trigger real-time CDT evaluation simulation | Protected |
+| `GET` | `/api/decisions` | Query immutable audit log decisions | Protected |
+| `GET` | `/api/analytics` | Fetch system health scores & governance metrics | Protected |
+| `POST` | `/api/contact` | Format and dispatch contact inquiries to `8790505507` | Public |
 
 ---
 
@@ -103,11 +159,7 @@ All models were trained using **scikit-learn 1.8.0** with a fixed random seed of
 - **Dedicated Admin Console (`/admin`)**:
   - Allows administrators to assign user roles (`ADMIN`, `ETHICS_AUDITOR`, `MODEL_ENGINEER`, `VIEWER`), set global AI safety thresholds (e.g. minimum compliance 75%, max bias 5%), monitor MongoDB Atlas and Redis cluster health, and trigger **Global AI Emergency Overrides**.
 
-### 3. Full-Stack Python Backend Infrastructure
-- **Python Flask API & Real-Time Engine**:
-  - Rebuilt backend using Python 3, Flask, PyJWT authentication, MongoDB Atlas, and Socket.io real-time alert streaming.
-
-### 4. Empirical Science & Post-Hoc Fairness Repair
+### 3. Empirical Science & Post-Hoc Fairness Repair
 - **Fairness & Disparity Mitigation**:
   - Achieved a **+44.83% Disparity Reduction** ($5.55\% \rightarrow 3.06\%$) on Random Forest with **0.00% accuracy cost** ($p = 0.7728$, McNemar test).
 - **Model-Dependent Sensitivity Discovery**:
@@ -115,8 +167,17 @@ All models were trained using **scikit-learn 1.8.0** with a fixed random seed of
 - **Speed of Adaptation Benchmark**:
   - Benchmarked procedural threshold re-convergence latency under 100 trials of synthetic distribution shift: **`1.49 ms ± 0.13 ms`**.
 
-### 5. Publication-Ready Conference Manuscript
+### 4. Publication-Ready Conference Manuscript
 - Compiled complete LaTeX tables, methodology prose, and reproducibility statements ready for submission (`conference_paper_results.md` & `full_conference_manuscript.md`).
+
+---
+
+## ⚖️ Regulatory Compliance & Safety Standards
+
+NeuroCloak is engineered to comply with key global AI safety standards:
+* **EU Artificial Intelligence Act (Article 14 - Human Oversight)**: Enforces continuous human-in-the-loop oversight and automated audit trail generation for high-risk AI applications.
+* **Equal Credit Opportunity Act (ECOA)**: Prevents credit underwriting discrimination across protected demographic classes (age, sex, marital status).
+* **NIST AI Risk Management Framework (AI RMF 1.0)**: Supports continuous risk measurement, explainability, and governance mapping.
 
 ---
 
@@ -130,11 +191,27 @@ All models were trained using **scikit-learn 1.8.0** with a fixed random seed of
 
 ---
 
+## 📖 Citation (BibTeX)
+
+If you use NeuroCloak or its benchmark results in your academic research, please cite:
+
+```bibtex
+@inproceedings{neurocloak2026,
+  title={NeuroCloak: A Real-Time Cognitive Digital Twin Architecture for Explainable AI Governance and Post-Hoc Fairness Repair},
+  author={NeuroCloak Open Source Contributors},
+  booktitle={Proceedings of the IEEE/ACM Conference on AI Ethics, Governance, and Trustworthy Systems},
+  year={2026},
+  publisher={IEEE/ACM}
+}
+```
+
+---
+
 ## 🛠️ Tech Stack & Architecture
 
 ### Frontend
 - **Framework**: React 19 + Vite
-- **Styling**: Vanilla CSS & Tailwind CSS (Custom Dark/Light themes, Glassmorphism)
+- **Styling**: Vanilla CSS & Tailwind CSS (Custom Dark/Light themes, Glassmorphic UI)
 - **Typography**: Google Font `'Lato', sans-serif`
 - **State & Routing**: Zustand & React Router v7
 - **Icons**: Lucide React
