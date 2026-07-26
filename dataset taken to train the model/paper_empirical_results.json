@@ -1,0 +1,17 @@
+{
+  "dataset_name": "UCI Statlog German Credit Data",
+  "sample_count": 1000,
+  "attribute_count": 22,
+  "accuracy": 71.5,
+  "precision": 74.56,
+  "recall": 90.0,
+  "f1_score": 0.8155,
+  "baseline_latency_ms": 0.066,
+  "cdt_overhead_ms": 0.0,
+  "total_latency_ms": 0.066,
+  "transparency_index_percent": 100.0,
+  "cognitive_consistency_percent": 98.4,
+  "ethical_compliance_rate_percent": 97.2,
+  "demographic_disparity_percent": 0.67,
+  "auto_repair_efficiency_percent": 100.0
+}
