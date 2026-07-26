@@ -1,0 +1,27 @@
+{
+  "path": "Path 2: Post-Hoc Threshold Adjustment Auto-Repair",
+  "random_seed": 42,
+  "sample_count": 1000,
+  "holdout_test_count": 300,
+  "baseline_accuracy_percent": 70.67,
+  "repaired_accuracy_percent": 71.33,
+  "repaired_precision_percent": 72.14,
+  "repaired_recall_percent": 96.19,
+  "repaired_f1_score": 0.8245,
+  "roc_auc_score": 0.768,
+  "raw_disparity_percent": 15.33,
+  "repaired_disparity_percent": 6.97,
+  "mitigation_efficiency_percent": 54.55,
+  "adaptation_speed_ms": 0.004618,
+  "statistical_tests": {
+    "mcnemar_test": {
+      "changed_samples_count": 24,
+      "chi2_statistic": 22.0417,
+      "p_value": 2.6679545936247906e-06
+    },
+    "paired_t_test": {
+      "t_statistic": -0.4077,
+      "p_value": 0.683799950005804
+    }
+  }
+}

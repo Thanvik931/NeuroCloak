@@ -1,0 +1,35 @@
+{
+  "dataset_name": "UCI Statlog German Credit Data (german.data / OpenML ID 31)",
+  "random_seed": 42,
+  "sample_count": 1000,
+  "test_sample_count": 300,
+  "split_ratio": "70/30 Train/Test Split",
+  "cv_method": "5-Fold Stratified Cross-Validation",
+  "metrics": {
+    "cv_mean_accuracy_percent": 74.8,
+    "cv_std_accuracy_percent": 1.91,
+    "cv_mean_roc_auc": 0.7744,
+    "test_accuracy_percent": 70.67,
+    "test_precision_percent": 73.83,
+    "test_recall_percent": 90.0,
+    "test_f1_score": 0.8112,
+    "test_roc_auc": 0.768,
+    "baseline_latency_ms": 0.374561,
+    "cdt_overhead_ms": 0.000736,
+    "total_latency_ms": 0.375297,
+    "adaptation_speed_ms": 0.09964,
+    "ethical_compliance_rate_percent": 89.56,
+    "age_disparity_percent": 5.55,
+    "foreign_worker_disparity_percent": 15.33,
+    "statistical_significance": {
+      "paired_t_test": {
+        "t_statistic": -1.4166,
+        "p_value": 0.15764546275999464
+      },
+      "mcnemar_test": {
+        "chi2_statistic": 1.3889,
+        "p_value": 0.2385928293164321
+      }
+    }
+  }
+}
