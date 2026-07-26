@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Bell, LogOut, Search } from 'lucide-react';
+import { Bell, LogOut, Search, Menu, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
+import { useThemeStore } from '../../store/themeStore';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../../api/client';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,7 @@ interface HeaderProps {
 
 export default function Header({ title }: HeaderProps) {
   const { logout } = useAuthStore();
+  const { theme, toggleTheme, toggleSidebar } = useThemeStore();
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   
@@ -22,23 +24,48 @@ export default function Header({ title }: HeaderProps) {
   const activeFlags = summary?.activeFlags || 0;
 
   return (
-    <header className="h-16 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border px-8 flex items-center justify-between sticky top-0 z-20">
-      <div className="flex items-center gap-4">
+    <header className="h-16 bg-dark-bg/95 backdrop-blur-md border-b border-dark-border px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors">
+      <div className="flex items-center gap-3">
+        {/* Hamburger Menu Toggle Button for Sidebar Access */}
+        <button
+          onClick={toggleSidebar}
+          className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center"
+          title="Toggle Sidebar Menu"
+          aria-label="Toggle Sidebar Menu"
+        >
+          <Menu className="w-5 h-5 text-white" />
+        </button>
+
         <h2 className="text-lg font-bold text-white tracking-wide">{title}</h2>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
+        {/* Search Bar */}
         <div className="relative hidden md:block">
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             placeholder="Search AI Systems..." 
-            className="bg-black/20 border border-dark-border rounded-full py-1.5 pl-9 pr-4 text-sm text-slate-300 focus:outline-none focus:border-primary/50 transition-colors w-64"
+            className="bg-black/20 border border-dark-border rounded-full py-1.5 pl-9 pr-4 text-sm text-slate-300 focus:outline-none focus:border-primary/50 transition-colors w-56 lg:w-64"
           />
         </div>
 
         <div className="flex items-center gap-2 relative">
           
+          {/* Theme Toggle Button (Light/Dark mode) */}
+          <button
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/10 transition-colors border border-slate-700/60"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-amber-400" />
+            ) : (
+              <Moon className="w-5 h-5 text-indigo-600" />
+            )}
+          </button>
+
           {/* Interactive Bell Dropdown Container */}
           <div>
             <button 
@@ -53,7 +80,7 @@ export default function Header({ title }: HeaderProps) {
 
             {/* Dropdown Menu */}
             {showNotifications && (
-              <div className="absolute right-12 mt-2 w-80 bg-[#0F172A] border border-dark-border rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute right-0 mt-2 w-80 bg-[#0F172A] border border-dark-border rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="px-5 py-3 border-b border-dark-border mb-2 flex justify-between items-center">
                   <h3 className="text-sm font-bold text-white tracking-wide">Alert Center</h3>
                   <span className="text-[10px] bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full font-bold">{activeFlags} New</span>
@@ -80,7 +107,7 @@ export default function Header({ title }: HeaderProps) {
             )}
           </div>
 
-          <div className="w-px h-6 bg-dark-border mx-2" />
+          <div className="w-px h-6 bg-dark-border mx-1" />
           
           <button 
             onClick={logout}

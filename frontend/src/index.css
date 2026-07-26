@@ -6,19 +6,73 @@
 
 @layer base {
   body {
-    @apply bg-[#0F172A] text-slate-200 font-sans antialiased;
+    @apply bg-[#0F172A] text-slate-200 font-sans antialiased transition-colors duration-200;
     font-family: 'Lato', sans-serif;
+  }
+
+  html.light body, body.light {
+    background-color: #F8FAFC;
+    color: #0F172A;
   }
 }
 
 .glass-panel {
-  @apply bg-[#1E293B]/80 backdrop-blur-md border border-dark-border rounded-xl shadow-xl;
+  @apply bg-[#1E293B]/80 backdrop-blur-md border border-dark-border rounded-xl shadow-xl transition-colors duration-200;
+}
+
+html.light .glass-panel {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: #E2E8F0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-dark-bg {
+  background-color: #F1F5F9 !important;
+}
+
+html.light .bg-dark-sidebar {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light .border-dark-border {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .text-white {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748B !important;
+}
+
+html.light .bg-slate-900,
+html.light .bg-slate-950 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #E2E8F0 !important;
 }
 
 .input-field {
   @apply w-full px-4 py-2.5 bg-[#0F172A] border border-dark-border rounded-lg 
          focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all
          text-white placeholder-slate-500;
+}
+
+html.light .input-field {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
 }
 
 .btn-primary {
@@ -28,7 +82,7 @@
          transition-all transform active:scale-[0.98];
 }
 
-/* Custom Scrollbar for inner zones */
+/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -44,8 +98,13 @@
   background: #475569;
 }
 
-/* Fix global select dropdown visibility on light-themed OS */
+/* Fix global select dropdown visibility */
 option {
   background-color: #0F172A;
   color: #f8fafc;
+}
+
+html.light option {
+  background-color: #FFFFFF;
+  color: #0F172A;
 }

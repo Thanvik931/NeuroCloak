@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import { BrainCircuit, Github, Menu, X, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useThemeStore } from '../../store/themeStore';
+import { BrainCircuit, Github, Menu, X, ArrowRight, ShieldCheck, Sun, Moon } from 'lucide-react';
 
 export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
+  const { theme, toggleTheme } = useThemeStore();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -30,7 +32,7 @@ export const PublicNavbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0F172A]/90 border-b border-slate-800">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0F172A]/90 border-b border-slate-800 transition-colors">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3 group">
@@ -70,8 +72,22 @@ export const PublicNavbar: React.FC = () => {
           })}
         </nav>
 
-        {/* CTA & GitHub */}
-        <div className="hidden md:flex items-center space-x-4">
+        {/* Theme Toggle, CTA & GitHub */}
+        <div className="hidden md:flex items-center space-x-3">
+          {/* Theme Switcher Button */}
+          <button
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-amber-400" />
+            ) : (
+              <Moon className="w-5 h-5 text-indigo-500" />
+            )}
+          </button>
+
           <a
             href="https://github.com/Thanvik931/NeuroCloak"
             target="_blank"
@@ -96,12 +112,20 @@ export const PublicNavbar: React.FC = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex md:hidden items-center space-x-2">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white"
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-500" />}
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
