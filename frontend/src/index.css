@@ -10,37 +10,66 @@
     font-family: 'Lato', sans-serif;
   }
 
-  html.light body, body.light {
-    background-color: #F8FAFC;
-    color: #0F172A;
+  html.light body,
+  html.light #root,
+  body.light {
+    background-color: #F8FAFC !important;
+    color: #0F172A !important;
   }
 }
 
-.glass-panel {
-  @apply bg-[#1E293B]/80 backdrop-blur-md border border-dark-border rounded-xl shadow-xl transition-colors duration-200;
-}
+/* ==========================================
+   GLOBAL LIGHT MODE STYLES & OVERRIDES
+   ========================================== */
 
-html.light .glass-panel {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-color: #E2E8F0;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-}
-
-html.light .bg-dark-bg {
-  background-color: #F1F5F9 !important;
-}
-
+/* 1. Page Backgrounds & Main Wrappers */
+html.light .min-h-screen,
+html.light [class*="bg-[#0F172A]"],
+html.light [class*="bg-[#0B0F19]"],
+html.light [class*="bg-[#090D16]"],
+html.light [class*="bg-[#0B132B]"],
+html.light .bg-dark-bg,
 html.light .bg-dark-sidebar {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+/* 2. Cards, Containers, Modals, Boards */
+html.light .glass-panel,
+html.light [class*="bg-slate-900"],
+html.light [class*="bg-slate-950"],
+html.light [class*="bg-[#1E293B]"],
+html.light [class*="bg-slate-800"] {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 }
 
+/* 3. Borders */
+html.light [class*="border-slate-800"],
+html.light [class*="border-slate-700"],
+html.light [class*="border-slate-600"],
 html.light .border-dark-border {
   border-color: #E2E8F0 !important;
 }
 
-html.light .text-white {
+/* 4. Text Colors for Light Mode Readability */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
   color: #0F172A !important;
+}
+
+html.light p,
+html.light span,
+html.light div,
+html.light td,
+html.light th,
+html.light label {
+  color: #334155;
 }
 
 html.light .text-slate-200,
@@ -48,31 +77,79 @@ html.light .text-slate-300 {
   color: #334155 !important;
 }
 
-html.light .text-slate-400 {
+html.light .text-slate-400,
+html.light .text-slate-500 {
   color: #64748B !important;
 }
 
-html.light .bg-slate-900,
-html.light .bg-slate-950 {
-  background-color: #FFFFFF !important;
-  border-color: #E2E8F0 !important;
+/* 5. FIX BUTTONS & BADGES: Keep white text crisp on solid colored buttons! */
+html.light .bg-primary,
+html.light .btn-primary,
+html.light .bg-primary-hover,
+html.light button.bg-primary,
+html.light a.bg-primary,
+html.light .bg-blue-600,
+html.light .bg-emerald-600,
+html.light .bg-red-600,
+html.light .bg-indigo-600,
+html.light .bg-emerald-500,
+html.light .bg-rose-500 {
+  color: #FFFFFF !important;
 }
 
+html.light .bg-primary *,
+html.light .btn-primary *,
+html.light button.bg-primary *,
+html.light a.bg-primary * {
+  color: #FFFFFF !important;
+}
+
+/* 6. Headers & Navigation */
 html.light header {
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-color: #E2E8F0 !important;
 }
 
+html.light header .text-white,
+html.light header span.font-bold {
+  color: #0F172A !important;
+}
+
+html.light nav[class*="bg-slate-900"] {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light nav a {
+  color: #475569 !important;
+}
+
+html.light nav a.bg-primary {
+  background-color: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+/* 7. Input Fields & Form Controls */
 .input-field {
   @apply w-full px-4 py-2.5 bg-[#0F172A] border border-dark-border rounded-lg 
          focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all
          text-white placeholder-slate-500;
 }
 
-html.light .input-field {
+html.light .input-field,
+html.light input[type="text"],
+html.light input[type="email"],
+html.light input[type="password"],
+html.light select,
+html.light textarea {
   background-color: #FFFFFF !important;
   border-color: #CBD5E1 !important;
   color: #0F172A !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94A3B8 !important;
 }
 
 .btn-primary {
@@ -108,3 +185,5 @@ html.light option {
   background-color: #FFFFFF;
   color: #0F172A;
 }
+
+

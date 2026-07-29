@@ -1,0 +1,60 @@
+{
+  "dataset": "UCI Adult Income (N=48,842)",
+  "protected_attribute": "Nativity / Foreign-Born Status (Non-US vs US-Born)",
+  "test_group_sizes": {
+    "US_Born": 13176,
+    "Foreign_Born": 1477
+  },
+  "RandomForest": {
+    "baseline": {
+      "accuracy_pct": 86.06,
+      "precision_pct": 81.54,
+      "recall_pct": 53.94,
+      "f1_score": 0.6493,
+      "roc_auc": 0.9115,
+      "disparity_pct": 1.64
+    },
+    "repaired": {
+      "accuracy_pct": 86.08,
+      "precision_pct": 81.54,
+      "recall_pct": 54.05,
+      "f1_score": 0.6501,
+      "roc_auc": 0.9115,
+      "disparity_pct": 1.15
+    },
+    "disparity_reduction_pct": 29.86,
+    "accuracy_impact_pct": 0.02,
+    "mcnemar_chi2": 1.7778,
+    "mcnemar_p_value": 0.1824,
+    "thresholds": {
+      "US_Born": 0.501,
+      "Foreign_Born": 0.491
+    }
+  },
+  "HistGradientBoosting": {
+    "baseline": {
+      "accuracy_pct": 86.23,
+      "precision_pct": 80.17,
+      "recall_pct": 56.39,
+      "f1_score": 0.6621,
+      "roc_auc": 0.9151,
+      "disparity_pct": 1.25
+    },
+    "repaired": {
+      "accuracy_pct": 86.22,
+      "precision_pct": 80.21,
+      "recall_pct": 56.3,
+      "f1_score": 0.6616,
+      "roc_auc": 0.9151,
+      "disparity_pct": 0.91
+    },
+    "disparity_reduction_pct": 27.18,
+    "accuracy_impact_pct": -0.01,
+    "mcnemar_chi2": 1.2308,
+    "mcnemar_p_value": 0.2673,
+    "thresholds": {
+      "US_Born": 0.501,
+      "Foreign_Born": 0.491
+    }
+  }
+}

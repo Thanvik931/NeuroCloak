@@ -1,0 +1,106 @@
+{
+  "COMPAS_Recidivism": {
+    "dataset_size": 5278,
+    "protected_attribute": "Race (African-American vs Caucasian)",
+    "RandomForest": {
+      "baseline": {
+        "acc": 67.11,
+        "prec": 66.52,
+        "rec": 60.54,
+        "f1": 0.6339,
+        "auc": 0.7164,
+        "disparity_pct": 6.06
+      },
+      "repaired": {
+        "acc": 67.05,
+        "prec": 66.62,
+        "rec": 60.0,
+        "f1": 0.6314,
+        "auc": 0.7164,
+        "disparity_pct": 4.9
+      },
+      "disparity_reduction_pct": 19.15,
+      "accuracy_impact": -0.06,
+      "mcnemar": {
+        "chi2": 4.0,
+        "p_value": 0.0455
+      }
+    },
+    "HistGradientBoosting": {
+      "baseline": {
+        "acc": 67.55,
+        "prec": 67.16,
+        "rec": 60.67,
+        "f1": 0.6375,
+        "auc": 0.7266,
+        "disparity_pct": 4.91
+      },
+      "repaired": {
+        "acc": 67.55,
+        "prec": 67.16,
+        "rec": 60.67,
+        "f1": 0.6375,
+        "auc": 0.7266,
+        "disparity_pct": 4.91
+      },
+      "disparity_reduction_pct": 0.0,
+      "accuracy_impact": 0.0,
+      "mcnemar": {
+        "chi2": 0.0,
+        "p_value": 1.0
+      }
+    }
+  },
+  "UCI_Adult_Income": {
+    "dataset_size": 48842,
+    "protected_attribute": "Sex (Female vs Male)",
+    "RandomForest": {
+      "baseline": {
+        "acc": 86.06,
+        "prec": 81.54,
+        "rec": 53.94,
+        "f1": 0.6493,
+        "auc": 0.9115,
+        "disparity_pct": 14.86
+      },
+      "repaired": {
+        "acc": 85.17,
+        "prec": 83.51,
+        "rec": 47.38,
+        "f1": 0.6045,
+        "auc": 0.9115,
+        "disparity_pct": 5.95
+      },
+      "disparity_reduction_pct": 59.95,
+      "accuracy_impact": -0.89,
+      "mcnemar": {
+        "chi2": 156.871,
+        "p_value": 0.0
+      }
+    },
+    "HistGradientBoosting": {
+      "baseline": {
+        "acc": 86.23,
+        "prec": 80.17,
+        "rec": 56.39,
+        "f1": 0.6621,
+        "auc": 0.9151,
+        "disparity_pct": 15.63
+      },
+      "repaired": {
+        "acc": 85.78,
+        "prec": 82.62,
+        "rec": 51.4,
+        "f1": 0.6337,
+        "auc": 0.9151,
+        "disparity_pct": 7.3
+      },
+      "disparity_reduction_pct": 53.3,
+      "accuracy_impact": -0.45,
+      "mcnemar": {
+        "chi2": 126.6185,
+        "p_value": 0.0
+      }
+    }
+  }
+}
