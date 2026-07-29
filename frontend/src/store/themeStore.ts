@@ -11,6 +11,22 @@ interface ThemeState {
 
 const savedTheme = (localStorage.getItem('neurocloak_theme') as 'dark' | 'light') || 'dark';
 
+// Ensure the document reflects the saved theme on initial load so Tailwind
+// classes that depend on `html.light` / `html.dark` cascade correctly.
+if (typeof document !== 'undefined') {
+  if (savedTheme === 'light') {
+    document.documentElement.classList.add('light');
+    document.documentElement.classList.remove('dark');
+    document.body.classList.add('light');
+    document.body.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+    document.body.classList.add('dark');
+    document.body.classList.remove('light');
+  }
+}
+
 export const useThemeStore = create<ThemeState>((set) => ({
   theme: savedTheme,
   sidebarOpen: false,
