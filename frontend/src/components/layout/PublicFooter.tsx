@@ -17,14 +17,14 @@ export const PublicFooter: React.FC = () => {
           <div className="flex items-center space-x-4">
             <Link
               to="/contact"
-              className="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow transition-all flex items-center gap-2"
             >
               <span>Contact Us</span>
               <ArrowUpRight className="w-4 h-4" />
             </Link>
             <Link
               to="/login"
-              className="px-5 py-2.5 rounded-full border border-slate-700 hover:bg-slate-800 text-slate-200 text-sm font-medium transition-all"
+              className="px-5 py-2.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-200 text-sm font-medium transition-all"
             >
               Sign In
             </Link>
@@ -104,9 +104,11 @@ export const PublicFooter: React.FC = () => {
       <div className="border-t border-slate-800/80 py-5 bg-slate-950">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
           <p>© {new Date().getFullYear()} NeuroCloak. All rights reserved.</p>
-          <div className="flex space-x-5">
+          <div className="flex flex-wrap gap-4 sm:gap-6">
             <Link to="/about" className="hover:text-slate-300">About</Link>
             <Link to="/contact" className="hover:text-slate-300">Contact</Link>
+            <Link to="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-slate-300">Terms of Service</Link>
             <a href="https://github.com/Thanvik931/NeuroCloak" target="_blank" rel="noreferrer" className="hover:text-slate-300">GitHub</a>
           </div>
         </div>

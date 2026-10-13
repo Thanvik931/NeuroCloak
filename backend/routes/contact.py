@@ -1,13 +1,16 @@
-"""Contact route – handles contact form submissions.
+"""Contact route – handles contact form submissions with strict sanitization.
 
 Target email: thanvikreddy2@gmail.com
 Target phone: 8790505507
 """
 
+import html
+import re
 import urllib.parse
-from flask import Blueprint, request, jsonify
 from datetime import datetime, timezone
+from flask import Blueprint, request, jsonify
 from lib.mongodb import get_db
+from lib.limiter import limiter
 
 bp = Blueprint("contact", __name__, url_prefix="/api/contact")
 
@@ -15,19 +18,42 @@ TARGET_EMAIL = "thanvikreddy2@gmail.com"
 TARGET_PHONE = "8790505507"
 TARGET_PHONE_INTL = "+918790505507"
 
+EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+
+
+def sanitize_text(text: str, max_length: int) -> str:
+    """Strip, truncate, and HTML-escape text to prevent XSS and injection."""
+    if not text:
+        return ""
+    truncated = text.strip()[:max_length]
+    return html.escape(truncated, quote=True)
+
+
 @bp.route("", methods=["POST"])
+@limiter.limit("5 per minute")
 def submit_contact():
     try:
-        body = request.get_json(force=True)
-        name = (body.get("name") or "").strip()
-        email = (body.get("email") or "").strip()
-        phone = (body.get("phone") or "").strip()
-        organization = (body.get("organization") or "").strip()
-        inquiry_type = (body.get("inquiryType") or "General Question").strip()
-        message = (body.get("message") or "").strip()
+        body = request.get_json(force=True) or {}
+        raw_name = (body.get("name") or "").strip()
+        raw_email = (body.get("email") or "").strip()
+        raw_phone = (body.get("phone") or "").strip()
+        raw_org = (body.get("organization") or "").strip()
+        raw_type = (body.get("inquiryType") or "General Question").strip()
+        raw_message = (body.get("message") or "").strip()
 
-        if not name or not email or not message:
-            return jsonify({"error": "Name, email, and message are required"}), 400
+        if not raw_name or not raw_email or not raw_message:
+            return jsonify({"error": "Name, valid email, and message are required"}), 400
+
+        if not EMAIL_REGEX.match(raw_email):
+            return jsonify({"error": "A valid email address is required"}), 400
+
+        # Sanitize against XSS and buffer abuse
+        name = sanitize_text(raw_name, 100)
+        email = sanitize_text(raw_email, 255)
+        phone = sanitize_text(raw_phone, 30)
+        organization = sanitize_text(raw_org, 150)
+        inquiry_type = sanitize_text(raw_type, 100)
+        message = sanitize_text(raw_message, 5000)
 
         now = datetime.now(timezone.utc)
         contact_doc = {
@@ -64,7 +90,7 @@ def submit_contact():
             "message": "Contact message received and logged successfully",
             "id": str(result.inserted_id),
             "mailtoUrl": mailto_url,
-            "whatsappUrl": whatsapp_url
+            "whatsappUrl": whatsapp_url,
         }), 201
 
     except Exception as e:

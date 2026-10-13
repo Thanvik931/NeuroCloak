@@ -22,7 +22,7 @@ export const About: React.FC = () => {
         {/* Hero Section */}
         <section className="relative py-16 border-b border-slate-800">
           <div className="container mx-auto px-6 text-center max-w-3xl">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-6">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-6">
               <Heart className="w-3.5 h-3.5 text-primary" />
               <span>Our Mission</span>
             </div>
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
             </h1>
 
             <p className="text-base md:text-lg text-slate-400 leading-relaxed">
-              We built NeuroCloak because AI is used everywhere today — but nobody wants AI to make secret choices or treat people unfairly. Our goal is to make every AI decision transparent in simple English.
+              We built NeuroCloak because AI is used everywhere today, but nobody wants AI to make secret choices or treat people unfairly. Our goal is to make every AI decision transparent in simple English.
             </p>
           </div>
         </section>
@@ -116,7 +116,7 @@ export const About: React.FC = () => {
           <div className="container mx-auto px-6">
             <div className="text-center max-w-xl mx-auto mb-12">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Who Can Use NeuroCloak?</h2>
-              <p className="text-slate-400 text-sm">Designed to be simple for everyone — no technical experience required!</p>
+              <p className="text-slate-400 text-sm">Designed to be simple for everyone: no technical experience required!</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
@@ -163,7 +163,7 @@ export const About: React.FC = () => {
             <div className="pt-2 flex justify-center gap-4">
               <Link
                 to="/contact"
-                className="px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow transition-all flex items-center gap-2"
+                className="px-6 py-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow transition-all flex items-center gap-2"
               >
                 <span>Contact Our Team</span>
                 <ArrowRight className="w-4 h-4" />

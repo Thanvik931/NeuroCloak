@@ -17,7 +17,7 @@ export default function TacticalHud() {
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="font-mono text-emerald-400 uppercase tracking-wider font-semibold">
-            Stitch Generated • Tactical HUD Interface
+            Cognitive Digital Twin • Tactical Telemetry HUD
           </span>
           <span className="text-slate-500">|</span>
           <span className="text-slate-400">Layer 4 AutoRepair Active (θ = 0.4910)</span>

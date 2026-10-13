@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import PublicNavbar from '../components/layout/PublicNavbar';
 import PublicFooter from '../components/layout/PublicFooter';
-import { BrainCircuit, Mail, Lock, LogIn, UserPlus, ArrowLeft } from 'lucide-react';
+import { BrainCircuit, Mail, Lock, LogIn, UserPlus, ArrowLeft, AlertCircle } from 'lucide-react';
 import { auth, googleProvider } from '../lib/firebase';
 import {
   signInWithEmailAndPassword,
@@ -108,7 +108,8 @@ export default function Login() {
           <form onSubmit={handleEmailAuth} className="space-y-4">
             {error && (
               <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
-                <span>⚠️</span> {error}
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 

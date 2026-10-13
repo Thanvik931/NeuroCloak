@@ -135,7 +135,7 @@ export const generateAuditReport = (decision: any, userEmail: string = 'System')
   doc.text("FINAL DISPOSITION", rightX + 32.5, 126, { align: 'center' });
 
   // Domain-specific description
-  let domainDescription = "AI system decision analysis — NeuroCloak 4-layer CDT audit";
+  let domainDescription = "AI system decision analysis: NeuroCloak 4-layer CDT audit";
   if (decision.aiSystem?.domain === 'healthcare') domainDescription = "Clinical Triage & Biomarker Analysis ($N=1,500$ held-out test evaluation)";
   if (decision.aiSystem?.domain === 'finance') domainDescription = "UCI Statlog German Credit Evaluation ($N=1,000$ banking dataset)";
   if (decision.aiSystem?.domain === 'industrial') domainDescription = "Sensor Telemetry & Predictive Maintenance ($N=1,000$ sensor telemetry)";

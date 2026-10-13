@@ -14,6 +14,11 @@ class Config:
     FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
     PORT = int(os.getenv("PORT", "4000"))
     ENV = os.getenv("NODE_ENV", os.getenv("FLASK_ENV", "development"))
+    ADMIN_EMAILS = [
+        email.strip().lower()
+        for email in os.getenv("ADMIN_EMAILS", "thanvikreddy2@gmail.com,admin@neurocloak.com").split(",")
+        if email.strip()
+    ]
 
     @classmethod
     def validate(cls):

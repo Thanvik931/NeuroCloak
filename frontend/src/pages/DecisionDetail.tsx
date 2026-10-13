@@ -75,7 +75,7 @@ export default function DecisionDetail() {
       setAuditVerified(res.verified ?? true);
     } catch (e: any) {
       setAuditReport(
-        '⚠️ **Audit Engine Notice:** Live Gemini analysis failed to connect to backend telemetry. ' +
+        '**Audit Engine Notice:** Live audit analysis failed to connect to backend telemetry. ' +
         'Please verify that your NeuroCloak server is running.'
       );
       setAuditVerified(false);

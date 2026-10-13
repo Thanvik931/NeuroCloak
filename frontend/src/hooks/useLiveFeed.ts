@@ -24,7 +24,7 @@ export const useLiveFeed = () => {
     });
 
     socket.on('connect', () => {
-      console.log('✅ Connected to NeuroCloak LiveFeed WebSocket');
+      console.log('[INFO] Connected to NeuroCloak LiveFeed WebSocket');
     });
 
     socket.on('new_decision', (decision) => {

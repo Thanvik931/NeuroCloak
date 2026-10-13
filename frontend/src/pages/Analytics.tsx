@@ -55,7 +55,7 @@ export default function Analytics() {
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500 pb-8 font-sans">
 
       {/* Header & Export Bar */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950/80 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-wider mb-1">
             <Sparkles className="w-4 h-4" />
@@ -185,11 +185,11 @@ export default function Analytics() {
               </tr>
               <tr className="hover:bg-slate-800/30 transition-colors">
                 <td className="px-4 py-3 font-bold text-white flex items-center gap-2">
-                  <Database className="w-3.5 h-3.5 text-purple-400" />
+                  <Database className="w-3.5 h-3.5 text-cyan-400" />
                   UCI Adult Income Benchmark
                 </td>
                 <td className="px-4 py-3 font-mono">48,842</td>
-                <td className="px-4 py-3 font-mono text-purple-400">RandomForest</td>
+                <td className="px-4 py-3 font-mono text-cyan-400">RandomForest</td>
                 <td className="px-4 py-3 font-mono font-bold text-emerald-400">86.06%</td>
                 <td className="px-4 py-3 text-slate-400">Sex (Female vs Male)</td>
                 <td className="px-4 py-3 font-mono font-bold text-emerald-400">+23.84%</td>
@@ -265,7 +265,7 @@ export default function Analytics() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2 text-purple-400">
+          <div className="flex items-center gap-2 text-cyan-400">
             <PieChart className="w-5 h-5" />
             <h2 className="text-lg font-bold text-white tracking-tight">Bias Distribution</h2>
           </div>

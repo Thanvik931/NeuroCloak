@@ -17,7 +17,10 @@ import Profile from './pages/Profile';
 import Admin from './pages/Admin';
 import TacticalHud from './pages/TacticalHud';
 import BattleArena from './pages/BattleArena';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import Layout from './components/layout/Layout';
+import AdminRoute from './components/auth/AdminRoute';
 import AssistantBot from './components/chat/AssistantBot';
 import ErrorBoundary from './components/layout/ErrorBoundary';
 import { Loader2 } from 'lucide-react';
@@ -49,6 +52,8 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
 
               {/* Protected Dashboard Routes */}
               <Route element={<ProtectedRoute />}>
@@ -61,7 +66,11 @@ function App() {
                 <Route path="hud" element={<TacticalHud />} />
                 <Route path="arena" element={<BattleArena />} />
                 <Route path="profile" element={<Profile />} />
-                <Route path="admin" element={<Admin />} />
+
+                {/* Role-Protected Admin Route */}
+                <Route element={<AdminRoute />}>
+                  <Route path="admin" element={<Admin />} />
+                </Route>
               </Route>
 
               {/* Catch-all Redirect */}

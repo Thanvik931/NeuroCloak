@@ -13,7 +13,8 @@ import {
   Mail, 
   Briefcase,
   Key,
-  Save
+  Save,
+  AlertCircle
 } from 'lucide-react';
 
 export default function Profile() {
@@ -89,7 +90,7 @@ export default function Profile() {
         <div className="flex-1 text-center md:text-left space-y-2">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
             <h1 className="text-2xl font-bold text-white tracking-tight">{profile.name}</h1>
-            <span className="px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/30 text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/30 text-xs font-bold uppercase tracking-wider">
               {profile.role}
             </span>
           </div>
@@ -279,8 +280,9 @@ export default function Profile() {
             )}
 
             {passwordError && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">
-                ⚠️ {passwordError}
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{passwordError}</span>
               </div>
             )}
 

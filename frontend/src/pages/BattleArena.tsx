@@ -17,7 +17,7 @@ export default function BattleArena() {
         <div className="flex items-center space-x-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           <span className="font-mono text-cyan-400 uppercase tracking-wider font-semibold">
-            Stitch Generated • Battle Mode Arena HUD
+            Adversarial Resilience • Battle Arena HUD
           </span>
           <span className="text-slate-500">|</span>
           <span className="text-slate-400">Adversarial Stress Suite & Cross-Domain Benchmarking</span>

@@ -1,20 +1,21 @@
-"""NeuroCloak Flask Backend – replaces index.ts.
+"""NeuroCloak Flask Backend – Production Hardened API Entrypoint.
 
 This is the main entry point. It creates the Flask app, registers all
-blueprints, sets up CORS, rate limiting, and Socket.io.
+blueprints, sets up strict CORS, rate limiting, security headers, and Socket.io.
 """
 
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from config import Config
 from lib.mongodb import connect_mongodb
+from lib.redis_client import get_redis
+from lib.limiter import limiter
 from services.socket_service import socketio
 
 # ── Validate Configuration ───────────────────────────────────────────
@@ -23,15 +24,19 @@ Config.validate()
 # ── Create Flask app ─────────────────────────────────────────────────
 app = Flask(__name__)
 app.config["SECRET_KEY"] = Config.JWT_SECRET
+app.config["DEBUG"] = False
+app.config["TESTING"] = False
 
 # ── CORS ─────────────────────────────────────────────────────────────
-import re
-
 cors_origins = [
     re.compile(r"^https://.*\.vercel\.app$"),
     re.compile(r"^https://.*\.onrender\.com$"),
+    re.compile(r"^https://.*\.neurocloak\.ai$"),
     re.compile(r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"),
     "https://neuro-cloak.vercel.app",
+    "https://neurocloak.vercel.app",
+    "https://neurocloak.ai",
+    "https://www.neurocloak.ai",
 ]
 if Config.FRONTEND_URL and Config.FRONTEND_URL not in cors_origins:
     cors_origins.append(Config.FRONTEND_URL)
@@ -44,23 +49,34 @@ CORS(
     methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 )
 
-
 # ── Rate Limiting ────────────────────────────────────────────────────
-from lib.redis_client import get_redis
 _redis_available = get_redis() is not None
 storage_uri = Config.REDIS_URL if (Config.REDIS_URL and _redis_available) else "memory://"
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["1000 per 15 minutes"],
-    storage_uri=storage_uri,
-)
+app.config["RATELIMIT_STORAGE_URI"] = storage_uri
+limiter.init_app(app)
 
-# Apply stricter limit to auth login
-@limiter.limit("10 per 15 minutes")
-@app.route("/api/auth/login_limiter_dummy")
-def _login_limiter():
-    pass
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return jsonify({
+        "error": "Rate limit exceeded. Too many requests, please try again later."
+    }), 429
+
+
+# ── HTTP Security Headers ────────────────────────────────────────────
+@app.after_request
+def apply_security_headers(response):
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    # Prevent caching of sensitive API data
+    if "Cache-Control" not in response.headers:
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+    return response
+
 
 # ── Register Blueprints ──────────────────────────────────────────────
 from routes.auth import bp as auth_bp
@@ -85,7 +101,12 @@ app.register_blueprint(contact_bp)
 # ── Health Check ─────────────────────────────────────────────────────
 @app.route("/health")
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({
+        "status": "ok",
+        "service": "NeuroCloak API",
+        "security": "hardened",
+        "debug": False,
+    })
 
 
 # ── Ensure indexes on startup ────────────────────────────────────────
@@ -115,5 +136,5 @@ socketio.init_app(app)
 if __name__ == "__main__":
     connect_mongodb()
     _ensure_indexes()
-    print(f"Server is running on port {Config.PORT}")
-    socketio.run(app, host="0.0.0.0", port=Config.PORT, debug=(Config.ENV != "production"))
+    print(f"Server is running on port {Config.PORT} (debug=False)")
+    socketio.run(app, host="0.0.0.0", port=Config.PORT, debug=False)

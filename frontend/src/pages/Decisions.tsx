@@ -82,7 +82,7 @@ export default function Decisions() {
     <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500 pb-8 font-sans">
       
       {/* Header & Summary Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950/80 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-wider mb-1">
             <FileCheck className="w-4 h-4" />

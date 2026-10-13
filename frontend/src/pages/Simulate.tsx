@@ -323,7 +323,7 @@ export default function Simulate() {
             onClick={() => loadPresetScenario('industrial')}
             className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center space-x-1.5 border border-slate-700 transition-all"
           >
-            <Wrench className="w-3.5 h-3.5 text-purple-400" />
+            <Wrench className="w-3.5 h-3.5 text-cyan-400" />
             <span>Industrial Telemetry</span>
           </button>
         </div>
@@ -342,7 +342,7 @@ export default function Simulate() {
             <button 
               onClick={() => setIsBattleMode(!isBattleMode)}
               className={cn(
-                "flex items-center gap-2 px-4 py-1.5 rounded-full border transition-all text-xs font-bold uppercase tracking-widest",
+                "flex items-center gap-2 px-4 py-1.5 rounded-lg border transition-all text-xs font-bold uppercase tracking-widest",
                 isBattleMode 
                   ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
                   : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-300"
@@ -439,7 +439,7 @@ export default function Simulate() {
               </div>
               <button
                 onClick={() => setAutoRepairEnabled(!autoRepairEnabled)}
-                className={cn("px-3 py-1 rounded-full text-xs font-bold transition-all border", autoRepairEnabled ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" : "bg-slate-800 text-slate-400 border-slate-700")}
+                className={cn("px-3 py-1 rounded-lg text-xs font-bold transition-all border", autoRepairEnabled ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" : "bg-slate-800 text-slate-400 border-slate-700")}
               >
                 {autoRepairEnabled ? 'ENABLED' : 'DISABLED'}
               </button>
@@ -512,7 +512,7 @@ export default function Simulate() {
                   <div className="text-center">
                     <p className="text-[10px] text-yellow-500/70 font-bold uppercase tracking-widest mb-1">Transparency Leader</p>
                     <p className="text-white font-semibold text-xs">{mostTransparent.name}</p>
-                    <p className="text-purple-400 font-mono text-xs">{(mostTransparent.score * 100).toFixed(0)}%</p>
+                    <p className="text-cyan-400 font-mono text-xs">{(mostTransparent.score * 100).toFixed(0)}%</p>
                   </div>
                 </div>
               </div>
@@ -608,7 +608,7 @@ export default function Simulate() {
                                }
                             }}
                             id="audit-btn"
-                            className="text-[10px] font-bold text-primary hover:text-white flex items-center gap-1.5 uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full border border-primary/30 transition-all hover:bg-primary"
+                            className="text-[10px] font-bold text-primary hover:text-white flex items-center gap-1.5 uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-lg border border-primary/30 transition-all hover:bg-primary"
                           >
                             <BrainCircuit className="w-3 h-3" /> Verify with AI Auditor
                           </button>
@@ -617,7 +617,7 @@ export default function Simulate() {
                           {simulationResult.biasFlags.map((flag: any, i: number) => (
                             <div key={i} className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-xs flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-sm">
                                <span className="font-semibold leading-relaxed">{flag.description}</span>
-                               <span className="font-mono text-[10px] font-bold uppercase tracking-wider opacity-80 shrink-0 bg-red-500/20 px-2.5 py-1 rounded-full">{flag.severity}</span>
+                               <span className="font-mono text-[10px] font-bold uppercase tracking-wider opacity-80 shrink-0 bg-red-500/20 px-2.5 py-1 rounded-md">{flag.severity}</span>
                             </div>
                           ))}
                         </div>

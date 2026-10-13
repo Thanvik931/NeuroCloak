@@ -119,7 +119,7 @@ export default function Systems() {
     <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500 pb-8 relative font-sans">
       
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950/80 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-wider mb-1">
             <Cpu className="w-4 h-4" />
@@ -296,7 +296,7 @@ export default function Systems() {
               </div>
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">F1-Score</span>
-                <span className="text-xl font-mono font-black text-purple-400">{activeBenchmark.f1_score}</span>
+                <span className="text-xl font-mono font-black text-cyan-400">{activeBenchmark.f1_score}</span>
               </div>
             </div>
 
