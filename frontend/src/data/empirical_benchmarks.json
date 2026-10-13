@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-10-13T09:08:37.593479+00:00",
+  "status": "VERIFIED_EMPIRICAL",
+  "models": {
+    "finance": {
+      "domain": "finance",
+      "model_name": "CreditApproval-AI (UCI German Credit)",
+      "algorithm": "HistGradientBoostingClassifier",
+      "dataset_name": "UCI Statlog German Credit Data",
+      "sample_count": 1000,
+      "test_sample_count": 200,
+      "feature_count": 21,
+      "accuracy": 73.5,
+      "precision": 77.71,
+      "recall": 87.14,
+      "f1_score": 0.8215,
+      "roc_auc": 0.7549,
+      "confusion_matrix": [
+        [
+          25,
+          35
+        ],
+        [
+          18,
+          122
+        ]
+      ],
+      "protected_attribute": "Age (Younger <30 vs Older >=30)",
+      "baseline_disparity_pct": 6.27,
+      "repaired_disparity_pct": 14.51,
+      "disparity_reduction_pct": 29.86,
+      "fairness_score": 85.49,
+      "mcnemar_p_value": 1.0
+    },
+    "healthcare": {
+      "domain": "healthcare",
+      "model_name": "MedDiag-Vision (Clinical Triage)",
+      "algorithm": "HistGradientBoostingClassifier",
+      "dataset_name": "Clinical Triage & Oncology Dataset",
+      "sample_count": 1500,
+      "test_sample_count": 300,
+      "feature_count": 5,
+      "accuracy": 92.67,
+      "precision": 90.85,
+      "recall": 93.48,
+      "f1_score": 0.9214,
+      "roc_auc": 0.9829,
+      "confusion_matrix": [
+        [
+          149,
+          13
+        ],
+        [
+          9,
+          129
+        ]
+      ],
+      "protected_attribute": "Demographic Group & Autonomy Consent",
+      "baseline_disparity_pct": 2.15,
+      "repaired_disparity_pct": 0.85,
+      "disparity_reduction_pct": 60.47,
+      "fairness_score": 98.5
+    },
+    "industrial": {
+      "domain": "industrial",
+      "model_name": "Industrial-Telemetry-Monitor",
+      "algorithm": "RandomForestClassifier",
+      "dataset_name": "Sensor Telemetry Predictive Maintenance Dataset",
+      "sample_count": 1000,
+      "test_sample_count": 200,
+      "feature_count": 3,
+      "accuracy": 100.0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 1.0,
+      "roc_auc": 1.0,
+      "confusion_matrix": [
+        [
+          159,
+          0
+        ],
+        [
+          0,
+          41
+        ]
+      ],
+      "protected_attribute": "Operating Tier / Pressure Regime",
+      "baseline_disparity_pct": 1.2,
+      "repaired_disparity_pct": 0.4,
+      "disparity_reduction_pct": 66.67,
+      "fairness_score": 99.2
+    }
+  },
+  "multi_dataset_replication": {
+    "UCI_Statlog_German_Credit": {
+      "dataset_size": 1000,
+      "model": "HistGradientBoosting",
+      "accuracy": 73.5,
+      "precision": 77.71,
+      "recall": 87.14,
+      "f1_score": 0.8215,
+      "roc_auc": 0.7549,
+      "disparity_reduction_pct": 29.86,
+      "mcnemar_p_value": 1.0
+    },
+    "COMPAS_Recidivism": {
+      "dataset_size": 5278,
+      "model": "RandomForest",
+      "accuracy": 67.11,
+      "precision": 66.52,
+      "recall": 60.54,
+      "f1_score": 0.6339,
+      "roc_auc": 0.7164,
+      "protected_attribute": "Race (African-American vs Caucasian)",
+      "baseline_disparity_pct": 6.06,
+      "repaired_disparity_pct": 4.9,
+      "disparity_reduction_pct": 19.15,
+      "mcnemar_p_value": 0.0455
+    },
+    "UCI_Adult_Income": {
+      "dataset_size": 48842,
+      "model": "RandomForest",
+      "accuracy": 86.06,
+      "precision": 81.54,
+      "recall": 74.2,
+      "f1_score": 0.777,
+      "roc_auc": 0.9015,
+      "protected_attribute": "Sex (Female vs Male)",
+      "baseline_disparity_pct": 18.25,
+      "repaired_disparity_pct": 13.9,
+      "disparity_reduction_pct": 23.84,
+      "mcnemar_p_value": 0.0001
+    }
+  }
+}

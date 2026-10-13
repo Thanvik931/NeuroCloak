@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, ShieldAlert, X } from 'lucide-react';
+import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, ShieldAlert, Swords, Gauge, X } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 
@@ -9,6 +9,8 @@ export default function Sidebar() {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { name: 'Tactical HUD', path: '/hud', icon: Gauge },
+    { name: 'Battle Arena', path: '/arena', icon: Swords },
     { name: 'Simulate', path: '/simulate', icon: Activity },
     { name: 'Decisions', path: '/decisions', icon: BrainCircuit },
     { name: 'Systems', path: '/systems', icon: Database },

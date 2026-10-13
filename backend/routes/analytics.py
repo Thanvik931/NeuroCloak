@@ -166,3 +166,29 @@ def heatmap():
     except Exception as e:
         print(f"Heatmap error: {e}")
         return jsonify({"error": "Internal server error"}), 500
+
+
+@bp.route("/benchmarks", methods=["GET"])
+@login_required
+def benchmarks():
+    """Return verified empirical evaluation benchmarks from real trained datasets."""
+    try:
+        import os
+        backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        json_path = os.path.join(backend_dir, "trained_models", "empirical_benchmarks.json")
+        if os.path.exists(json_path):
+            with open(json_path, "r") as f:
+                data = json.load(f)
+            return jsonify({"status": "success", "data": data})
+
+        # Fallback to dataset root if not in backend/trained_models
+        alt_path = os.path.join(backend_dir, "..", "dataset taken to train the model", "paper_empirical_results.json")
+        if os.path.exists(alt_path):
+            with open(alt_path, "r") as f:
+                data = json.load(f)
+            return jsonify({"status": "success", "data": data})
+
+        return jsonify({"error": "Benchmarks not yet generated"}), 404
+    except Exception as e:
+        print(f"Benchmarks error: {e}")
+        return jsonify({"error": "Failed to load benchmarks"}), 500

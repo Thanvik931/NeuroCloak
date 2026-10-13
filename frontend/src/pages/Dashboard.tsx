@@ -88,43 +88,52 @@ export default function Dashboard() {
 
       {/* Domain Models Real-Time Status Bar */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+        <div 
+          onClick={() => navigate('/systems')}
+          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition-all flex items-center justify-between group shadow-md"
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+            <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition-transform">
               <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-white text-xs font-bold">Finance Model (UCI Credit)</h4>
-              <p className="text-slate-400 text-[11px]">73.67% Test Acc | 0.8264 F1</p>
+              <h4 className="text-white text-xs font-bold group-hover:text-cyan-300 transition-colors">Finance Model (UCI Credit)</h4>
+              <p className="text-slate-400 text-[11px]">73.50% Test Acc | 0.8215 F1 | +29.86% Disparity Red.</p>
             </div>
           </div>
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Active</span>
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Verified</span>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+        <div 
+          onClick={() => navigate('/systems')}
+          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition-all flex items-center justify-between group shadow-md"
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
+            <div className="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 group-hover:scale-105 transition-transform">
               <Activity className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-white text-xs font-bold">Healthcare Diagnostic</h4>
-              <p className="text-slate-400 text-[11px]">94.33% Test Acc | 0.9587 AUC</p>
+              <h4 className="text-white text-xs font-bold group-hover:text-cyan-300 transition-colors">Healthcare Diagnostic (Triage)</h4>
+              <p className="text-slate-400 text-[11px]">92.67% Test Acc | 0.9214 F1 | 0.9829 AUC</p>
             </div>
           </div>
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Active</span>
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Verified</span>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+        <div 
+          onClick={() => navigate('/systems')}
+          className="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition-all flex items-center justify-between group shadow-md"
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
+            <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20 group-hover:scale-105 transition-transform">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-white text-xs font-bold">Industrial Maintenance</h4>
-              <p className="text-slate-400 text-[11px]">100.00% Acc | Telemetry</p>
+              <h4 className="text-white text-xs font-bold group-hover:text-cyan-300 transition-colors">Industrial Maintenance (Telemetry)</h4>
+              <p className="text-slate-400 text-[11px]">100.00% Test Acc | 1.0000 F1 | Real Telemetry</p>
             </div>
           </div>
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Active</span>
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase">Verified</span>
         </div>
       </div>
 

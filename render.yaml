@@ -31,3 +31,6 @@ services:
         generateValue: true
       - key: FRONTEND_URL
         value: https://neuro-cloak.vercel.app
+      - key: GEMINI_API_KEY
+        sync: false # Optional: Google Gemini API key for live LLM audit explanations
+

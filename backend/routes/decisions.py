@@ -36,12 +36,29 @@ def verify_decision(decision_id):
         if not decision:
             return jsonify({"error": "Decision not found"}), 404
 
-        trace = StepModel.find_by_decision(decision_id)
-        audit_result = ai_service.audit_decision(
-            serialize_doc(decision),
-            serialize_docs(trace),
-        )
-        return jsonify({"data": audit_result})
+        from services.gemini_governance_agent import explain_decision_trace
+        explanation_result = explain_decision_trace(decision_id)
+
+        # Compute backward-compatible metrics for existing consumers
+        conf = float(decision.get("confidenceScore", 0.95))
+        ethical_rate = float(decision.get("ethicalComplianceRate", 1.0))
+        ethical_label = "HIGH" if ethical_rate >= 0.8 else ("MODERATE" if ethical_rate >= 0.5 else "CRITICAL")
+
+        legacy_data = {
+            "accuracyScore": round(conf, 4),
+            "ethicalRating": ethical_label,
+            "commentary": explanation_result.get("explanation", "Reasoning steps verified."),
+            "explanation": explanation_result.get("explanation", ""),
+            "verified": explanation_result.get("verified", True),
+            "trace": explanation_result.get("trace", {}),
+        }
+
+        return jsonify({
+            "data": legacy_data,
+            "explanation": explanation_result.get("explanation", ""),
+            "verified": explanation_result.get("verified", True),
+            "trace": explanation_result.get("trace", {}),
+        })
     except Exception as e:
         print(f"Verify error: {e}")
         return jsonify({"error": "Internal server error during audit"}), 500
@@ -63,6 +80,12 @@ def simulate():
         if not system:
             return jsonify({"error": "AI System not found"}), 404
 
+        if isinstance(input_data, dict):
+            if "_auto_repair_enabled" in body and "_auto_repair_enabled" not in input_data:
+                input_data["_auto_repair_enabled"] = body["_auto_repair_enabled"]
+            if "_bias_injection_probability" in body and "_bias_injection_probability" not in input_data:
+                input_data["_bias_injection_probability"] = body["_bias_injection_probability"]
+
         sim_result = cdt_simulate(ai_system_id, system["domain"], input_data)
 
         # 1. Create Decision
@@ -77,6 +100,7 @@ def simulate():
             "ethicalComplianceRate": sim_result["ethicalComplianceRate"],
             "adaptationSpeed": sim_result["adaptationSpeed"],
             "selfRepairEfficiency": sim_result["selfRepairEfficiency"],
+            "disparityReduction": sim_result.get("disparityReduction", 0.0),
             "status": sim_result["status"],
         })
         decision_id = decision["_id"]
@@ -122,6 +146,7 @@ def simulate():
             "reasoningTrace": sim_result["reasoningTrace"],
             "ethicsChecks": sim_result["ethicsChecks"],
             "biasFlags": sim_result["biasFlags"],
+            "disparityReduction": sim_result.get("disparityReduction", 0.0),
         }
         return jsonify(response), 201
 

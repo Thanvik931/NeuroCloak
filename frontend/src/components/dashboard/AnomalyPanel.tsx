@@ -23,10 +23,15 @@ export default function AnomalyPanel() {
 
   useEffect(() => {
     if (!token) return;
-    const SOCKET_URL = import.meta.env.VITE_API_URL
-      ? import.meta.env.VITE_API_URL.replace('/api', '')
+    const rawUrl = (import.meta.env.VITE_API_URL || '').trim();
+    const SOCKET_URL = rawUrl
+      ? rawUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '')
       : window.location.origin;
-    const socket = io(SOCKET_URL, { auth: { token } });
+    const socket = io(SOCKET_URL, { 
+      auth: { token },
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+    });
 
     socket.on('anomaly_detected', (newAnomaly: any) => {
       setLocalAnomalies(prev => [newAnomaly, ...prev]);

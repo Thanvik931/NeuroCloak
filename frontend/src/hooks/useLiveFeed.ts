@@ -10,13 +10,17 @@ export const useLiveFeed = () => {
   useEffect(() => {
     if (!token) return;
 
-    const API_BASE = import.meta.env.VITE_API_URL 
-      ? import.meta.env.VITE_API_URL.replace('/api', '') 
+    const rawUrl = (import.meta.env.VITE_API_URL || '').trim();
+    const API_BASE = rawUrl
+      ? rawUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '')
       : window.location.origin;
 
-    // Connect to Backend WebSocket server using JWT for Auth
+    // Connect to Backend WebSocket server using JWT for Auth (Render supports polling + websocket)
     const socket = io(API_BASE, {
-      auth: { token }
+      auth: { token },
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+      reconnectionDelay: 2000,
     });
 
     socket.on('connect', () => {

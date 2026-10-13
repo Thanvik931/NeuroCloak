@@ -25,21 +25,30 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = Config.JWT_SECRET
 
 # ── CORS ─────────────────────────────────────────────────────────────
-allowed_origins = [
-    Config.FRONTEND_URL,
-    "http://localhost:5173",
+import re
+
+cors_origins = [
+    re.compile(r"^https://.*\.vercel\.app$"),
+    re.compile(r"^https://.*\.onrender\.com$"),
+    re.compile(r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"),
     "https://neuro-cloak.vercel.app",
 ]
+if Config.FRONTEND_URL and Config.FRONTEND_URL not in cors_origins:
+    cors_origins.append(Config.FRONTEND_URL)
+
 CORS(
     app,
-    origins=allowed_origins,
+    origins=cors_origins,
     supports_credentials=True,
-    allow_headers=["Content-Type", "Authorization"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept"],
     methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 )
 
+
 # ── Rate Limiting ────────────────────────────────────────────────────
-storage_uri = Config.REDIS_URL if Config.REDIS_URL else "memory://"
+from lib.redis_client import get_redis
+_redis_available = get_redis() is not None
+storage_uri = Config.REDIS_URL if (Config.REDIS_URL and _redis_available) else "memory://"
 limiter = Limiter(
     get_remote_address,
     app=app,

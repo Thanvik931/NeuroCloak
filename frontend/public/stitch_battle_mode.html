@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEUROCLOAK // Battle Mode Arena: Adversarial Stress Testing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed-variant": "#005236",
+            "outline": "#86948a",
+            "inverse-on-surface": "#2a3043",
+            "on-secondary-fixed-variant": "#004e5c",
+            "outline-variant": "#3c4a42",
+            "on-primary-container": "#00422b",
+            "primary-container": "#10b981",
+            "on-error": "#690005",
+            "tertiary-container": "#b090ff",
+            "surface-tint": "#4edea3",
+            "inverse-primary": "#006c49",
+            "error": "#ffb4ab",
+            "on-surface-variant": "#bbcabf",
+            "on-primary": "#003824",
+            "secondary-fixed": "#acedff",
+            "on-secondary-container": "#00424e",
+            "surface-variant": "#2e3447",
+            "surface-bright": "#33394c",
+            "surface": "#0c1324",
+            "secondary-fixed-dim": "#4cd7f6",
+            "surface-container-lowest": "#070d1f",
+            "surface-container-high": "#23293c",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#d0bcff",
+            "error-container": "#93000a",
+            "background": "#0c1324",
+            "surface-container-highest": "#2e3447",
+            "on-tertiary": "#3c0091",
+            "on-secondary-fixed": "#001f26",
+            "surface-container": "#191f31",
+            "on-background": "#dce1fb",
+            "on-primary-fixed": "#002113",
+            "tertiary-fixed": "#e9ddff",
+            "secondary-container": "#03b5d3",
+            "on-tertiary-fixed-variant": "#5516be",
+            "on-tertiary-fixed": "#23005c",
+            "inverse-surface": "#dce1fb",
+            "tertiary": "#d0bcff",
+            "on-secondary": "#003640",
+            "primary-fixed": "#6ffbbe",
+            "on-surface": "#dce1fb",
+            "surface-dim": "#0c1324",
+            "secondary": "#4cd7f6",
+            "on-tertiary-container": "#4600a7",
+            "primary-fixed-dim": "#4edea3",
+            "surface-container-low": "#151b2d",
+            "primary": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-2xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "margin": "1rem",
+            "space-3xl": "3rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-2xs": "0.125rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "body-sm": ["Inter"],
+            "display": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-caps": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "telemetry-metric": ["JetBrains Mono"],
+            "telemetry-data": ["JetBrains Mono"],
+            "telemetry-code": ["JetBrains Mono"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "telemetry-metric": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "telemetry-data": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "telemetry-code": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom scanline HUD grid overlay */
+    .hud-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(60, 74, 66, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(60, 74, 66, 0.12) 1px, transparent 1px);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(7, 13, 31, 0.6);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(60, 74, 66, 0.8);
+      border-radius: 2px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #4edea3;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden min-h-screen selection:bg-primary selection:text-surface-container-lowest">
+<!-- TOP NAVIGATION BAR (Shared Components: TopNavBar) -->
+<header class="bg-surface-container-low/80 dark:bg-surface-container-low/80 backdrop-blur-md text-primary dark:text-primary docked full-width top-0 z-50 border-b border-outline-variant/40 dark:border-outline-variant/40 shadow-lg shadow-surface-container-lowest/50 flex justify-between items-center w-full px-space-xl py-space-sm h-16 max-w-full fixed">
+<!-- Brand / Product Identity & Search on Left -->
+<div class="flex items-center gap-space-xl">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-2xl animate-pulse" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span class="text-headline-sm font-headline-sm tracking-wider font-extrabold text-primary dark:text-primary uppercase">NEUROCLOAK // CDT-HUD</span>
+</div>
+<!-- Search on Left -->
+<div class="hidden lg:flex items-center bg-surface-container-lowest/90 border border-outline-variant/60 rounded px-space-md py-1.5 w-64 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary/40 transition-all">
+<span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
+<input class="bg-transparent border-none p-0 text-telemetry-code font-telemetry-code text-on-surface placeholder:text-outline/70 focus:outline-none focus:ring-0 w-full uppercase" placeholder="QUERY PERTURBATION VECTORS..." type="text"/>
+</div>
+</div>
+<!-- Top Navigation Links: Battle Arena is ACTIVE -->
+<nav class="hidden xl:flex items-center space-x-space-lg">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface pb-1 font-headline-sm hover:border-primary/60 hover:text-primary transition-colors duration-150" href="#">Twin Inspector</a>
+<a class="text-primary dark:text-primary border-b-2 border-primary dark:border-primary pb-1 font-headline-sm" href="#">Battle Arena</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface pb-1 font-headline-sm hover:border-primary/60 hover:text-primary transition-colors duration-150" href="#">Neural Topology</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface pb-1 font-headline-sm hover:border-primary/60 hover:text-primary transition-colors duration-150" href="#">AutoRepair Logs</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface pb-1 font-headline-sm hover:border-primary/60 hover:text-primary transition-colors duration-150" href="#">Policy Registry</a>
+</nav>
+<!-- Trailing Actions & HUD Operator Badging -->
+<div class="flex items-center gap-space-md">
+<!-- Trailing Secondary Action -->
+<button class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container border border-outline-variant/50 hover:border-secondary/60 text-secondary font-label-caps text-label-caps rounded uppercase transition-colors">
+<span class="material-symbols-outlined text-xs">speed</span>
+        Simulate Drift
+      </button>
+<!-- Trailing Primary Action -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-error-container/40 border border-error/80 text-error hover:bg-error-container/70 font-label-caps text-label-caps rounded uppercase transition-all shadow-sm shadow-error/20 active:scale-[0.98]">
+<span class="material-symbols-outlined text-xs animate-ping">warning</span>
+        Emergency Break
+      </button>
+<!-- Trailing Icon Actions: tune, notifications, terminal -->
+<div class="flex items-center space-x-1 border-l border-outline-variant/40 pl-space-md">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded transition-colors" title="Tune Parameters">
+<span class="material-symbols-outlined text-lg">tune</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full ring-2 ring-surface"></span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded transition-colors" title="Terminal">
+<span class="material-symbols-outlined text-lg">terminal</span>
+</button>
+</div>
+<!-- Operator HUD Badge Image -->
+<div class="flex items-center gap-2 pl-space-xs">
+<div class="w-8 h-8 rounded border border-primary/50 bg-surface-container-high p-0.5 relative">
+<img class="w-full h-full object-cover rounded-sm" data-alt="High-contrast cybernetic tactical security operative avatar badge featuring dark visor, high-tech tactical comms gear, glowing emerald cyber-reticle ocular implant, slate-blue digital carbon fiber armor, mission critical HUD style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj7SdBA4MSalEp-U9IffAToFdF-Kd0QWkMqCFvp6NYbEcs4Di825q3CCLVqNBkcdqO4XLIsao4eC689A_pLtd7aGF-zuZuwzZ32TFfppvrabpadg49loAnSeqjuh7H6nu0ip1-hCmF2tl-B9C_Tt-Ws8VZDrev4jqvXP8HCXaTHhesiXAsPaWMzWTfVEj-KLe3mJWdXwLwn5NZZ8wF3wJpbuOXM7v7exYynvsqaNBhKxVJuXmlPw4wy9xKqvxwa7eQNgCJpzNJ0ew8"/>
+<div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-primary rounded-full border border-surface"></div>
+</div>
+</div>
+</div>
+</header>
+<!-- LATERAL TELEMETRY RAIL (Shared Components: SideNavBar) -->
+<aside class="fixed left-0 top-16 bottom-0 w-64 z-40 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30 dark:border-outline-variant/30 shadow-2xl shadow-surface-container-lowest/80 hidden md:flex flex-col justify-between p-space-md">
+<!-- Header Section -->
+<div class="space-y-space-md">
+<div class="p-space-sm bg-surface-container/40 rounded border border-outline-variant/30 flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center border border-primary/40 text-primary">
+<span class="material-symbols-outlined text-lg">memory</span>
+</div>
+<div class="overflow-hidden">
+<div class="text-headline-sm font-headline-sm font-bold text-primary dark:text-primary truncate">NODE // CDT-09</div>
+<div class="text-label-caps font-label-caps text-primary/80 tracking-wider">STATUS: DETERMINISTIC SAFE</div>
+</div>
+</div>
+<!-- Side Navigation Links: Adversarial Sim is ACTIVE (matches Battle Arena) -->
+<nav class="space-y-1">
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface px-space-md py-space-sm font-headline-sm hover:bg-surface-container-high/50 hover:text-on-surface transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">neurology</span>
+<span class="text-body-sm font-body-sm">Cognitive Twin</span>
+</a>
+<a class="flex items-center gap-space-sm bg-surface-container/60 text-primary dark:text-primary border-l-2 border-primary dark:border-primary font-headline-sm px-space-md py-space-sm rounded-r-lg active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg text-primary" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="text-body-sm font-body-sm font-semibold">Adversarial Sim</span>
+</a>
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface px-space-md py-space-sm font-headline-sm hover:bg-surface-container-high/50 hover:text-on-surface transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">hub</span>
+<span class="text-body-sm font-body-sm">Telemetry Mesh</span>
+</a>
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface px-space-md py-space-sm font-headline-sm hover:bg-surface-container-high/50 hover:text-on-surface transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">gavel</span>
+<span class="text-body-sm font-body-sm">Deterministic Audit</span>
+</a>
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface px-space-md py-space-sm font-headline-sm hover:bg-surface-container-high/50 hover:text-on-surface transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">memory</span>
+<span class="text-body-sm font-body-sm">Model Nodes</span>
+</a>
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface px-space-md py-space-sm font-headline-sm hover:bg-surface-container-high/50 hover:text-on-surface transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span class="text-body-sm font-body-sm">Governance Config</span>
+</a>
+</nav>
+<!-- Side CTA -->
+<div class="pt-space-sm">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-space-md bg-gradient-to-b from-primary-container to-emerald-700 text-on-surface-lowest font-headline-sm font-semibold rounded text-xs uppercase tracking-wider shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-base">auto_fix_high</span>
+          Engage AutoRepair
+        </button>
+</div>
+</div>
+<!-- Side Footer Tabs -->
+<div class="border-t border-outline-variant/30 pt-space-md space-y-1">
+<a class="flex items-center gap-space-sm text-on-surface-variant hover:text-primary px-space-md py-1.5 text-body-sm font-body-sm rounded hover:bg-surface-container-high/40 transition-colors" href="#">
+<span class="material-symbols-outlined text-base">terminal</span>
+        Terminal Console
+      </a>
+<a class="flex items-center gap-space-sm text-on-surface-variant hover:text-primary px-space-md py-1.5 text-body-sm font-body-sm rounded hover:bg-surface-container-high/40 transition-colors" href="#">
+<span class="material-symbols-outlined text-base">help_center</span>
+        System Docs
+      </a>
+<div class="px-space-md pt-2 text-label-caps font-label-caps text-outline text-[9px]">
+        SESSION: SEC-7819 // ENCLAVE AIRGAP
+      </div>
+</div>
+</aside>
+<!-- MAIN HUD CANVAS AREA -->
+<main class="md:pl-64 pt-16 min-h-screen bg-background hud-grid-pattern relative">
+<!-- SUB-HEADER / GLOBAL BATTLE MODE KPI STRIP -->
+<div class="bg-surface-container-low/90 backdrop-blur-xl border-b border-outline-variant/40 px-space-xl py-space-md sticky top-16 z-30 shadow-md">
+<div class="max-w-[1680px] mx-auto flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-md">
+<!-- Title & Version Breadcrumb -->
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-error-container/30 border border-error/50 text-error font-label-caps text-[9px] tracking-widest uppercase">
+              LIVE ARENA
+            </span>
+<h1 class="text-headline-md font-headline-md font-bold tracking-tight text-on-surface flex items-center gap-2">
+              NEUROCLOAK // BATTLE MODE ARENA
+            </h1>
+</div>
+<p class="text-label-caps font-label-caps text-secondary text-xs tracking-wider flex items-center gap-1.5 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+            ADVERSARIAL STRESS SUITE v4.8 • TARGET SPEC: MULTI-DOMAIN CONTINUOUS CALIBRATION
+          </p>
+</div>
+<!-- Global Action CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-highest/80 hover:bg-surface-container-highest text-secondary border border-secondary/40 rounded text-label-caps font-label-caps tracking-wider uppercase transition-all shadow-sm">
+<span class="material-symbols-outlined text-xs">restart_alt</span>
+            Reset Monte Carlo Baseline
+          </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-highest/80 hover:bg-surface-container-highest text-on-surface border border-outline-variant/60 rounded text-label-caps font-label-caps tracking-wider uppercase transition-all">
+<span class="material-symbols-outlined text-xs">file_download</span>
+            Export Adversarial Dossier
+          </button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-primary-container to-emerald-600 text-surface-container-lowest font-headline-sm font-semibold rounded text-xs uppercase tracking-wider shadow-lg shadow-primary-container/25 hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+            Engage AutoRepair Autopilot (Active)
+          </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-error-container/40 hover:bg-error-container/60 border border-error/70 text-error rounded text-label-caps font-label-caps tracking-wider uppercase transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-xs">science</span>
+            Inject Synthetic Poison
+          </button>
+</div>
+</div>
+<!-- Real-Time Metric Telemetry Bar (5 Vital Anchors) -->
+<div class="max-w-[1680px] mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-md pt-space-md mt-space-sm border-t border-outline-variant/30">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest/70 border border-outline-variant/40 rounded p-2.5 flex items-center justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-outline text-[10px] uppercase">Attack Vectors</div>
+<div class="text-telemetry-metric font-telemetry-metric text-on-surface font-bold">142,890</div>
+</div>
+<div class="p-1.5 bg-surface-container rounded text-error border border-error/20">
+<span class="material-symbols-outlined text-lg">swords</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest/70 border border-amber-500/30 rounded p-2.5 flex items-center justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-amber-400 text-[10px] uppercase">Perturbation Strain</div>
+<div class="text-telemetry-metric font-telemetry-metric text-amber-300 font-bold flex items-baseline gap-1">
+              68.4%
+              <span class="text-[10px] font-label-caps text-amber-400 font-normal">Elevated</span>
+</div>
+</div>
+<div class="p-1.5 bg-amber-500/10 rounded text-amber-400 border border-amber-500/30">
+<span class="material-symbols-outlined text-lg">warning</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest/70 border border-primary/30 rounded p-2.5 flex items-center justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-primary text-[10px] uppercase">AutoRepair Mitigation</div>
+<div class="text-telemetry-metric font-telemetry-metric text-primary font-bold">99.2%</div>
+</div>
+<div class="p-1.5 bg-primary/10 rounded text-primary border border-primary/30">
+<span class="material-symbols-outlined text-lg">verified</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest/70 border border-secondary/30 rounded p-2.5 flex items-center justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-secondary text-[10px] uppercase">Equalized Odds Gain</div>
+<div class="text-telemetry-metric font-telemetry-metric text-secondary font-bold">+29.86%</div>
+</div>
+<div class="p-1.5 bg-secondary/10 rounded text-secondary border border-secondary/30">
+<span class="material-symbols-outlined text-lg">trending_up</span>
+</div>
+</div>
+<!-- KPI 5 -->
+<div class="col-span-2 sm:col-span-1 bg-surface-container-lowest/70 border border-outline-variant/40 rounded p-2.5 flex items-center justify-between">
+<div class="truncate">
+<div class="text-label-caps font-label-caps text-outline text-[10px] uppercase">Active Sim Seed</div>
+<div class="text-telemetry-code font-telemetry-code text-on-surface-variant font-semibold truncate">#AR-88192-NEURO</div>
+</div>
+<div class="p-1.5 bg-surface-container rounded text-outline border border-outline-variant/30">
+<span class="material-symbols-outlined text-lg">fingerprint</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MAIN GRID CONTAINER -->
+<div class="max-w-[1680px] mx-auto p-space-md sm:p-space-xl space-y-space-xl">
+<!-- TOP SECTION: CONSOLE + RECALIBRATION FRONTIER CURVE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- SECTION A: Real-Time Bias & Perturbation Injection Control Console (Interactive HUD) (5 cols) -->
+<section class="lg:col-span-5 bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 rounded-lg p-space-lg shadow-xl relative overflow-hidden flex flex-col justify-between">
+<!-- Glass Accent Top Border -->
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-secondary/50 to-transparent"></div>
+<div>
+<!-- Header -->
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">tune</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Injection Control Console</h2>
+</div>
+<span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/40 text-amber-300 font-label-caps text-[10px] tracking-wider uppercase">
+                STATUS: LIVE POISONING
+              </span>
+</div>
+<div class="space-y-space-lg mt-space-md">
+<!-- Slider 1: Demographic Disparity Perturbation -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-body-sm font-body-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+                    Demographic Disparity Perturbation
+                    <span class="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded text-[9px] font-label-caps border border-amber-500/40">MODERATE CORRUPTION</span>
+</span>
+<span class="font-telemetry-data text-telemetry-data text-amber-300 font-bold">68.0%</span>
+</div>
+<!-- Range Slider Visual Mockup -->
+<div class="relative w-full h-2 bg-surface-container-lowest rounded-full border border-outline-variant/60 flex items-center">
+<div class="h-full bg-gradient-to-r from-secondary via-amber-400 to-amber-500 rounded-full" style="width: 68%;"></div>
+<div class="absolute w-4 h-4 bg-amber-300 rounded-full border-2 border-surface shadow-md cursor-pointer -translate-x-1/2" style="left: 68%;"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label-caps text-outline">
+<span>0% (NORMAL CONVERGENCE)</span>
+<span>50% STRESS</span>
+<span>100% (TOTAL DRIFT CHAOS)</span>
+</div>
+</div>
+<!-- Slider 2: Feature Drift Injection -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-body-sm font-body-sm">
+<span class="text-on-surface font-medium">Feature Drift Injection (Gaussian &amp; Latent Shift)</span>
+<span class="font-telemetry-data text-telemetry-data text-secondary font-bold">42.0%</span>
+</div>
+<div class="relative w-full h-2 bg-surface-container-lowest rounded-full border border-outline-variant/60 flex items-center">
+<div class="h-full bg-secondary rounded-full" style="width: 42%;"></div>
+<div class="absolute w-4 h-4 bg-secondary rounded-full border-2 border-surface shadow-md cursor-pointer -translate-x-1/2" style="left: 42%;"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label-caps text-outline">
+<span>σ=0.00 (PRISTINE)</span>
+<span>σ=0.50</span>
+<span>σ=1.00 (EXTREME NOISE)</span>
+</div>
+</div>
+<!-- Parameter 3: Epsilon Budget -->
+<div class="p-space-md bg-surface-container-lowest/80 border border-outline-variant/40 rounded flex items-center justify-between">
+<div>
+<div class="text-body-sm font-body-sm font-medium text-on-surface">Adversarial Epsilon Budget (FGSM / PGD)</div>
+<div class="text-telemetry-code font-telemetry-code text-outline text-[11px]">Gradient vector displacement limit</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-2.5 py-1 bg-surface-container border border-secondary/40 rounded font-telemetry-data text-telemetry-data text-secondary font-bold">
+                    ε = 0.084
+                  </div>
+</div>
+</div>
+<!-- Selector 4: Protected Attribute Target -->
+<div class="space-y-1.5">
+<label class="text-body-sm font-body-sm text-on-surface-variant font-medium block">
+                  Protected Attribute Target Selector
+                </label>
+<div class="grid grid-cols-2 gap-2">
+<button class="px-3 py-2 rounded bg-surface-container-high border border-primary/60 text-primary font-label-caps text-label-caps flex items-center justify-between shadow-sm">
+<span>Age Cohort (&lt;25)</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</button>
+<button class="px-3 py-2 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:border-secondary/50 font-label-caps text-label-caps flex items-center justify-between transition-colors">
+<span>Foreign Worker Status</span>
+<span class="w-1.5 h-1.5 rounded-full bg-transparent border border-outline"></span>
+</button>
+<button class="px-3 py-2 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:border-secondary/50 font-label-caps text-label-caps flex items-center justify-between transition-colors">
+<span>Socioeconomic Tier</span>
+<span class="w-1.5 h-1.5 rounded-full bg-transparent border border-outline"></span>
+</button>
+<button class="px-3 py-2 rounded bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant hover:border-secondary/50 font-label-caps text-label-caps flex items-center justify-between transition-colors">
+<span>Gender Parity Index</span>
+<span class="w-1.5 h-1.5 rounded-full bg-transparent border border-outline"></span>
+</button>
+</div>
+</div>
+<!-- Toggle 5: Attack Strategy -->
+<div class="space-y-1.5">
+<label class="text-body-sm font-body-sm text-on-surface-variant font-medium block">
+                  Active Attack Strategy Matrix
+                </label>
+<div class="grid grid-cols-3 gap-1 bg-surface-container-lowest p-1 rounded border border-outline-variant/40">
+<button class="py-1.5 px-2 rounded bg-error-container/40 border border-error/50 text-error font-label-caps text-[9px] font-bold uppercase truncate">
+                    Equalized Odds Sabotage
+                  </button>
+<button class="py-1.5 px-2 rounded text-outline hover:text-on-surface font-label-caps text-[9px] uppercase truncate transition-colors">
+                    Demographic Parity
+                  </button>
+<button class="py-1.5 px-2 rounded text-outline hover:text-on-surface font-label-caps text-[9px] uppercase truncate transition-colors">
+                    Concept Drift Warp
+                  </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Console Status Footer -->
+<div class="mt-space-lg pt-space-md border-t border-outline-variant/30 flex items-center justify-between text-telemetry-code font-telemetry-code text-outline text-[11px]">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              RECALIBRATION PIPELINE LINKED
+            </span>
+<span class="text-secondary font-mono">CYCLE: #4092-PGD-AUTO</span>
+</div>
+</section>
+<!-- SECTION B: Dynamic AutoRepair Recalibration Comparison & Frontier Curve (7 cols) -->
+<section class="lg:col-span-7 bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 rounded-lg p-space-lg shadow-xl relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div>
+<!-- Header & Badge -->
+<div class="flex flex-wrap items-center justify-between pb-space-md border-b border-outline-variant/30 gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">balance</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">AutoRepair Recalibration Engine</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded bg-primary/10 border border-primary/40 text-primary font-label-caps text-[10px] tracking-wider uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">bolt</span>
+                  Zero Retraining Overhead (142μs In-Flight)
+                </span>
+</div>
+</div>
+<!-- Dual Comparison Cards (Unmitigated vs Repaired) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-md">
+<!-- Left: Unmitigated Baseline -->
+<div class="p-space-md rounded bg-surface-container-lowest/80 border border-error/40 relative">
+<div class="flex justify-between items-start mb-2">
+<div class="text-label-caps font-label-caps text-error text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">error</span>
+                    Unmitigated Baseline
+                  </div>
+<span class="px-1.5 py-0.5 rounded bg-error-container/40 text-error border border-error/50 font-label-caps text-[9px]">
+                    NON-COMPLIANT
+                  </span>
+</div>
+<div class="space-y-2 mt-3 font-telemetry-data text-telemetry-data">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Decision Boundary:</span>
+<span class="text-on-surface font-mono font-semibold">θ_BASE = 0.5000</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Disparity Gap:</span>
+<span class="text-error font-mono font-bold">34.2%</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Disadvantaged Rejection:</span>
+<span class="text-error font-mono font-bold">61.4%</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30 text-[10px] font-label-caps text-outline">
+                  STOCHASTIC DRIFT SEVERITY: SEVERE
+                </div>
+</div>
+<!-- Right: NeuroCloak AutoRepair Engine -->
+<div class="p-space-md rounded bg-surface-container-lowest/80 border border-primary/50 relative">
+<div class="flex justify-between items-start mb-2">
+<div class="text-label-caps font-label-caps text-primary text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span>
+                    NeuroCloak AutoRepair Engine
+                  </div>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/60 font-label-caps text-[9px]">
+                    PARITY SAFE
+                  </span>
+</div>
+<div class="space-y-2 mt-3 font-telemetry-data text-telemetry-data">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Recalibrated Boundary:</span>
+<span class="text-primary font-mono font-bold">θ_OOF = 0.4910</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Cohort Equalization:</span>
+<span class="text-secondary font-mono font-semibold">Δθ = -0.0090</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-outline">Mitigated Disparity Gap:</span>
+<span class="text-primary font-mono font-bold">4.3% (Safe)</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30 text-[10px] font-label-caps text-primary flex items-center justify-between">
+<span>DETERMINISTIC CONFORMAL CERTIFIED</span>
+<span class="font-bold">+29.86% GAIN</span>
+</div>
+</div>
+</div>
+<!-- Visual Equalized Odds Boundary Frontier Gauge -->
+<div class="mt-space-lg p-space-md bg-surface-container-lowest/90 border border-outline-variant/40 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<div class="text-label-caps font-label-caps text-on-surface text-[11px] uppercase tracking-wider">
+                  Decision Threshold Frontier (θ_SHIFT CURVE)
+                </div>
+<div class="text-label-caps font-label-caps text-secondary text-[11px]">
+                  [0.00 DENY ←→ 1.00 APPROVE]
+                </div>
+</div>
+<!-- Graphical Calibration Strip Visual -->
+<div class="relative w-full h-14 bg-surface-container rounded border border-outline-variant/50 overflow-hidden mt-3">
+<!-- Density gradient background representation -->
+<div class="absolute inset-0 bg-gradient-to-r from-error/15 via-transparent to-primary/15 opacity-50"></div>
+<!-- Unmitigated Base Line Marker -->
+<div class="absolute top-0 bottom-0 w-[2px] bg-error shadow-[0_0_8px_#ffb4ab]" style="left: 50.0%;"></div>
+<div class="absolute top-1 -translate-x-1/2 px-1 rounded bg-error text-surface-container-lowest font-telemetry-code text-[9px] font-bold" style="left: 50.0%;">
+                  θ_BASE: 0.50
+                </div>
+<!-- Repaired Marker -->
+<div class="absolute top-0 bottom-0 w-[2px] bg-primary shadow-[0_0_8px_#4edea3]" style="left: 49.1%;"></div>
+<div class="absolute bottom-1 -translate-x-1/2 px-1 rounded bg-primary text-surface-container-lowest font-telemetry-code text-[9px] font-bold" style="left: 49.1%;">
+                  θ_OOF: 0.491
+                </div>
+<!-- Mitigated Equalized Bracket -->
+<div class="absolute top-3.5 bottom-3.5 bg-primary/20 border-x border-primary rounded" style="left: 46.5%; width: 6.8%;">
+<div class="w-full h-full flex items-center justify-center text-[9px] font-label-caps text-primary font-bold">
+                    SAFE
+                  </div>
+</div>
+<!-- Grid tick marks -->
+<div class="absolute bottom-0 inset-x-0 h-2 flex justify-between px-2 text-[8px] font-label-caps text-outline">
+<span>0.00</span>
+<span>0.25</span>
+<span>0.50</span>
+<span>0.75</span>
+<span>1.00</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 text-telemetry-code font-telemetry-code text-[11px]">
+<span class="text-outline">Continuous Recalibration Buffer: <strong class="text-on-surface">Active</strong></span>
+<span class="text-primary font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+                  Cohort Parity Guaranteed via Out-of-Fold Threshold Quantiles
+                </span>
+</div>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="mt-space-md pt-2 border-t border-outline-variant/20 flex justify-between text-[11px] font-label-caps text-outline">
+<span>MODEL WEIGHT RE-TRAINING: 0.0% (ZERO DOWNTIME)</span>
+<span class="text-secondary">EQUALIZED ODDS PRESERVATION: 98.4%</span>
+</div>
+</section>
+</div>
+<!-- MIDDLE SECTION: 3-SYSTEM CROSS-DOMAIN LIVE SHOWDOWN MATRIX -->
+<section class="space-y-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/40 pb-space-sm">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl">hub</span>
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface">3-Domain Cross-Twin Stress Testing Arena</h2>
+</div>
+<p class="text-body-sm font-body-sm text-outline">
+              Simultaneous real-time adversarial vector barrage across isolated enterprise cognitive production replicas
+            </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded bg-surface-container border border-outline-variant/40 font-label-caps text-label-caps text-outline">
+              ALL SYSTEMS RUNNING CONCURRENT DRIFT INJECTION (68%)
+            </span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- CARD 1: German Credit Risk CDT -->
+<div class="bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 hover:border-primary/60 transition-all rounded-lg p-space-lg shadow-lg relative group flex flex-col justify-between">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-primary"></div>
+<div>
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-primary text-[10px] tracking-wider uppercase">DOMAIN: FINTECH CORE</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface mt-0.5">Financecdt // German Credit</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary/10 border border-primary/40 text-primary font-label-caps text-[10px]">
+                  #CR-902
+                </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm mt-space-md">
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">LATENCY</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-on-surface">142ms</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">FAIRNESS INDEX</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-primary">98.4%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">ROBUSTNESS (68% DRIFT)</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-secondary">94.2%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">EQUALIZED ODDS</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-primary">0.98</div>
+</div>
+</div>
+<!-- Telemetry Pulse -->
+<div class="mt-space-md p-2 rounded bg-surface-container-high/40 border border-outline-variant/30 flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-outline text-xs">Perturbation Type:</span>
+<span class="font-telemetry-code text-error text-xs font-semibold">Foreign Worker Bias Vector</span>
+</div>
+</div>
+<!-- Footer Action & Status Badge -->
+<div class="mt-space-lg pt-space-sm border-t border-outline-variant/30 flex items-center justify-between">
+<span class="inline-flex items-center gap-1 text-[10px] font-label-caps text-primary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                PASS UNDER ADVERSARIAL STRESS
+              </span>
+<a class="text-xs font-headline-sm text-secondary hover:text-on-surface flex items-center gap-0.5 transition-colors" href="#">
+                Inspect Nodes
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- CARD 2: Clinical Triage CDT -->
+<div class="bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 hover:border-secondary/60 transition-all rounded-lg p-space-lg shadow-lg relative group flex flex-col justify-between">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-cyan-400"></div>
+<div>
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-secondary text-[10px] tracking-wider uppercase">DOMAIN: HEALTHCARE TRIAGE</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface mt-0.5">Healthcarecdt // Clinical Triage</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-secondary/10 border border-secondary/40 text-secondary font-label-caps text-[10px]">
+                  #TR-408
+                </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm mt-space-md">
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">LATENCY</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-on-surface">188ms</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">FAIRNESS INDEX</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-primary">94.1%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">ROBUSTNESS (68% DRIFT)</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-secondary">91.8%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">EQUALIZED ODDS</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-primary">0.96</div>
+</div>
+</div>
+<!-- Telemetry Pulse -->
+<div class="mt-space-md p-2 rounded bg-surface-container-high/40 border border-outline-variant/30 flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-outline text-xs">Perturbation Type:</span>
+<span class="font-telemetry-code text-amber-300 text-xs font-semibold">Age Cohort (&lt;25) Sub-sampling</span>
+</div>
+</div>
+<!-- Footer Action & Status Badge -->
+<div class="mt-space-lg pt-space-sm border-t border-outline-variant/30 flex items-center justify-between">
+<span class="inline-flex items-center gap-1 text-[10px] font-label-caps text-secondary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                AUTO-REPAIRED IN-STREAM
+              </span>
+<a class="text-xs font-headline-sm text-secondary hover:text-on-surface flex items-center gap-0.5 transition-colors" href="#">
+                Inspect Nodes
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- CARD 3: Turbine Telemetry CDT -->
+<div class="bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 hover:border-tertiary/60 transition-all rounded-lg p-space-lg shadow-lg relative group flex flex-col justify-between">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-tertiary to-purple-400"></div>
+<div>
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-tertiary text-[10px] tracking-wider uppercase">DOMAIN: CRITICAL INFRASTRUCTURE</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface mt-0.5">Industrialcdt // Turbine Telemetry</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/40 text-tertiary font-label-caps text-[10px]">
+                  #TB-112
+                </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm mt-space-md">
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">LATENCY</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-on-surface">89ms</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">FAIRNESS INDEX</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-primary">91.8%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">ROBUSTNESS (68% DRIFT)</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-secondary">96.5%</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest/80 border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-outline">ANOMALY DIVERGENCE</div>
+<div class="text-headline-sm font-telemetry-metric font-bold text-tertiary">0.012</div>
+</div>
+</div>
+<!-- Telemetry Pulse -->
+<div class="mt-space-md p-2 rounded bg-surface-container-high/40 border border-outline-variant/30 flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-outline text-xs">Perturbation Type:</span>
+<span class="font-telemetry-code text-cyan-300 text-xs font-semibold">Sensor Vibration Noise σ=0.45</span>
+</div>
+</div>
+<!-- Footer Action & Status Badge -->
+<div class="mt-space-lg pt-space-sm border-t border-outline-variant/30 flex items-center justify-between">
+<span class="inline-flex items-center gap-1 text-[10px] font-label-caps text-primary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                PASS UNDER ADVERSARIAL STRESS
+              </span>
+<a class="text-xs font-headline-sm text-secondary hover:text-on-surface flex items-center gap-0.5 transition-colors" href="#">
+                Inspect Nodes
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- LOWER SPLIT: COGNITIVE ROBUSTNESS RADAR & VECTOR ANALYTICS (SECTION D) + REAL-TIME STREAM (SECTION E) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- SECTION D: Multi-Dimensional Cognitive Robustness Radar & Vector Analytics (5 cols) -->
+<section class="lg:col-span-5 bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 rounded-lg p-space-lg shadow-xl relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-secondary/50 to-transparent"></div>
+<div>
+<!-- Header -->
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">radar</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Robustness Vector Radar</h2>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant font-label-caps text-[10px]">
+                6-AXIS TOPOLOGY
+              </span>
+</div>
+<!-- Radar Graphic Representation -->
+<div class="relative w-full aspect-square max-w-[320px] mx-auto my-space-md flex items-center justify-center">
+<!-- Concentric Rings & Axis Lines -->
+<div class="absolute inset-0 rounded-full border border-outline-variant/30"></div>
+<div class="absolute inset-6 rounded-full border border-outline-variant/20"></div>
+<div class="absolute inset-14 rounded-full border border-outline-variant/20"></div>
+<div class="absolute inset-20 rounded-full border border-outline-variant/20"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-full h-[1px] bg-outline-variant/20"></div>
+<div class="h-full w-[1px] bg-outline-variant/20 absolute"></div>
+<div class="w-full h-[1px] bg-outline-variant/20 rotate-45 absolute"></div>
+<div class="w-full h-[1px] bg-outline-variant/20 -rotate-45 absolute"></div>
+</div>
+<!-- Overlaid Polygon 1: Active CDT Arena (Cyan/Emerald Filled Poly) -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" viewbox="0 0 100 100">
+<!-- Vanilla Baseline (Crimson dashed) -->
+<polygon fill="rgba(239, 68, 68, 0.08)" points="50,18 78,35 70,72 50,78 28,68 25,36" stroke="#ffb4ab" stroke-dasharray="2,2" stroke-width="1.2"></polygon>
+<!-- Repaired Arena CDT (Emerald/Cyan neon) -->
+<polygon fill="rgba(78, 222, 163, 0.18)" points="50,6 92,26 88,80 50,90 12,78 10,24" stroke="#4edea3" stroke-width="1.8"></polygon>
+<!-- Vertex Dots -->
+<circle cx="50" cy="6" fill="#4edea3" r="2.5"></circle>
+<circle cx="92" cy="26" fill="#4edea3" r="2.5"></circle>
+<circle cx="88" cy="80" fill="#4edea3" r="2.5"></circle>
+<circle cx="50" cy="90" fill="#4edea3" r="2.5"></circle>
+<circle cx="12" cy="78" fill="#4edea3" r="2.5"></circle>
+<circle cx="10" cy="24" fill="#4edea3" r="2.5"></circle>
+</svg>
+<!-- Radial Label Tags -->
+<span class="absolute -top-1 font-label-caps text-[9px] text-primary font-bold">FAIRNESS (99%)</span>
+<span class="absolute top-1/4 -right-2 font-label-caps text-[9px] text-primary">ROBUST (94%)</span>
+<span class="absolute bottom-1/4 -right-2 font-label-caps text-[9px] text-primary">COMPLY (98%)</span>
+<span class="absolute -bottom-1 font-label-caps text-[9px] text-secondary">SPEED (89ms)</span>
+<span class="absolute bottom-1/4 -left-3 font-label-caps text-[9px] text-primary">EXPLAIN (96%)</span>
+<span class="absolute top-1/4 -left-3 font-label-caps text-[9px] text-primary">ALIGN (97%)</span>
+</div>
+<!-- Legend -->
+<div class="flex items-center justify-center gap-space-lg text-body-sm font-body-sm py-2 bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 bg-primary rounded"></span>
+<span class="text-on-surface text-xs font-medium">Repaired NeuroCloak Arena</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 border-b border-dashed border-error"></span>
+<span class="text-outline text-xs">Vanilla Baseline (Unmitigated)</span>
+</div>
+</div>
+<!-- Live Sensitivity Gradient Meters Breakdown -->
+<div class="space-y-2 mt-space-md font-telemetry-code text-telemetry-code">
+<div>
+<div class="flex justify-between text-xs text-on-surface mb-1">
+<span>Fairness Under High Epsilon Strain</span>
+<span class="text-primary font-bold">99.1%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 99.1%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs text-on-surface mb-1">
+<span>Sub-population Robustness Parity</span>
+<span class="text-secondary font-bold">94.3%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 94.3%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-2 border-t border-outline-variant/20 flex justify-between text-[11px] font-label-caps text-outline">
+<span>DETERMINISTIC BOUNDING: ACTIVE</span>
+<span class="text-primary font-semibold">COGNITIVE SOVEREIGNTY: 100%</span>
+</div>
+</section>
+<!-- SECTION E: Real-Time Adversarial Execution Stream / Attack Provenance Log (7 cols) -->
+<section class="lg:col-span-7 bg-surface-container/60 backdrop-blur-xl border border-outline-variant/50 rounded-lg p-space-lg shadow-xl relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div>
+<!-- Header -->
+<div class="flex flex-wrap items-center justify-between pb-space-md border-b border-outline-variant/30 gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">terminal</span>
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">Adversarial Execution Stream &amp; Provenance</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 font-telemetry-code text-[11px] text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                  STREAMING @ 142 BATCH/SEC
+                </span>
+</div>
+</div>
+<!-- Dense Telemetry Table -->
+<div class="overflow-x-auto custom-scroll mt-space-md">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/40 text-[10px] font-label-caps text-outline">
+<th class="py-2 px-2">TIME</th>
+<th class="py-2 px-2">VECTOR ID</th>
+<th class="py-2 px-2">MODEL</th>
+<th class="py-2 px-2">PERTURBATION</th>
+<th class="py-2 px-2 text-right">RAW → REPAIRED</th>
+<th class="py-2 px-2 text-center">ACTION</th>
+<th class="py-2 px-2 text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-telemetry-code text-telemetry-code text-[11px]">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.910</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8910</td>
+<td class="py-2 px-2 text-on-surface">Finance CDT</td>
+<td class="py-2 px-2 text-amber-300">+24% Age Skew</td>
+<td class="py-2 px-2 text-right">
+<span class="text-error line-through mr-1">0.32</span>
+<span class="text-primary font-bold">0.491</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 text-[9px] font-bold">
+                        Calibrated
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.845</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8911</td>
+<td class="py-2 px-2 text-on-surface">Healthcare CDT</td>
+<td class="py-2 px-2 text-amber-300">Feature Inversion</td>
+<td class="py-2 px-2 text-right">
+<span class="text-error line-through mr-1">0.18</span>
+<span class="text-primary font-bold">0.488</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 text-[9px] font-bold">
+                        Mitigated
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.790</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8912</td>
+<td class="py-2 px-2 text-on-surface">Industrial CDT</td>
+<td class="py-2 px-2 text-secondary">Gaussian Noise σ=0.15</td>
+<td class="py-2 px-2 text-right">
+<span class="text-on-surface-variant mr-1">0.49</span>
+<span class="text-primary font-bold">0.492</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 text-[9px] font-bold">
+                        Calibrated
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.620</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8913</td>
+<td class="py-2 px-2 text-on-surface">Finance CDT</td>
+<td class="py-2 px-2 text-error">Foreign Status Poison</td>
+<td class="py-2 px-2 text-right">
+<span class="text-error line-through mr-1">0.24</span>
+<span class="text-primary font-bold">0.490</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 text-[9px] font-bold">
+                        Mitigated
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.510</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8914</td>
+<td class="py-2 px-2 text-on-surface">Healthcare CDT</td>
+<td class="py-2 px-2 text-error">PGD Epsilon Breach</td>
+<td class="py-2 px-2 text-right">
+<span class="text-error line-through mr-1">0.11</span>
+<span class="text-amber-300 font-bold">0.485</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-bold">
+                        Flagged Audit
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-2 text-outline">14:02:18.399</td>
+<td class="py-2 px-2 text-secondary font-semibold">#VEC-8915</td>
+<td class="py-2 px-2 text-on-surface">Finance CDT</td>
+<td class="py-2 px-2 text-amber-300">Income Latent Shift</td>
+<td class="py-2 px-2 text-right">
+<span class="text-error line-through mr-1">0.38</span>
+<span class="text-primary font-bold">0.491</span>
+</td>
+<td class="py-2 px-2 text-center">
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 text-[9px] font-bold">
+                        Calibrated
+                      </span>
+</td>
+<td class="py-2 px-2 text-right">
+<button class="text-outline hover:text-primary text-[10px] font-label-caps uppercase underline">
+                        Inspect
+                      </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Quick Action Micro Bar -->
+<div class="mt-space-md flex flex-wrap items-center justify-between gap-2 p-space-sm bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="text-outline text-xs">Vector Tools:</span>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-[10px] font-label-caps uppercase border border-outline-variant/40 transition-colors">
+                  Deconstruct Vectors
+                </button>
+<button class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-secondary text-[10px] font-label-caps uppercase border border-secondary/40 transition-colors">
+                  Inspect Shapley Impact
+                </button>
+</div>
+<div class="text-[11px] font-telemetry-code text-primary font-semibold">
+                EXECUTION LATENCY: 1.2ms
+              </div>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="mt-space-md pt-2 border-t border-outline-variant/20 flex justify-between text-[11px] font-label-caps text-outline">
+<span>EVENT HASH: SHA-256 // VERIFIED LEDGER</span>
+<span class="text-outline">REPAIR PIPELINE: CONFORMAL CONTINUOUS</span>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>
+

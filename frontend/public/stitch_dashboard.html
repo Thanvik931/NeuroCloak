@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEUROCLOAK // CDT-HUD - Cognitive Digital Twin AI Governance</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter & JetBrains Mono Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#002113",
+            "surface-container-lowest": "#070d1f",
+            "surface-bright": "#33394c",
+            "on-tertiary-fixed-variant": "#5516be",
+            "on-primary": "#003824",
+            "surface-container-high": "#23293c",
+            "primary": "#4edea3",
+            "outline": "#86948a",
+            "primary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#4edea3",
+            "surface-variant": "#2e3447",
+            "on-background": "#dce1fb",
+            "surface-container-highest": "#2e3447",
+            "inverse-primary": "#006c49",
+            "on-secondary": "#003640",
+            "surface-container-low": "#151b2d",
+            "surface-container": "#191f31",
+            "on-secondary-container": "#00424e",
+            "on-error": "#690005",
+            "inverse-on-surface": "#2a3043",
+            "on-secondary-fixed-variant": "#004e5c",
+            "on-primary-container": "#00422b",
+            "on-tertiary": "#3c0091",
+            "primary-container": "#10b981",
+            "on-tertiary-fixed": "#23005c",
+            "tertiary": "#d0bcff",
+            "error-container": "#93000a",
+            "tertiary-fixed-dim": "#d0bcff",
+            "on-error-container": "#ffdad6",
+            "secondary-container": "#03b5d3",
+            "surface-tint": "#4edea3",
+            "on-surface": "#dce1fb",
+            "secondary-fixed": "#acedff",
+            "secondary": "#4cd7f6",
+            "on-tertiary-container": "#4600a7",
+            "inverse-surface": "#dce1fb",
+            "secondary-fixed-dim": "#4cd7f6",
+            "on-secondary-fixed": "#001f26",
+            "outline-variant": "#3c4a42",
+            "background": "#0c1324",
+            "tertiary-fixed": "#e9ddff",
+            "surface-dim": "#0c1324",
+            "surface": "#0c1324",
+            "on-primary-fixed-variant": "#005236",
+            "tertiary-container": "#b090ff",
+            "error": "#ffb4ab",
+            "on-surface-variant": "#bbcabf"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "margin-desktop": "2rem",
+            "margin": "1rem",
+            "space-md": "0.75rem",
+            "space-2xl": "2rem",
+            "space-2xs": "0.125rem",
+            "space-lg": "1rem",
+            "space-sm": "0.5rem",
+            "space-3xl": "3rem",
+            "gutter-desktop": "1.5rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "telemetry-data": ["JetBrains Mono"],
+            "telemetry-code": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "label-caps": ["JetBrains Mono"],
+            "display": ["Inter"],
+            "telemetry-metric": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "telemetry-data": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "telemetry-code": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "display": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "telemetry-metric": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Tactical grid & scanline ambiance */
+    body {
+      background-color: #070d1f;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(78, 222, 163, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 90% 20%, rgba(76, 215, 246, 0.05) 0%, transparent 50%),
+        linear-gradient(rgba(60, 74, 66, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(60, 74, 66, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+    }
+    
+    .hud-edge-glow {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px -4px rgba(7, 13, 31, 0.85);
+    }
+
+    .pulse-dot {
+      animation: tactical-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes tactical-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Custom range styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #191f31;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 2px;
+      background: #4edea3;
+      cursor: pointer;
+      box-shadow: 0 0 8px #4edea3;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col">
+<!-- ========================================================================= -->
+<!-- 1. TOP NAV BAR (Shared Component: TopNavBar)                              -->
+<!-- ========================================================================= -->
+<header class="bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/40 shadow-lg shadow-surface-container-lowest/50 fixed top-0 left-0 right-0 z-50 h-16">
+<div class="flex justify-between items-center w-full px-space-xl py-space-sm h-16 max-w-full">
+<!-- Brand & Search cluster -->
+<div class="flex items-center space-x-space-lg">
+<div class="flex items-center space-x-space-sm">
+<span class="material-symbols-outlined text-primary text-[26px]">neurology</span>
+<span class="text-headline-sm font-headline-sm tracking-wider font-extrabold text-primary uppercase">NEUROCLOAK // CDT-HUD</span>
+</div>
+<!-- Search bar on left -->
+<div class="hidden lg:flex items-center bg-surface-container-lowest/90 border border-outline-variant/40 rounded px-space-md py-1 w-64 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary/40">
+<span class="material-symbols-outlined text-outline text-[16px] mr-2">search</span>
+<input class="bg-transparent border-none p-0 text-telemetry-code font-telemetry-code text-on-surface placeholder:text-outline focus:ring-0 w-full" placeholder="Query cognitive telemetry..." type="text"/>
+<span class="text-label-caps font-label-caps text-outline bg-surface-container px-1 py-0.5 rounded">⌘K</span>
+</div>
+</div>
+<!-- Center navigation links from JSON (Twin Inspector Active) -->
+<nav class="hidden md:flex items-center space-x-space-lg">
+<a class="text-primary border-b-2 border-primary pb-1 font-headline-sm flex items-center space-x-1" href="#twin-inspector">
+<span>Twin Inspector</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 font-headline-sm transition-colors duration-150" href="#battle-arena">
+<span>Battle Arena</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 font-headline-sm transition-colors duration-150" href="#neural-topology">
+<span>Neural Topology</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 font-headline-sm transition-colors duration-150" href="#autorepair-logs">
+<span>AutoRepair Logs</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 font-headline-sm transition-colors duration-150" href="#policy-registry">
+<span>Policy Registry</span>
+</a>
+</nav>
+<!-- Trailing actions and status -->
+<div class="flex items-center space-x-space-md">
+<!-- Live Node Indicator -->
+<div class="hidden xl:flex items-center bg-surface-container-high/60 border border-outline-variant/40 rounded px-2 py-1">
+<span class="w-2 h-2 rounded-full bg-primary pulse-dot mr-2"></span>
+<span class="text-label-caps font-label-caps text-on-surface">NODE // CDT-09</span>
+</div>
+<!-- Trailing action buttons -->
+<button class="hidden sm:inline-flex items-center bg-surface-container-high/80 hover:bg-surface-container-highest border border-secondary/50 text-secondary px-3 py-1.5 rounded text-telemetry-data font-telemetry-data active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[15px] mr-1.5">science</span>
+<span>Simulate Drift</span>
+</button>
+<button class="inline-flex items-center bg-error-container/20 hover:bg-error-container/40 border border-error text-error px-3 py-1.5 rounded text-telemetry-data font-telemetry-data active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[16px] mr-1">power_settings_new</span>
+<span>Emergency Break</span>
+</button>
+<!-- Trailing icon actions -->
+<div class="flex items-center space-x-1 border-l border-outline-variant/40 pl-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" title="Tune Parameters">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="absolute top-1 right-1 w-1.5 h-1.5 bg-secondary rounded-full"></span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" title="Terminal">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</button>
+</div>
+<!-- Executive Avatar -->
+<div class="w-8 h-8 rounded bg-surface-container-high border border-primary/50 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Cyber-executive tactical avatar HUD badge displaying a holographic geometric glyph with neon emerald and cyan highlights inside a high-tech dark cockpit frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD64i6LbgLfkFnoNIFZSKxTJqZ8iCedrR4A6DfMJbOwzqGO9FzBvQhaWrNymax1Y2cNA6QSLDAfZNVAlwo2_eWlpqzo3AXP4tHZHxBoCXsfIK_GvHfE6KGjQqS7_9UYw9XYjvicICZV_pohkBylLHvNCZPUAiXLlD8aLWRNotty0bgDMOD9dreUAGhq1IIaJO-bvlBu_y_kFpJMjz8Ir5dBKTg9DxMjEUgo9uPYLRD2CMrSbzlQyXpQiwjo0gsR1M-YrNsSDf2gJ3wc"/>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- 2. LATERAL TELEMETRY RAIL (Shared Component: SideNavBar)                  -->
+<!-- ========================================================================= -->
+<aside class="fixed left-0 top-16 bottom-0 w-64 z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30 shadow-2xl shadow-surface-container-lowest/80 hidden md:block">
+<div class="flex flex-col justify-between h-[calc(100vh-4rem)] p-space-md w-64">
+<!-- Top header node info -->
+<div>
+<div class="p-space-sm bg-surface-container/60 border border-outline-variant/30 rounded mb-space-md">
+<div class="flex items-center space-x-2">
+<div class="w-7 h-7 rounded bg-primary/10 border border-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">neurology</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm font-bold text-primary">NODE // CDT-09</div>
+<div class="text-label-caps font-label-caps text-primary flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1 pulse-dot"></span>
+<span>STATUS: DETERMINISTIC SAFE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs from JSON (Active: Cognitive Twin) -->
+<div class="space-y-1">
+<a class="bg-surface-container/60 text-primary border-l-2 border-primary font-headline-sm px-space-md py-space-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#cognitive-twin">
+<span class="material-symbols-outlined text-[18px]">neurology</span>
+<span class="text-body-md font-body-md">Cognitive Twin</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 px-space-md py-space-sm font-headline-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#adversarial-sim">
+<span class="material-symbols-outlined text-[18px]">swords</span>
+<span class="text-body-md font-body-md">Adversarial Sim</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 px-space-md py-space-sm font-headline-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#telemetry-mesh">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span class="text-body-md font-body-md">Telemetry Mesh</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 px-space-md py-space-sm font-headline-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#deterministic-audit">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+<span class="text-body-md font-body-md">Deterministic Audit</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 px-space-md py-space-sm font-headline-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#model-nodes">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+<span class="text-body-md font-body-md">Model Nodes</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 px-space-md py-space-sm font-headline-sm rounded-r-lg flex items-center space-x-3 transition-all duration-150" href="#governance-config">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="text-body-md font-body-md">Governance Config</span>
+</a>
+</div>
+</div>
+<!-- CTA and Footer items from JSON -->
+<div class="space-y-space-md">
+<!-- CTA -->
+<button class="w-full py-2 bg-gradient-to-b from-primary-container to-[#059669] text-surface-container-lowest font-headline-sm text-body-md font-bold rounded shadow-[0_0_16px_rgba(16,185,129,0.35)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[18px]">auto_fix_high</span>
+<span>Engage AutoRepair</span>
+</button>
+<!-- Footer Navigation links -->
+<div class="border-t border-outline-variant/30 pt-space-sm space-y-1">
+<a class="text-on-surface-variant hover:text-on-surface flex items-center space-x-2 px-space-sm py-1.5 text-telemetry-code font-telemetry-code transition-colors" href="#terminal-console">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>Terminal Console</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface flex items-center space-x-2 px-space-sm py-1.5 text-telemetry-code font-telemetry-code transition-colors" href="#system-docs">
+<span class="material-symbols-outlined text-[16px]">help_center</span>
+<span>System Docs</span>
+</a>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN OPERATING SURFACE (Fluid HUD Canvas)                                -->
+<!-- ========================================================================= -->
+<main class="md:pl-64 pt-16 flex-1 flex flex-col p-space-lg lg:p-space-xl space-y-space-lg">
+<!-- SUB-HEADER CONTROL STRIP & LIVE STATUS BANNER -->
+<div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container/70 border border-outline-variant/40 rounded-lg p-space-md hud-edge-glow backdrop-blur-md">
+<!-- Live Status Banner -->
+<div class="flex items-center space-x-space-md flex-wrap gap-y-2">
+<div class="flex items-center space-x-2 bg-primary/10 border border-primary/40 px-3 py-1 rounded">
+<span class="w-2 h-2 rounded-full bg-primary pulse-dot"></span>
+<span class="text-telemetry-data font-telemetry-data text-primary font-semibold">
+            Layer 4 AutoRepair: ACTIVE
+          </span>
+<span class="text-telemetry-code font-telemetry-code text-on-surface-variant bg-surface-container-high px-1.5 py-0.5 rounded ml-1">
+            θ_OOF = 0.4910, +29.86% Parity
+          </span>
+</div>
+<div class="h-4 w-px bg-outline-variant/40 hidden md:block"></div>
+<!-- Domain Selector Pills -->
+<div class="flex items-center space-x-1 bg-surface-container-lowest/80 p-0.5 border border-outline-variant/30 rounded">
+<button class="px-3 py-1 rounded text-label-caps font-label-caps bg-primary text-surface-container-lowest font-bold shadow-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]">account_balance</span>
+<span>Finance (German Credit)</span>
+</button>
+<button class="px-3 py-1 rounded text-label-caps font-label-caps text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]">local_hospital</span>
+<span>Healthcare (Clinical Triage)</span>
+</button>
+<button class="px-3 py-1 rounded text-label-caps font-label-caps text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]">precision_manufacturing</span>
+<span>Industrial (Turbine CDT)</span>
+</button>
+</div>
+</div>
+<!-- Action Utilities -->
+<div class="flex items-center space-x-2">
+<button class="px-3 py-1.5 rounded text-telemetry-code font-telemetry-code bg-surface-container-high/60 border border-outline-variant hover:border-on-surface text-on-surface flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">description</span>
+<span>Export Audit Dossier</span>
+</button>
+<button class="px-3 py-1.5 rounded text-telemetry-code font-telemetry-code bg-secondary/10 border border-secondary text-secondary hover:bg-secondary/20 flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">smart_toy</span>
+<span>AI Governance Copilot</span>
+</button>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 2. TOP TELEMETRY KPI ROW (4 High-Density Tactical Metric Cards)           -->
+<!-- ========================================================================= -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1: Transparency Index -->
+<div class="bg-surface-container/65 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md hover:border-primary/40 transition-colors hud-edge-glow flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="text-label-caps font-label-caps uppercase tracking-wider text-outline">Index // Symbolic Logic</span>
+<span class="material-symbols-outlined text-[18px] text-primary">visibility</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface-variant font-medium">Transparency Index</div>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-telemetry-metric font-telemetry-metric text-primary">100.0%</span>
+<span class="text-label-caps font-label-caps text-primary bg-primary/10 border border-primary/30 px-1.5 py-0.5 rounded">VERIFIED</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-telemetry-code font-telemetry-code text-on-surface-variant">
+<span>Execution Graph:</span>
+<span class="text-primary font-semibold">6/6 Steps Logged</span>
+</div>
+</div>
+<!-- Card 2: Ethical Compliance -->
+<div class="bg-surface-container/65 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md hover:border-secondary/40 transition-colors hud-edge-glow flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="text-label-caps font-label-caps uppercase tracking-wider text-outline">Audit // Multi-Pillar</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface-variant font-medium">Ethical Compliance</div>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-telemetry-metric font-telemetry-metric text-secondary">98.4%</span>
+<span class="text-label-caps font-label-caps text-secondary bg-secondary/10 border border-secondary/30 px-1.5 py-0.5 rounded">NOMINAL</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30">
+<div class="grid grid-cols-4 gap-1 text-center text-label-caps font-label-caps">
+<span class="bg-surface-container-high py-0.5 rounded text-primary">SAF</span>
+<span class="bg-surface-container-high py-0.5 rounded text-primary">FAIR</span>
+<span class="bg-surface-container-high py-0.5 rounded text-primary">LEG</span>
+<span class="bg-surface-container-high py-0.5 rounded text-primary">ETH</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Disparity Reduction -->
+<div class="bg-surface-container/65 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md hover:border-primary/40 transition-colors hud-edge-glow flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="text-label-caps font-label-caps uppercase tracking-wider text-outline">Parity // Meta-Calibration</span>
+<span class="material-symbols-outlined text-[18px] text-primary">equalizer</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface-variant font-medium">Disparity Reduction</div>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-telemetry-metric font-telemetry-metric text-primary">+29.86%</span>
+<span class="material-symbols-outlined text-primary text-[18px]">trending_up</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-telemetry-code font-telemetry-code text-on-surface-variant">
+<span>Layer 4 Recalibration:</span>
+<span class="text-primary font-semibold">Equalized Odds</span>
+</div>
+</div>
+<!-- Card 4: Inference Latency & Audited Counter -->
+<div class="bg-surface-container/65 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md hover:border-secondary/40 transition-colors hud-edge-glow flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="text-label-caps font-label-caps uppercase tracking-wider text-outline">Latency // Pipeline</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">speed</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm text-on-surface-variant font-medium">Inference Latency</div>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-telemetry-metric font-telemetry-metric text-on-surface">142<span class="text-body-md font-body-md text-outline">ms</span></span>
+<span class="text-label-caps font-label-caps text-on-surface-variant bg-surface-container-high px-1.5 py-0.5 rounded">Scikit + Symbolic</span>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-telemetry-code font-telemetry-code">
+<span class="text-on-surface-variant">14,892 Audited</span>
+<span class="text-primary">94.2% Passed</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 3. 4-LAYER COGNITIVE DIGITAL TWIN (CDT) INSPECTOR (Centerpiece Bento)    -->
+<!-- ========================================================================= -->
+<section class="space-y-space-md" id="twin-inspector">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">4-Layer Cognitive Digital Twin (CDT) Inspector</h2>
+<span class="text-label-caps font-label-caps bg-surface-container border border-outline-variant/50 text-outline px-2 py-0.5 rounded">GERMAN_CREDIT_V4.2</span>
+</div>
+<div class="text-telemetry-code font-telemetry-code text-outline">TRANSACTION_ID: #TX-90218-COGNITIVE</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-space-md">
+<!-- LAYER 1: Perception -->
+<div class="bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="text-label-caps font-label-caps bg-secondary/15 text-secondary border border-secondary/40 px-1.5 py-0.5 rounded">L1</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Perception</span>
+</div>
+<span class="text-label-caps font-label-caps text-outline">24 DENSE VECTORS</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-3">Normalized ingested applicant state vector ready for inference.</p>
+<div class="space-y-2 text-telemetry-code font-telemetry-code">
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded flex justify-between items-center">
+<span class="text-outline">Loan Amount:</span>
+<span class="text-on-surface font-semibold">$5,000 <span class="text-secondary">(Norm 0.42)</span></span>
+</div>
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded flex justify-between items-center">
+<span class="text-outline">Age Demographic:</span>
+<span class="text-primary font-semibold">45 yrs (Non-Disadv.)</span>
+</div>
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded flex justify-between items-center">
+<span class="text-outline">Checking Status:</span>
+<span class="text-primary font-semibold">&gt; DM 200 (Good)</span>
+</div>
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded flex justify-between items-center">
+<span class="text-outline">Job Class:</span>
+<span class="text-on-surface">Skilled [A173]</span>
+</div>
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded flex justify-between items-center">
+<span class="text-outline">Credit History:</span>
+<span class="text-on-surface">A34 (Critical Acct)</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps text-secondary">
+<span>INPUT HASH: 0x8F4A...D9</span>
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+</div>
+</div>
+<!-- LAYER 2: Reasoning -->
+<div class="bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="text-label-caps font-label-caps bg-primary/15 text-primary border border-primary/40 px-1.5 py-0.5 rounded">L2</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Reasoning Waterfall</span>
+</div>
+<span class="text-label-caps font-label-caps text-outline">SHAP ATTENTION</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-3">Feature importance decomposition on decision trajectory.</p>
+<div class="space-y-2 text-telemetry-code font-telemetry-code">
+<!-- Feature 1 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="text-outline">Checking Status</span>
+<span class="text-primary">+18.40%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 78%"></div>
+</div>
+</div>
+<!-- Feature 2 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="text-outline">Credit Duration</span>
+<span class="text-amber-400">-6.10%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-amber-400 h-full" style="width: 32%"></div>
+</div>
+</div>
+<!-- Feature 3 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="text-outline">Loan Amount</span>
+<span class="text-error">-4.76%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 24%"></div>
+</div>
+</div>
+<!-- Feature 4 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="text-outline">Age Demographic</span>
+<span class="text-secondary">+2.32%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 15%"></div>
+</div>
+</div>
+<!-- Feature 5 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="text-outline">Purpose (Car)</span>
+<span class="text-primary">+1.15%</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary/70 h-full" style="width: 10%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps text-outline">
+<span>BASE SCORE: 0.5218</span>
+<span class="text-primary">PRE-CALIBRATED</span>
+</div>
+</div>
+<!-- LAYER 3: Policy -->
+<div class="bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="text-label-caps font-label-caps bg-tertiary-container/20 text-tertiary border border-tertiary/40 px-1.5 py-0.5 rounded">L3</span>
+<span class="text-headline-sm font-headline-sm text-on-surface">Symbolic Policies</span>
+</div>
+<span class="text-label-caps font-label-caps text-primary">4/4 PASSED</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-3">Deterministic rule-bound validation against compliance bounds.</p>
+<div class="space-y-2 text-telemetry-code font-telemetry-code">
+<!-- Policy 1 -->
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center text-label-caps font-label-caps mb-0.5">
+<span class="text-on-surface font-semibold">SAFETY CHECK</span>
+<span class="text-primary">PASS</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline">Risk Score ≤ 40.0% (Calculated: 28.4%)</div>
+</div>
+<!-- Policy 2 -->
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center text-label-caps font-label-caps mb-0.5">
+<span class="text-on-surface font-semibold">FAIRNESS CHECK</span>
+<span class="text-primary">PASS</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline">Cohort Parity: Delta &lt; 0.05 Valid</div>
+</div>
+<!-- Policy 3 -->
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center text-label-caps font-label-caps mb-0.5">
+<span class="text-on-surface font-semibold">LEGAL TENOR</span>
+<span class="text-primary">PASS</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline">Statutory Term ≤ 72mo (Recorded: 36mo)</div>
+</div>
+<!-- Policy 4 -->
+<div class="p-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center text-label-caps font-label-caps mb-0.5">
+<span class="text-on-surface font-semibold">ETHICS CONSENT</span>
+<span class="text-primary">LOGGED</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline">Explicit Algorithmic Consent Registered</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps text-outline">
+<span>RULESET: ISO/IEC 42001</span>
+<span class="text-primary font-bold">COMPLIANT</span>
+</div>
+</div>
+<!-- LAYER 4: AutoRepair -->
+<div class="bg-surface-container/70 backdrop-blur-md border border-primary/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="text-label-caps font-label-caps bg-primary text-surface-container-lowest font-bold px-1.5 py-0.5 rounded">L4</span>
+<span class="text-headline-sm font-headline-sm text-primary">Dynamic AutoRepair</span>
+</div>
+<span class="text-label-caps font-label-caps text-primary pulse-dot font-semibold">CALIBRATED</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">Metacognitive equalized odds boundary adjustment.</p>
+<div class="bg-surface-container-lowest/90 border border-primary/30 p-2.5 rounded mb-3">
+<div class="text-label-caps font-label-caps text-outline uppercase mb-1">Calibration Metric</div>
+<div class="flex items-center justify-between font-telemetry-code text-telemetry-code">
+<span class="text-on-surface-variant">θ_BASE: <span class="text-outline">0.5000</span></span>
+<span class="text-primary font-bold">→ θ_OOF: 0.4910</span>
+</div>
+<div class="text-label-caps font-label-caps text-primary mt-1">Δθ = -0.0090 (Cohort Equalization)</div>
+</div>
+<!-- Dynamic Threshold Slider Visualization -->
+<div class="space-y-1">
+<div class="flex justify-between text-label-caps font-label-caps text-outline">
+<span>DENY (0.00)</span>
+<span class="text-primary font-semibold">MITIGATED ZONE (+29.86%)</span>
+<span>APPROVE (1.00)</span>
+</div>
+<div class="relative w-full h-7 bg-surface-container-high rounded border border-outline-variant/40 flex items-center px-1">
+<div class="absolute left-0 w-[49.1%] h-full bg-error-container/20 rounded-l border-r border-error/50"></div>
+<div class="absolute left-[49.1%] w-[0.9%] h-full bg-primary/40 border-r border-primary"></div>
+<div class="absolute right-0 w-[50%] h-full bg-primary/10 rounded-r"></div>
+<!-- Marker -->
+<div class="absolute left-[49.1%] -top-1 w-2.5 h-9 bg-primary rounded shadow-[0_0_8px_#4edea3] -translate-x-1/2"></div>
+</div>
+<div class="flex justify-between text-telemetry-code font-telemetry-code text-on-surface-variant text-[10px]">
+<span>Disadvantaged Threshold</span>
+<span class="text-primary font-bold">θ_OOF = 0.4910</span>
+<span>Baseline = 0.5000</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps">
+<span class="text-outline">STATUS:</span>
+<span class="text-primary font-bold">APPROVED WITH REPAIR</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 4. BATTLE MODE BENCHMARKING ARENA                                         -->
+<!-- ========================================================================= -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-md" id="battle-arena">
+<!-- Interactive Adversarial Bias Injection & Stress Sandbox (Col 5) -->
+<div class="lg:col-span-5 bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">swords</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Battle Arena: Bias Injection</h3>
+</div>
+<span class="text-label-caps font-label-caps text-secondary bg-secondary/15 border border-secondary/30 px-2 py-0.5 rounded">STRESS TEST</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-4">
+            Simulate real-time synthetic drift to benchmark resilience against cognitive degradation.
+          </p>
+<!-- Interactive Stress Slider -->
+<div class="space-y-2 bg-surface-container-lowest/80 p-space-md rounded border border-outline-variant/30 mb-space-md">
+<div class="flex justify-between items-center text-telemetry-code font-telemetry-code">
+<span class="text-outline">Synthetic Drift Severity:</span>
+<span class="text-secondary font-bold text-headline-sm font-headline-sm">68%</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-high rounded cursor-pointer accent-primary" max="100" min="0" type="range" value="68"/>
+<div class="flex justify-between text-label-caps font-label-caps text-outline">
+<span>0% Baseline</span>
+<span class="text-amber-400 font-semibold">MODERATE CORRUPTION</span>
+<span>100% Critical</span>
+</div>
+</div>
+<!-- AutoRepair Auto-Pilot Comparison Module -->
+<div class="p-space-md bg-surface-container-lowest/80 rounded border border-outline-variant/30 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="text-label-caps font-label-caps text-outline">AUTOREPAIR AUTO-PILOT</span>
+<span class="text-label-caps font-label-caps bg-primary/20 text-primary border border-primary/40 px-1.5 py-0.2 rounded font-bold">ACTIVE</span>
+</div>
+<!-- Mechanical Switch Toggle -->
+<div class="w-9 h-5 bg-primary/30 rounded-full flex items-center p-0.5 cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full shadow-[0_0_8px_#4edea3] translate-x-4 transition-transform"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-center text-telemetry-code font-telemetry-code">
+<div class="p-2 bg-surface-container-high/40 rounded border border-error/30">
+<div class="text-label-caps font-label-caps text-error">DISPARITY (WITHOUT)</div>
+<div class="text-headline-sm font-headline-sm text-error font-bold mt-1">34.2%</div>
+<div class="text-[10px] text-outline">Non-Compliant Drift</div>
+</div>
+<div class="p-2 bg-surface-container-high/40 rounded border border-primary/30">
+<div class="text-label-caps font-label-caps text-primary">DISPARITY (WITH)</div>
+<div class="text-headline-sm font-headline-sm text-primary font-bold mt-1">4.3%</div>
+<div class="text-[10px] text-primary">Parity Maintained</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps text-outline">
+<span>MONTE CARLO SEED: #88192</span>
+<button class="text-secondary hover:underline flex items-center space-x-1">
+<span>RERUN INJECTION</span>
+<span class="material-symbols-outlined text-[12px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Cognitive Robustness Radar & 3-Way Model Benchmarking Matrix (Col 7) -->
+<div class="lg:col-span-7 bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md flex flex-col justify-between hud-edge-glow">
+<div>
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30 mb-3">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]">radar</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Cognitive Robustness Radar &amp; 3-Way Model Matrix</h3>
+</div>
+<span class="text-label-caps font-label-caps text-primary bg-primary/10 border border-primary/30 px-2 py-0.5 rounded">CROSS-DOMAIN</span>
+</div>
+<!-- Radar SVG and Benchmark Stats Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center mb-space-md">
+<!-- Radar Visual (Col 5) -->
+<div class="md:col-span-5 flex flex-col items-center justify-center p-2 bg-surface-container-lowest/80 rounded border border-outline-variant/30">
+<svg class="w-44 h-44" viewbox="0 0 200 200">
+<!-- Concentric Web Rings -->
+<polygon fill="none" points="100,20 170,60 170,140 100,180 30,140 30,60" stroke="#2e3447" stroke-width="1"></polygon>
+<polygon fill="none" points="100,45 150,75 150,125 100,155 50,125 50,75" stroke="#2e3447" stroke-width="1"></polygon>
+<polygon fill="none" points="100,70 130,85 130,115 100,130 70,115 70,85" stroke="#2e3447" stroke-width="1"></polygon>
+<!-- Axis lines -->
+<line stroke="#3c4a42" stroke-width="1" x1="100" x2="100" y1="20" y2="180"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="30" x2="170" y1="60" y2="140"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="30" x2="170" y1="140" y2="60"></line>
+<!-- Baseline Polygon (Translucent Cyan) -->
+<polygon fill="rgba(76, 215, 246, 0.15)" points="100,40 145,80 135,130 100,145 65,120 55,75" stroke="#4cd7f6" stroke-width="1.5"></polygon>
+<!-- NeuroCloak CDT Repaired Polygon (Luminous Emerald) -->
+<polygon fill="rgba(78, 222, 163, 0.25)" points="100,24 162,65 158,135 100,172 40,132 38,64" stroke="#4edea3" stroke-width="2"></polygon>
+<!-- Axis Labels -->
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="100" y="14">FAIRNESS</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" x="175" y="58">ROBUST</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" x="175" y="146">SPEED</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="100" y="194">COMPLIANCE</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" text-anchor="end" x="22" y="146">EXPLAIN</text>
+<text fill="#bbcabf" font-family="JetBrains Mono" font-size="8" text-anchor="end" x="24" y="58">ALIGN</text>
+</svg>
+<div class="flex items-center space-x-3 text-label-caps font-label-caps mt-1">
+<span class="flex items-center text-primary"><span class="w-2 h-2 bg-primary rounded-full mr-1"></span> CDT-09</span>
+<span class="flex items-center text-secondary"><span class="w-2 h-2 bg-secondary rounded-full mr-1"></span> Baseline</span>
+</div>
+</div>
+<!-- Model Benchmark Matrix (Col 7) -->
+<div class="md:col-span-7 space-y-2">
+<!-- Model 1: German Credit -->
+<div class="p-2.5 bg-surface-container-lowest/90 border border-primary/40 rounded">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[15px]">account_balance</span>
+<span class="text-telemetry-code font-telemetry-code text-on-surface font-semibold">Finance (Credit Risk CDT)</span>
+</div>
+<span class="text-label-caps font-label-caps bg-primary/20 text-primary px-1.5 py-0.2 rounded font-bold">MOST ETHICAL</span>
+</div>
+<div class="grid grid-cols-3 gap-1 text-telemetry-code font-telemetry-code text-on-surface-variant">
+<div>Lat: <span class="text-on-surface">142ms</span></div>
+<div>Transp: <span class="text-primary font-bold">100%</span></div>
+<div>Score: <span class="text-primary font-bold">98.4%</span></div>
+</div>
+</div>
+<!-- Model 2: Healthcare -->
+<div class="p-2.5 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-secondary text-[15px]">local_hospital</span>
+<span class="text-telemetry-code font-telemetry-code text-on-surface font-semibold">Healthcare (Triage CDT)</span>
+</div>
+<span class="text-label-caps font-label-caps bg-surface-container-high text-outline px-1.5 py-0.2 rounded">VERIFIED</span>
+</div>
+<div class="grid grid-cols-3 gap-1 text-telemetry-code font-telemetry-code text-on-surface-variant">
+<div>Lat: <span class="text-on-surface">188ms</span></div>
+<div>Transp: <span class="text-secondary">96%</span></div>
+<div>Score: <span class="text-secondary">94.1%</span></div>
+</div>
+</div>
+<!-- Model 3: Industrial -->
+<div class="p-2.5 bg-surface-container-lowest/80 border border-outline-variant/30 rounded">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-outline text-[15px]">precision_manufacturing</span>
+<span class="text-telemetry-code font-telemetry-code text-on-surface font-semibold">Industrial (Turbine CDT)</span>
+</div>
+<span class="text-label-caps font-label-caps bg-surface-container-high text-outline px-1.5 py-0.2 rounded">HIGH SPEED</span>
+</div>
+<div class="grid grid-cols-3 gap-1 text-telemetry-code font-telemetry-code text-on-surface-variant">
+<div>Lat: <span class="text-on-surface font-semibold">89ms</span></div>
+<div>Transp: <span class="text-outline">92%</span></div>
+<div>Score: <span class="text-outline">91.8%</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-caps font-label-caps text-outline">
+<span>PARITY GAP OVERALL: &lt; 0.021 MAXIMUM DEVIATION</span>
+<span class="text-primary font-bold">ALL PILARS SATISFIED</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 5. REAL-TIME DECISION AUDIT STREAM TABLE                                  -->
+<!-- ========================================================================= -->
+<section class="bg-surface-container/70 backdrop-blur-md border border-outline-variant/40 rounded-lg p-space-md hud-edge-glow" id="autorepair-logs">
+<!-- Table Header & Filter Tabs -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pb-space-md border-b border-outline-variant/30">
+<div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]">rule_settings</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Real-Time Decision Audit Stream</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Deterministic provenance ledger with automated equalized calibration records.</p>
+</div>
+<!-- Filter Segmented Tabs -->
+<div class="flex items-center space-x-1 bg-surface-container-lowest/80 p-0.5 border border-outline-variant/30 rounded text-telemetry-code font-telemetry-code">
+<button class="px-2.5 py-1 rounded bg-primary text-surface-container-lowest font-bold">All (14,892)</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface">Approved (14,028)</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface">Flagged (685)</button>
+<button class="px-2.5 py-1 rounded text-primary hover:bg-surface-container-high">Auto-Repaired (179)</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto mt-space-md">
+<table class="w-full text-left text-telemetry-code font-telemetry-code">
+<thead>
+<tr class="text-label-caps font-label-caps text-outline border-b border-outline-variant/30">
+<th class="py-2.5 px-3">TIMESTAMP</th>
+<th class="py-2.5 px-3">DECISION ID</th>
+<th class="py-2.5 px-3">MODEL &amp; DOMAIN</th>
+<th class="py-2.5 px-3">PROTECTED ATTRIBUTE</th>
+<th class="py-2.5 px-3">RAW → REPAIRED SCORE</th>
+<th class="py-2.5 px-3">STATUS BADGE</th>
+<th class="py-2.5 px-3 text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1: Auto-Repaired -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 text-outline">14:48:02.19 UTC</td>
+<td class="py-3 px-3 text-primary font-semibold">#TX-90218</td>
+<td class="py-3 px-3 text-on-surface">German Credit CDT v4</td>
+<td class="py-3 px-3 text-on-surface-variant">Age Cohort &lt; 25 (Disadv.)</td>
+<td class="py-3 px-3">
+<span class="text-error font-medium">0.4930</span>
+<span class="text-primary mx-1">→</span>
+<span class="text-primary font-bold">0.4910</span>
+<span class="text-[10px] text-primary ml-1">(+Parity)</span>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary/15 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5 pulse-dot"></span>
+                  Auto-Repaired
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<button class="px-2 py-1 bg-surface-container-high hover:border-secondary border border-outline-variant/40 rounded text-secondary text-body-sm font-body-sm inline-flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Explain with Gemini</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Standard Approved -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 text-outline">14:47:58.82 UTC</td>
+<td class="py-3 px-3 text-secondary font-semibold">#TX-90217</td>
+<td class="py-3 px-3 text-on-surface">German Credit CDT v4</td>
+<td class="py-3 px-3 text-on-surface-variant">Non-Protected Cohort</td>
+<td class="py-3 px-3">
+<span class="text-on-surface">0.6840</span>
+<span class="text-outline mx-1">→</span>
+<span class="text-on-surface">0.6840</span>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5"></span>
+                  Approved
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<button class="px-2 py-1 bg-surface-container-high hover:border-secondary border border-outline-variant/40 rounded text-secondary text-body-sm font-body-sm inline-flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Explain with Gemini</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Auto-Repaired -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 text-outline">14:47:45.04 UTC</td>
+<td class="py-3 px-3 text-primary font-semibold">#TX-90216</td>
+<td class="py-3 px-3 text-on-surface">Clinical Triage CDT</td>
+<td class="py-3 px-3 text-on-surface-variant">Socioeconomic Decile 1</td>
+<td class="py-3 px-3">
+<span class="text-error font-medium">0.4890</span>
+<span class="text-primary mx-1">→</span>
+<span class="text-primary font-bold">0.4920</span>
+<span class="text-[10px] text-primary ml-1">(+Rebalance)</span>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary/15 text-primary border border-primary/40">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5 pulse-dot"></span>
+                  Auto-Repaired
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<button class="px-2 py-1 bg-surface-container-high hover:border-secondary border border-outline-variant/40 rounded text-secondary text-body-sm font-body-sm inline-flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Explain with Gemini</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Flagged Audit -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 text-outline">14:47:12.60 UTC</td>
+<td class="py-3 px-3 text-amber-400 font-semibold">#TX-90215</td>
+<td class="py-3 px-3 text-on-surface">German Credit CDT v4</td>
+<td class="py-3 px-3 text-on-surface-variant">Foreign Worker Index</td>
+<td class="py-3 px-3">
+<span class="text-amber-400">0.4120</span>
+<span class="text-outline mx-1">→</span>
+<span class="text-amber-400">HOLD</span>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-400/15 text-amber-400 border border-amber-400/40">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>
+                  Flagged (Audit)
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<button class="px-2 py-1 bg-surface-container-high hover:border-secondary border border-outline-variant/40 rounded text-secondary text-body-sm font-body-sm inline-flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Explain with Gemini</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Blocked Policy Breached -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 text-outline">14:46:50.11 UTC</td>
+<td class="py-3 px-3 text-error font-semibold">#TX-90214</td>
+<td class="py-3 px-3 text-on-surface">Turbine CDT Telemetry</td>
+<td class="py-3 px-3 text-on-surface-variant">Sensor Drift Divergence</td>
+<td class="py-3 px-3">
+<span class="text-error font-medium">0.1200</span>
+<span class="text-outline mx-1">→</span>
+<span class="text-error font-bold">REJECTED</span>
+</td>
+<td class="py-3 px-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-error/15 text-error border border-error/40">
+<span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
+                  Blocked
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<button class="px-2 py-1 bg-surface-container-high hover:border-secondary border border-outline-variant/40 rounded text-secondary text-body-sm font-body-sm inline-flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Explain with Gemini</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination and Stream Footer -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant/30 flex flex-wrap items-center justify-between text-telemetry-code font-telemetry-code text-on-surface-variant gap-2">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-primary pulse-dot"></span>
+<span>STREAM INGESTION RATE: <span class="text-on-surface font-semibold">48.2 ops/sec</span></span>
+</div>
+<div class="flex items-center space-x-3 text-label-caps font-label-caps">
+<button class="px-2 py-1 bg-surface-container-high border border-outline-variant/30 rounded hover:text-on-surface">PREV</button>
+<span>PAGE 1 OF 372</span>
+<button class="px-2 py-1 bg-surface-container-high border border-outline-variant/30 rounded hover:text-on-surface">NEXT</button>
+</div>
+</div>
+</section>
+<!-- Footer Copyright & Tactical Status -->
+<footer class="pt-space-md pb-space-lg text-center text-label-caps font-label-caps text-outline border-t border-outline-variant/20">
+<span>NEUROCLOAK AUTONOMOUS COGNITIVE GOVERNANCE PLATFORM // MISSION CRITICAL GRADE // ISO-42001 &amp; NIST AI RMF VERIFIED</span>
+</footer>
+</main>
+</body></html>
+

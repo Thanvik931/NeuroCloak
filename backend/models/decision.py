@@ -32,6 +32,7 @@ def create(data: dict) -> dict:
         "ethicalComplianceRate": data["ethicalComplianceRate"],
         "adaptationSpeed": data["adaptationSpeed"],
         "selfRepairEfficiency": data.get("selfRepairEfficiency"),
+        "disparityReduction": data.get("disparityReduction", 0.0),
         "status": data.get("status", "PENDING"),
         "createdAt": data.get("createdAt", datetime.now(timezone.utc)),
         "updatedAt": datetime.now(timezone.utc),
