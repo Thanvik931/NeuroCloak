@@ -1,22 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-[#0F172A] text-slate-200 font-sans antialiased transition-colors duration-200;
-    font-family: 'Lato', sans-serif;
+    @apply bg-[#070d1f] text-slate-200 font-sans antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-200 min-h-screen;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #070d1f;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(78, 222, 163, 0.08) 0%, transparent 60%),
+      radial-gradient(circle at 90% 20%, rgba(76, 215, 246, 0.05) 0%, transparent 50%),
+      linear-gradient(rgba(60, 74, 66, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(60, 74, 66, 0.08) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
   }
 
   html.light body,
   html.light #root,
   body.light {
     background-color: #F8FAFC !important;
+    background-image: none !important;
     color: #0F172A !important;
   }
 }
+
+.hud-edge-glow {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px -4px rgba(7, 13, 31, 0.85);
+}
+
+.pulse-dot {
+  animation: tactical-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes tactical-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+
 
 /* ==========================================
    GLOBAL LIGHT MODE STYLES & OVERRIDES

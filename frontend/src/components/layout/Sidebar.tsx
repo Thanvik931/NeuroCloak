@@ -1,94 +1,160 @@
-import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BrainCircuit, Activity, Database, BarChart3, ShieldAlert, Swords, Gauge, X } from 'lucide-react';
+import React from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { 
+  Activity, 
+  BrainCircuit, 
+  Database, 
+  BarChart3, 
+  ShieldAlert, 
+  Swords, 
+  SlidersHorizontal,
+  X,
+  Layers,
+  FileCheck,
+  Zap,
+  Terminal
+} from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
 
 export default function Sidebar() {
   const { user } = useAuthStore();
   const { sidebarOpen, setSidebarOpen } = useThemeStore();
+  const navigate = useNavigate();
 
   const navItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Tactical HUD', path: '/hud', icon: Gauge },
-    { name: 'Battle Arena', path: '/arena', icon: Swords },
-    { name: 'Simulate', path: '/simulate', icon: Activity },
-    { name: 'Decisions', path: '/decisions', icon: BrainCircuit },
-    { name: 'Systems', path: '/systems', icon: Database },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-    { name: 'Admin', path: '/admin', icon: ShieldAlert },
+    { name: 'Twin Inspector', path: '/dashboard', icon: Layers, badge: 'ACTIVE' },
+    { name: 'Battle Arena', path: '/arena', icon: Swords, badge: 'STRESS' },
+    { name: 'Live Simulator', path: '/simulate', icon: Zap },
+    { name: 'Decision Logs', path: '/decisions', icon: FileCheck },
+    { name: 'Model Nodes', path: '/systems', icon: Database },
+    { name: 'Analytics Suite', path: '/analytics', icon: BarChart3 },
+    { name: 'Safeguards & Admin', path: '/admin', icon: ShieldAlert },
   ];
+
+  const handleAutoRepair = () => {
+    navigate('/simulate?autorepair=true');
+    setSidebarOpen(false);
+  };
 
   return (
     <>
-      {/* Backdrop Overlay */}
+      {/* Mobile Backdrop Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity animate-in fade-in duration-200"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden transition-opacity"
         />
       )}
 
-      {/* Slide-out Sidebar Drawer */}
+      {/* Lateral Telemetry Rail (Fixed on desktop, drawer on mobile) */}
       <aside
-        className={`fixed top-0 left-0 z-50 w-64 bg-dark-sidebar border-r border-dark-border h-full flex flex-col transition-transform duration-300 transform shadow-2xl ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 z-50 md:z-40 w-64 h-full bg-[#070d1f]/95 backdrop-blur-2xl border-r border-[#23293c] flex flex-col justify-between transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        } shadow-2xl`}
       >
-        {/* Header */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-dark-border shrink-0">
-          <div className="flex items-center space-x-2">
-            <BrainCircuit className="w-6 h-6 text-primary" />
-            <span className="font-bold text-lg text-white tracking-wide">NeuroCloak</span>
+        {/* Top Node Branding & Status Box */}
+        <div className="p-4 border-b border-[#23293c] shrink-0">
+          <div className="flex items-center justify-between mb-3">
+            <Link to="/dashboard" className="flex items-center space-x-2 group">
+              <div className="w-8 h-8 rounded bg-primary/10 border border-primary/50 flex items-center justify-center text-primary group-hover:scale-105 transition-transform shadow-[0_0_12px_rgba(78,222,163,0.3)]">
+                <BrainCircuit className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="font-mono text-sm font-black text-white tracking-wider block">NEUROCLOAK</span>
+                <span className="font-mono text-[9px] text-primary tracking-widest block uppercase">CDT // GOVERNANCE</span>
+              </div>
+            </Link>
+
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1 rounded text-slate-400 hover:text-white hover:bg-white/5 md:hidden"
+              aria-label="Close Sidebar"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          {/* Close button */}
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
-            aria-label="Close Sidebar"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Node Status Badge */}
+          <div className="p-2.5 rounded bg-[#151b2d] border border-[#23293c] flex items-center justify-between text-[11px] font-mono">
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 rounded-full bg-primary pulse-dot"></span>
+              <span className="font-bold text-white tracking-wider">NODE // CDT-09</span>
+            </div>
+            <span className="text-[9px] font-bold text-primary bg-primary/10 border border-primary/30 px-1.5 py-0.5 rounded">
+              DETERMINISTIC
+            </span>
+          </div>
         </div>
 
-        {/* Clean Nav Links */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {/* Navigation Rail */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto font-sans">
+          <div className="px-3 pb-2 text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold">
+            Cognitive Telemetry
+          </div>
           {navItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.path}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  isActive 
-                    ? 'bg-primary/10 text-primary font-bold border border-primary/20 shadow-sm' 
-                    : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+                `flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-all group ${
+                  isActive
+                    ? 'bg-primary/15 text-primary border-l-2 border-primary font-bold shadow-sm'
+                    : 'text-slate-400 hover:bg-[#151b2d] hover:text-white'
                 }`
               }
             >
-              <item.icon className="w-5 h-5 mr-3 shrink-0" />
-              {item.name}
+              <div className="flex items-center space-x-3">
+                <item.icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                <span>{item.name}</span>
+              </div>
+              {item.badge && (
+                <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#191f31] border border-[#23293c] text-secondary">
+                  {item.badge}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        {/* Minimal Footer: User Profile Card Only */}
-        <div className="p-4 border-t border-dark-border">
+        {/* Action Callout & Footer Telemetry */}
+        <div className="p-4 border-t border-[#23293c] space-y-3 shrink-0">
+          {/* Quick AutoRepair Action */}
+          <button
+            onClick={handleAutoRepair}
+            className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-mono text-xs font-bold shadow-[0_0_16px_rgba(78,222,163,0.3)] flex items-center justify-center space-x-2 active:scale-[0.98] transition-all"
+          >
+            <Zap className="w-3.5 h-3.5 fill-current" />
+            <span>ENGAGE AUTOREPAIR</span>
+          </button>
+
+          {/* Telemetry Indicator */}
+          <div className="p-2.5 rounded bg-[#151b2d]/80 border border-[#23293c] text-[10px] font-mono text-slate-400 space-y-1">
+            <div className="flex justify-between">
+              <span>Layer 4 AutoRepair:</span>
+              <span className="text-primary font-bold">θ = 0.4910</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Disparity Delta:</span>
+              <span className="text-secondary font-bold">+29.86% Parity</span>
+            </div>
+          </div>
+
+          {/* User Account / Profile */}
           <Link
             to="/profile"
             onClick={() => setSidebarOpen(false)}
-            className="flex items-center space-x-3 bg-white/[0.03] hover:bg-white/10 transition-colors p-3 rounded-xl border border-white/5 group"
+            className="flex items-center space-x-2.5 p-2 rounded-lg hover:bg-[#151b2d] transition-colors group"
           >
-            <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/30 group-hover:scale-105 transition-transform">
-              <span className="text-primary font-bold text-sm text-center leading-none">
-                {user?.email?.charAt(0).toUpperCase() || 'A'}
-              </span>
+            <div className="w-7 h-7 rounded bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-mono text-xs font-bold">
+              {user?.email?.charAt(0).toUpperCase() || 'A'}
             </div>
             <div className="flex-1 min-w-0 text-left">
               <p className="text-xs font-bold text-white truncate group-hover:text-primary transition-colors">
-                {user?.email || 'admin@neurocloak.ai'}
+                {user?.email || 'auditor@neurocloak.ai'}
               </p>
-              <p className="text-[10px] text-slate-400 font-medium truncate">My Account &amp; Profile</p>
+              <p className="text-[10px] font-mono text-slate-400 truncate">Cognitive Twin Auditor</p>
             </div>
           </Link>
         </div>
