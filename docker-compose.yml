@@ -1,33 +1,42 @@
 version: '3.8'
 
 services:
+  # ── DATABASE: MongoDB 7 ─────────────────────────────────────────────────────
   mongo:
     image: mongo:7
+    container_name: neurocloak-mongo
+    restart: unless-stopped
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
+  # ── CACHE & PUBSUB: Redis 7 ─────────────────────────────────────────────────
   redis:
     image: redis:7
+    container_name: neurocloak-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
 
-  # backend:
-  #   build: ./backend
-  #   ports:
-  #     - "4000:4000"
-  #   environment:
-  #     MONGODB_URI: mongodb://mongo:27017/neurocloak
-  #     RDB_URL: redis://redis:6379
-  #   depends_on:
-  #     - mongo
-  #     - redis
-
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "3000:3000"
+  # ── BACKEND: Python Flask AI Governance API ─────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: neurocloak-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/neurocloak
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=local-docker-development-jwt-secret-key-at-least-32-chars
+      - FRONTEND_URL=http://localhost:5173
+      - FLASK_ENV=development
+    depends_on:
+      - mongo
+      - redis
 
 volumes:
   mongo_data:

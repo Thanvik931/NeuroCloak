@@ -17,6 +17,9 @@ from config import Config
 from lib.mongodb import connect_mongodb
 from services.socket_service import socketio
 
+# ── Validate Configuration ───────────────────────────────────────────
+Config.validate()
+
 # ── Create Flask app ─────────────────────────────────────────────────
 app = Flask(__name__)
 app.config["SECRET_KEY"] = Config.JWT_SECRET
@@ -36,11 +39,12 @@ CORS(
 )
 
 # ── Rate Limiting ────────────────────────────────────────────────────
+storage_uri = Config.REDIS_URL if Config.REDIS_URL else "memory://"
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=["1000 per 15 minutes"],
-    storage_uri="memory://",
+    storage_uri=storage_uri,
 )
 
 # Apply stricter limit to auth login
