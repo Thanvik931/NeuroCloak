@@ -36,6 +36,7 @@ FINANCE_DEFAULTS = {
     "people_liable": 1.0,
     "telephone": "A191",
     "foreign_worker": "A201",
+    "age_group": 1.0,
 }
 
 HEALTHCARE_DEFAULTS = {
@@ -214,6 +215,13 @@ def impute_features(domain: str, raw_input: Dict[str, Any]) -> Dict[str, Any]:
             base[target_k] = val
         else:
             base[target_k] = v
+
+    if d == "finance":
+        try:
+            age_val = float(base.get("age_years", 33.0))
+            base["age_group"] = 1.0 if age_val >= 25.0 else 0.0
+        except (ValueError, TypeError):
+            base["age_group"] = 1.0
 
     return base
 
