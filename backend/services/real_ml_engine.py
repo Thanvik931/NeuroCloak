@@ -142,6 +142,9 @@ def load_model(domain: str) -> Optional[Any]:
         return None
 
 
+get_model = load_model
+
+
 def normalize_value(key: str, val: Any) -> Any:
     """Normalize common values to match trained categorical codes."""
     if key == "foreign_worker":

@@ -50,10 +50,12 @@ def list_systems():
 @require_role(["ADMIN"])
 def create_system():
     try:
-        body = request.get_json(force=True)
+        body = request.get_json(force=True) or {}
+        if not body.get("name") or not body.get("domain"):
+            return jsonify({"error": "System name and domain are required"}), 400
         system = SystemModel.create(body)
         return jsonify(serialize_doc(system)), 201
-    except Exception:
+    except Exception as e:
         return jsonify({"error": "Internal server error"}), 500
 
 

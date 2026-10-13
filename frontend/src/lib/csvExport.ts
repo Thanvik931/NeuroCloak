@@ -25,7 +25,7 @@ interface DecisionExportItem {
   createdAt?: string;
 }
 
-function escapeCSV(val: any): string {
+export function escapeCSV(val: any): string {
   if (val === null || val === undefined) return '""';
   let str = typeof val === 'object' ? JSON.stringify(val) : String(val);
   if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
