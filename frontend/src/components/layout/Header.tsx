@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bell, LogOut, Search, Menu, Sun, Moon, User, BrainCircuit, Activity, ShieldAlert, Zap, ExternalLink } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
+import { useSocketStore } from '../../store/socketStore';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '../../api/client';
 import { useNavigate, Link } from 'react-router-dom';
@@ -13,6 +14,7 @@ interface HeaderProps {
 export default function Header({ title }: HeaderProps) {
   const { logout, user } = useAuthStore();
   const { theme, toggleTheme, toggleSidebar } = useThemeStore();
+  const socketStatus = useSocketStore((state) => state.status);
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -70,6 +72,35 @@ export default function Header({ title }: HeaderProps) {
       {/* Right Tactical Action Utilities */}
       <div className="flex items-center space-x-2 md:space-x-3">
         
+        {/* Live WebSocket Telemetry Indicator */}
+        <div 
+          className={`hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border font-mono text-[11px] font-semibold tracking-wider transition-colors ${
+            socketStatus === 'connected'
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+              : socketStatus === 'reconnecting'
+              ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+              : 'bg-slate-800/60 border-[#23293c] text-slate-400'
+          }`}
+          title={`Telemetry Stream: ${socketStatus.toUpperCase()}`}
+        >
+          <span 
+            className={`w-2 h-2 rounded-full ${
+              socketStatus === 'connected'
+                ? 'bg-emerald-400 animate-pulse'
+                : socketStatus === 'reconnecting'
+                ? 'bg-amber-400 animate-pulse'
+                : 'bg-slate-500'
+            }`} 
+          />
+          <span>
+            {socketStatus === 'connected'
+              ? 'TELEMETRY LIVE'
+              : socketStatus === 'reconnecting'
+              ? 'RECONNECTING'
+              : 'OFFLINE'}
+          </span>
+        </div>
+
         {/* Simulate Drift Quick Action */}
         <button
           onClick={() => navigate('/arena')}

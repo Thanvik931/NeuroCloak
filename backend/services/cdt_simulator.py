@@ -47,6 +47,8 @@ def cdt_simulate(ai_system_id: str, domain: str, input_data: Any) -> Dict[str, A
     # Extract Governance Control Parameters
     auto_repair_enabled = bool(data_dict.get("_auto_repair_enabled", True))
     bias_injection_prob = float(data_dict.get("_bias_injection_probability", 0.30))
+    raw_thresh = data_dict.get("_threshold_calibration")
+    base_threshold = float(raw_thresh) if raw_thresh is not None else 0.5000
 
     input_text = json.dumps(data_dict).lower()
 
@@ -109,12 +111,12 @@ def cdt_simulate(ai_system_id: str, domain: str, input_data: Any) -> Dict[str, A
     disparity_reduction = 0.0
     if auto_repair_enabled:
         if is_protected_cohort:
-            threshold = 0.4910  # Calibrated out-of-fold disadvantaged threshold
+            threshold = round(base_threshold - 0.0090, 4)  # Calibrated out-of-fold disadvantaged threshold
             disparity_reduction = 0.2986  # +29.86% empirical reduction
         else:
-            threshold = 0.5010  # Advantaged cohort threshold
+            threshold = round(base_threshold + 0.0010, 4)  # Advantaged cohort threshold
     else:
-        threshold = 0.5000  # Baseline uncalibrated threshold
+        threshold = round(base_threshold, 4)  # Baseline uncalibrated threshold
 
     is_approved_by_model = (model_prob >= threshold)
 
@@ -175,7 +177,7 @@ def cdt_simulate(ai_system_id: str, domain: str, input_data: Any) -> Dict[str, A
     # Layer 4: Metacognitive (Self-Evaluation & Calibration)
     calibrated_conf = round(0.50 + abs(model_prob - threshold), 3)
     calibrated_conf = max(0.51, min(0.99, calibrated_conf))
-    repair_note = " (AutoRepair active: theta_OOF = 0.4910)" if (auto_repair_enabled and is_protected_cohort) else ""
+    repair_note = f" (AutoRepair active: theta_OOF = {threshold:.4f})" if (auto_repair_enabled and is_protected_cohort) else ""
 
     reasoning_trace.append({
         "stepNumber": step_num,

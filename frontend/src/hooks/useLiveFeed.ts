@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
+import { useSocketStore } from '../store/socketStore';
 
 export const useLiveFeed = () => {
   const queryClient = useQueryClient();
   const token = useAuthStore(state => state.token);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      useSocketStore.getState().setStatus('disconnected');
+      return;
+    }
 
     const rawUrl = (import.meta.env.VITE_API_URL || '').trim();
     const API_BASE = rawUrl
@@ -25,6 +29,15 @@ export const useLiveFeed = () => {
 
     socket.on('connect', () => {
       console.log('[INFO] Connected to NeuroCloak LiveFeed WebSocket');
+      useSocketStore.getState().setStatus('connected');
+    });
+
+    socket.io.on('reconnect_attempt', () => {
+      useSocketStore.getState().setStatus('reconnecting');
+    });
+
+    socket.on('disconnect', () => {
+      useSocketStore.getState().setStatus('disconnected');
     });
 
     socket.on('new_decision', (decision) => {

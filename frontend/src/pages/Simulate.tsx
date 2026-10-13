@@ -34,6 +34,7 @@ export default function Simulate() {
   // Battle Mode State
   const [isBattleMode, setIsBattleMode] = useState(false);
   const [biasSlider, setBiasSlider] = useState(50);
+  const [thresholdCalibration, setThresholdCalibration] = useState(0.50);
   const [battleResults, setBattleResults] = useState<any[]>([]);
   const [battleTick, setBattleTick] = useState(0);
   const [isBattlePending, setIsBattlePending] = useState(false);
@@ -158,8 +159,16 @@ export default function Simulate() {
       }
       const parsed = JSON.parse(finalData);
       parsed._auto_repair_enabled = autoRepairEnabled;
+      parsed._bias_injection_probability = biasSlider / 100;
+      parsed._threshold_calibration = thresholdCalibration;
       setSimulationResult(null);
-      simulateMutation.mutate({ aiSystemId: selectedSystem, inputData: parsed });
+      simulateMutation.mutate({ 
+        aiSystemId: selectedSystem, 
+        inputData: parsed,
+        _auto_repair_enabled: autoRepairEnabled,
+        _bias_injection_probability: biasSlider / 100,
+        _threshold_calibration: thresholdCalibration
+      });
     } catch(e) {
       alert('Invalid input data format. Please check JSON syntax.');
     }
@@ -175,6 +184,7 @@ export default function Simulate() {
       const parsed = JSON.parse(finalData);
       parsed._bias_injection_probability = biasSlider / 100;
       parsed._auto_repair_enabled = autoRepairEnabled;
+      parsed._threshold_calibration = thresholdCalibration;
       
       setBattleResults([]);
       setBattleTick(0);
@@ -182,7 +192,16 @@ export default function Simulate() {
       
       const targetSystems = systems.slice(0, 3);
       const promises = targetSystems.map((s: any) => 
-         apiClient('/decisions/simulate', { method: 'POST', body: JSON.stringify({ aiSystemId: s.id, inputData: parsed }) })
+         apiClient('/decisions/simulate', { 
+           method: 'POST', 
+           body: JSON.stringify({ 
+             aiSystemId: s.id, 
+             inputData: parsed,
+             _bias_injection_probability: biasSlider / 100,
+             _auto_repair_enabled: autoRepairEnabled,
+             _threshold_calibration: thresholdCalibration
+           }) 
+         })
       );
       
       const results = await Promise.all(promises);
@@ -428,28 +447,49 @@ export default function Simulate() {
               )}
             </div>
 
-            {/* Auto-Repair Toggle Control */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
-              <div className="flex items-center space-x-2">
-                <Sliders className="w-4 h-4 text-emerald-400" />
-                <div>
-                  <h4 className="text-xs font-bold text-white">Metacognitive Auto-Repair</h4>
-                  <p className="text-[11px] text-slate-400">Post-hoc threshold calibration for demographic fairness</p>
+            {/* Governance Controls Bar */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+              {/* Auto-Repair Toggle Control */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <div className="flex items-center space-x-2">
+                  <Sliders className="w-4 h-4 text-emerald-400" />
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Metacognitive Auto-Repair</h4>
+                    <p className="text-[11px] text-slate-400">Demographic parity recalibration</p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setAutoRepairEnabled(!autoRepairEnabled)}
+                  className={cn("px-3 py-1 rounded-lg text-xs font-bold transition-all border", autoRepairEnabled ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" : "bg-slate-800 text-slate-400 border-slate-700")}
+                >
+                  {autoRepairEnabled ? 'ENABLED' : 'DISABLED'}
+                </button>
               </div>
-              <button
-                onClick={() => setAutoRepairEnabled(!autoRepairEnabled)}
-                className={cn("px-3 py-1 rounded-lg text-xs font-bold transition-all border", autoRepairEnabled ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" : "bg-slate-800 text-slate-400 border-slate-700")}
-              >
-                {autoRepairEnabled ? 'ENABLED' : 'DISABLED'}
-              </button>
+
+              {/* Threshold Calibration Slider */}
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-center space-y-1">
+                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex justify-between">
+                  <span>Threshold Calibration (θ)</span>
+                  <span className="text-secondary font-mono font-bold">{thresholdCalibration.toFixed(2)}</span>
+                </label>
+                <input 
+                  type="range" min="0.30" max="0.70" step="0.01"
+                  value={thresholdCalibration} onChange={(e) => setThresholdCalibration(Number(e.target.value))}
+                  className="w-full accent-secondary bg-slate-800 h-2 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
             </div>
 
+            {/* Battle Mode Bias Slider */}
             {isBattleMode && (
-              <div className="space-y-3 w-full lg:w-1/3 flex flex-col justify-center px-4">
+              <div className="p-3 rounded-xl bg-slate-900/90 border border-primary/30 flex flex-col justify-center space-y-1 w-full">
                 <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex justify-between">
-                  <span>Bias Probability</span>
-                  <span className="text-primary font-mono">{biasSlider}%</span>
+                  <span className="flex items-center space-x-1.5">
+                    <Zap className="w-3.5 h-3.5 text-primary" />
+                    <span>Synthetic Bias Injection Stress Rate</span>
+                  </span>
+                  <span className="text-primary font-mono font-bold">{biasSlider}%</span>
                 </label>
                 <input 
                   type="range" min="0" max="100" 

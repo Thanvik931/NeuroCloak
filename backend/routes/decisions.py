@@ -85,6 +85,8 @@ def simulate():
                 input_data["_auto_repair_enabled"] = body["_auto_repair_enabled"]
             if "_bias_injection_probability" in body and "_bias_injection_probability" not in input_data:
                 input_data["_bias_injection_probability"] = body["_bias_injection_probability"]
+            if "_threshold_calibration" in body and "_threshold_calibration" not in input_data:
+                input_data["_threshold_calibration"] = body["_threshold_calibration"]
 
         sim_result = cdt_simulate(ai_system_id, system["domain"], input_data)
 
