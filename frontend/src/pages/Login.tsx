@@ -5,6 +5,7 @@ import PublicNavbar from '../components/layout/PublicNavbar';
 import PublicFooter from '../components/layout/PublicFooter';
 import { BrainCircuit, Mail, Lock, LogIn, UserPlus, ArrowLeft, AlertCircle } from 'lucide-react';
 import { auth, googleProvider } from '../lib/firebase';
+import { apiClient } from '../api/client';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -26,6 +27,22 @@ export default function Login() {
     setError('');
     setLoading(true);
     try {
+      if (!auth) {
+        // Direct Backend JWT Authentication
+        const endpoint = isRegistering ? '/auth/register' : '/auth/login';
+        const res = await apiClient(endpoint, {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+        });
+        setAuth({
+          id: res.user.id,
+          email: res.user.email,
+          role: res.user.role || 'VIEWER'
+        }, res.token);
+        navigate('/dashboard');
+        return;
+      }
+
       let userCredential;
       if (isRegistering) {
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -42,7 +59,7 @@ export default function Login() {
 
       navigate('/dashboard');
     } catch (err: any) {
-      let friendlyError = 'Sign in failed. Please check your details.';
+      let friendlyError = err.message || 'Sign in failed. Please check your details.';
       if (err.code === 'auth/user-not-found') friendlyError = 'Account not found. Please register first.';
       else if (err.code === 'auth/wrong-password') friendlyError = 'Incorrect password.';
       else if (err.code === 'auth/email-already-in-use') friendlyError = 'This email is already registered.';
@@ -55,6 +72,10 @@ export default function Login() {
   };
 
   const handleGoogleAuth = async () => {
+    if (!auth || !googleProvider) {
+      setError('Google Sign-In is not configured in this environment. Please use email and password.');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
