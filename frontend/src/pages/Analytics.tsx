@@ -12,11 +12,15 @@ import {
   Clock, 
   Sparkles, 
   FileSpreadsheet,
+  FileText,
+  Download,
   CheckCircle2,
   Scale,
   Database
 } from 'lucide-react';
 import empiricalBenchmarks from '../data/empirical_benchmarks.json';
+import { exportAnalyticsSummaryCSV } from '../lib/csvExport';
+import { generateAnalyticsPDFReport } from '../lib/pdfExport';
 
 export default function Analytics() {
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
@@ -87,11 +91,19 @@ export default function Analytics() {
           </div>
 
           <button
-            onClick={handleExportCSV}
+            onClick={() => exportAnalyticsSummaryCSV(benchmarkData, summary?.recentDecisions || [])}
             className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-lg flex items-center space-x-2"
           >
             <FileSpreadsheet className="w-4 h-4" />
-            <span>Export Benchmark CSV</span>
+            <span>Export CSV</span>
+          </button>
+
+          <button
+            onClick={() => generateAnalyticsPDFReport(benchmarkData)}
+            className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all shadow-lg flex items-center space-x-2"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Executive PDF</span>
           </button>
         </div>
       </div>
