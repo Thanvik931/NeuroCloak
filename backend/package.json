@@ -1,0 +1,10 @@
+{
+  "name": "neurocloak-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NeuroCloak Flask Backend Runner for Render & Multi-Cloud Deploys",
+  "scripts": {
+    "build": "pip install --no-cache-dir -r requirements.txt",
+    "start": "gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:$PORT app:app"
+  }
+}
